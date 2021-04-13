@@ -1,7 +1,7 @@
 ﻿
 namespace TransientSDB
 {
-    partial class Form1
+    partial class FormTransientServer
     {
         /// <summary>
         /// Required designer variable.
@@ -33,16 +33,16 @@ namespace TransientSDB
             this.SDBTextFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.TextFileRadioButton = new System.Windows.Forms.RadioButton();
             this.ClipboardRadioButton = new System.Windows.Forms.RadioButton();
-            this.OutputGroupBos = new System.Windows.Forms.GroupBox();
-            this.AAVSOTSXButton = new System.Windows.Forms.Button();
-            this.OutputGroupBos.SuspendLayout();
+            this.OutputGroupBox = new System.Windows.Forms.GroupBox();
+            this.AAVSOVSXButton = new System.Windows.Forms.Button();
+            this.OutputGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNSReaderButton
             // 
-            this.TNSReaderButton.Location = new System.Drawing.Point(12, 95);
+            this.TNSReaderButton.Location = new System.Drawing.Point(130, 13);
             this.TNSReaderButton.Name = "TNSReaderButton";
-            this.TNSReaderButton.Size = new System.Drawing.Size(101, 54);
+            this.TNSReaderButton.Size = new System.Drawing.Size(101, 64);
             this.TNSReaderButton.TabIndex = 0;
             this.TNSReaderButton.Text = "Transient Name Server";
             this.TNSReaderButton.UseVisualStyleBackColor = true;
@@ -76,39 +76,43 @@ namespace TransientSDB
             this.ClipboardRadioButton.Text = "Clipboard";
             this.ClipboardRadioButton.UseVisualStyleBackColor = true;
             // 
-            // OutputGroupBos
+            // OutputGroupBox
             // 
-            this.OutputGroupBos.Controls.Add(this.ClipboardRadioButton);
-            this.OutputGroupBos.Controls.Add(this.TextFileRadioButton);
-            this.OutputGroupBos.Location = new System.Drawing.Point(12, 12);
-            this.OutputGroupBos.Name = "OutputGroupBos";
-            this.OutputGroupBos.Size = new System.Drawing.Size(101, 65);
-            this.OutputGroupBos.TabIndex = 3;
-            this.OutputGroupBos.TabStop = false;
-            this.OutputGroupBos.Text = "Output";
+            this.OutputGroupBox.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.OutputGroupBox.Controls.Add(this.ClipboardRadioButton);
+            this.OutputGroupBox.Controls.Add(this.TextFileRadioButton);
+            this.OutputGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.OutputGroupBox.Name = "OutputGroupBox";
+            this.OutputGroupBox.Size = new System.Drawing.Size(101, 65);
+            this.OutputGroupBox.TabIndex = 3;
+            this.OutputGroupBox.TabStop = false;
+            this.OutputGroupBox.Text = "Output";
             // 
-            // AAVSOTSXButton
+            // AAVSOVSXButton
             // 
-            this.AAVSOTSXButton.Location = new System.Drawing.Point(140, 95);
-            this.AAVSOTSXButton.Name = "AAVSOTSXButton";
-            this.AAVSOTSXButton.Size = new System.Drawing.Size(101, 54);
-            this.AAVSOTSXButton.TabIndex = 4;
-            this.AAVSOTSXButton.Text = "AAVSO VSX Server";
-            this.AAVSOTSXButton.UseVisualStyleBackColor = true;
-            this.AAVSOTSXButton.Click += new System.EventHandler(this.AAVSOVSXButton_Click);
+            this.AAVSOVSXButton.Location = new System.Drawing.Point(248, 13);
+            this.AAVSOVSXButton.Name = "AAVSOVSXButton";
+            this.AAVSOVSXButton.Size = new System.Drawing.Size(101, 64);
+            this.AAVSOVSXButton.TabIndex = 4;
+            this.AAVSOVSXButton.Text = "AAVSO VSX Server";
+            this.AAVSOVSXButton.UseVisualStyleBackColor = true;
+            this.AAVSOVSXButton.Click += new System.EventHandler(this.AAVSOVSXButton_Click);
             // 
-            // Form1
+            // FormTransientServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(551, 176);
-            this.Controls.Add(this.AAVSOTSXButton);
-            this.Controls.Add(this.OutputGroupBos);
+            this.BackColor = System.Drawing.Color.Cyan;
+            this.ClientSize = new System.Drawing.Size(364, 93);
+            this.Controls.Add(this.AAVSOVSXButton);
+            this.Controls.Add(this.OutputGroupBox);
             this.Controls.Add(this.TNSReaderButton);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.OutputGroupBos.ResumeLayout(false);
-            this.OutputGroupBos.PerformLayout();
+            this.ForeColor = System.Drawing.Color.Black;
+            this.MaximizeBox = false;
+            this.Name = "FormTransientServer";
+            this.Text = "Transient Server";
+            this.OutputGroupBox.ResumeLayout(false);
+            this.OutputGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -119,8 +123,8 @@ namespace TransientSDB
         private System.Windows.Forms.OpenFileDialog SDBTextFileDialog;
         private System.Windows.Forms.RadioButton TextFileRadioButton;
         private System.Windows.Forms.RadioButton ClipboardRadioButton;
-        private System.Windows.Forms.GroupBox OutputGroupBos;
-        private System.Windows.Forms.Button AAVSOTSXButton;
+        private System.Windows.Forms.GroupBox OutputGroupBox;
+        private System.Windows.Forms.Button AAVSOVSXButton;
     }
 }
 

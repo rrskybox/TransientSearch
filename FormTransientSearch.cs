@@ -2,13 +2,14 @@
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Deployment.Application;
+using System.Drawing;
 
 
 namespace TransientSDB
 {
-    public partial class Form1 : Form
+    public partial class FormTransientServer : Form
     {
-        public Form1()
+        public FormTransientServer()
         {
             InitializeComponent();
             string version;
@@ -17,16 +18,19 @@ namespace TransientSDB
             catch
             {
                 //probably in debug mode
-                version = "in Debug";
+                version = "  **in Debug**";
             }
-            this.Text = version;
-
+            this.Text = "Transient Search V"+version;
+            Utility.ButtonGreen(TNSReaderButton);
+            Utility.ButtonGreen(AAVSOVSXButton);
+            OutputGroupBox.ForeColor = Color.Black;
         }
 
         private void TNSReaderButton_Click(object sender, EventArgs e)
         {
             //Import TNS-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
+            Utility.ButtonRed(TNSReaderButton);
             TNSManagement tnsAcquisition = new TNSManagement();
             tnsAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
@@ -41,12 +45,14 @@ namespace TransientSDB
             }
             else
                 tnsAcquisition.BuildSDBClipboard();
+            Utility.ButtonGreen(TNSReaderButton);
         }
 
         private void AAVSOVSXButton_Click(object sender, EventArgs e)
         {
             //Import TSX-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
+            Utility.ButtonRed(AAVSOVSXButton);
             VSXManagement tsxAcquisition = new VSXManagement();
             tsxAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
@@ -61,6 +67,7 @@ namespace TransientSDB
             }
             else
                 tsxAcquisition.BuildSDBClipboard();
+            Utility.ButtonGreen(AAVSOVSXButton);
         }
 
     }
