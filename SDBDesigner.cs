@@ -59,6 +59,9 @@ namespace TransientSDB
         const string FieldIDX = "fieldID";
         #endregion
 
+        public int DefaultObjectIndex { get; set; } = 60;
+        public string DefaultObjectDescription { get; set; } = "Supernova";
+
         public List<ControlDesc> ControlFields = new List<ControlDesc>()
         {
             //List of values for generating TSX SDB fields
@@ -86,8 +89,6 @@ namespace TransientSDB
       
         public List<DataColumn> HeaderMap = new List<DataColumn>();
 
-        public DefaultObjectlDesc DefaultObject = new DefaultObjectlDesc();
-
         public XDocument HeaderGenerator()
         {
             XElement xHeader = new XElement(SDBHeaderX, new XAttribute("version", "1.00"));
@@ -96,8 +97,8 @@ namespace TransientSDB
             { xHeader.Add(new XElement(cf.ControlName, cf.ControlValue)); }
             //Default Object type -- may fix this up later
             XElement dotx = new XElement(DefaultObjectTypeX,
-                    new XAttribute(IndexX, DefaultObject.Index),
-                    new XAttribute(DescriptionX, DefaultObject.Description));
+                    new XAttribute(IndexX, DefaultObjectIndex),
+                    new XAttribute(DescriptionX, DefaultObjectDescription));
             xHeader.Add(dotx);
             //Column definitions
             //Custom fields
@@ -169,10 +170,5 @@ namespace TransientSDB
         public string ControlValue { get; set; }
     }
 
-    public class DefaultObjectlDesc
-    {
-        public int Index { get; set; } = 60;
-        public string Description { get; set; } = "Test Nova";
-    }
 }
 

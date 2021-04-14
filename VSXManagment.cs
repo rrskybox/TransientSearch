@@ -41,6 +41,9 @@ namespace TransientSDB
         const string vsxListIdentifier = "TNS Supernova List";
         const string vsxName = "www.TNS.org";
 
+        public bool SearchNova { get; set; }
+        public bool SearchAGN { get; set; }
+            
         private SDBDesigner sbdDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
@@ -64,7 +67,7 @@ namespace TransientSDB
         {
             // url of vsx and vsx-sandbox api
             // 
-            string startYear = (DateTime.Now.Year - 1).ToString("0");
+            string startYear = (DateTime.Now.Year - 10).ToString("0");
             string endYear = (DateTime.Now.Year).ToString("0"); ;
             string url_vsx_search = VSXGETURL;
             string contents1 = "";
@@ -224,8 +227,8 @@ namespace TransientSDB
                         break;
                     case "varType":
                         sb.SourceDataName = "varType";
-                        sb.TSXEntryName = SDBDesigner.ObjectTypeX;
-                        sb.IsBuiltIn = true;
+                        sb.TSXEntryName = "Variable Type";
+                        sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
@@ -311,7 +314,7 @@ namespace TransientSDB
             //queryString[  "geom"] = "";
             //queryString[  "size"] = "";
             //queryString[  "unit"] = "";
-            //queryString["vtype"] = vType;
+            queryString["vtype"] = vType;
             //queryString[  "stype"] = "";
             //queryString[  "maxhi"] = "";
             //queryString[ "maxlo"] = "";

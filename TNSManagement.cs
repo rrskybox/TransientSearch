@@ -27,6 +27,10 @@ namespace TransientSDB
         private XElement sdbXResults;
         private XDocument sdbXDoc;
 
+        public int SearchBackDays { get; set; }
+        public bool SearchSN { get; set; }
+        public bool SearchClassified { get; set; }
+
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
@@ -307,8 +311,12 @@ namespace TransientSDB
             queryString["name_like"] = "0";
             queryString["isTNS_AT"] = "yes";
             queryString["public"] = "all";
-            queryString["unclassified_at"] = "0";
-            queryString["classified_sne"] = "1";
+            if (SearchClassified)
+                queryString["unclassified_at"] = "0";
+            else queryString["unclassified)at"] = "1";
+            if (SearchSN) 
+                queryString["classified_sne"] = "1";
+            else queryString["classified_sne"] = "0";
             queryString["ra"] = "";
             queryString["decl"] = "";
             queryString["radius"] = "";
@@ -317,8 +325,8 @@ namespace TransientSDB
             queryString["classifier_groupid[]"] = "null";
             queryString["objtype[]"] = "null";
             queryString["AT_objtype[]"] = "null";
-            queryString["discovered_period_value"] = "1";
-            queryString["discovered_period_units"] = "months";
+            queryString["discovered_period_value"] = SearchBackDays.ToString();
+            queryString["discovered_period_units"] = "days";
             queryString["discovery_mag_min"] = "";
             queryString["discovery_mag_max"] = "";
             queryString["internal_name"] = "";

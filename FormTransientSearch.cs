@@ -32,6 +32,10 @@ namespace TransientSDB
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(TNSReaderButton);
             TNSManagement tnsAcquisition = new TNSManagement();
+            tnsAcquisition.SearchBackDays =(int) SearchDaysBox.Value;
+            tnsAcquisition.SearchClassified = ATSelectButton.Checked;
+            tnsAcquisition.SearchSN = SuperNovaSelectButton.Checked;
+
             tnsAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
@@ -53,8 +57,11 @@ namespace TransientSDB
             //Import TSX-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(AAVSOVSXButton);
-            VSXManagement tsxAcquisition = new VSXManagement();
-            tsxAcquisition.GetAndSet();
+            VSXManagement vsxAcquisition = new VSXManagement();
+            vsxAcquisition.SearchNova = NovaSelectButton.Checked;
+            vsxAcquisition.SearchAGN = AGNSelectButton.Checked;
+
+            vsxAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
@@ -62,14 +69,14 @@ namespace TransientSDB
                 {
                     string textFileName = SDBTextFileDialog.FileName;
                     if (TextFileRadioButton.Checked)
-                        tsxAcquisition.BuildSDBTextFile(textFileName);
+                        vsxAcquisition.BuildSDBTextFile(textFileName);
                 }
             }
             else
-                tsxAcquisition.BuildSDBClipboard();
+                vsxAcquisition.BuildSDBClipboard();
             Utility.ButtonGreen(AAVSOVSXButton);
         }
 
-    }
+     }
 }
 
