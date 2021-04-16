@@ -44,19 +44,20 @@ namespace TransientSDB
         public bool SearchNova { get; set; }
         public bool SearchAGN { get; set; }
             
-        private SDBDesigner sbdDesign;
+        private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
 
         public void GetAndSet()
         {
-            sbdDesign = new SDBDesigner();
+            sdbDesign = new SDBDesigner();
+            sdbDesign.SearchPrefix = "VSX";
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
             //Parse the TNS-specific catalog data for names and widths to be used
             //  for defining columns in the output text data to TSX SDB text file
             //colMap is the generic list of column names and maximum data widths
-            sbdDesign.MakeHeaderMap(sdbXResults);
+            sdbDesign.MakeHeaderMap(sdbXResults);
             //Create the TSX SDB Text header by mapping the column map to the 
             //  TSX built-in and user data fields
             sdbXDoc = ResultsXMLtoSDBHeader(sdbXResults);
@@ -116,10 +117,14 @@ namespace TransientSDB
                     string dItemValue = dItem.Value.ToString();
                     if (dHeader[dIndex] == "radec2000")
                     {
-                        string dItemRA = dItemValue.Split(',')[0];
-                        string dItemDec = dItemValue.Split(',')[1];
+                        double dItemRAdegrees = Convert.ToDouble(dItemValue.Split(',')[0]);
+                        double dItemDecdegrees =Convert.ToDouble(dItemValue.Split(',')[1]);
+                        //Convert RA Degrees to RA Hours as VSX delivers it in degrees and TSX wants it in hours
+                        double dItemRAHours = dItemRAdegrees * 24.0 / 3600.0;
+                        string dItemRA = dItemRAHours.ToString();
+                        string dItemDec = dItemDecdegrees.ToString();
                         xmlItem.Add(new XElement("RA2000", dItemRA));
-                        xmlItem.Add(new XElement("Dec2000", dItemDec));
+                        xmlItem.Add(new XElement("Dec2000", dItemDecdegrees)) ;
                         if (dItemRA.Length > widths[dIndex])
                             widths[dIndex] = dItemRA.Length;
                         if (dItemDec.Length > widths[dIndex])
@@ -162,12 +167,12 @@ namespace TransientSDB
             //  and empty sets of builtin and user data fields
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sbdDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "AAVSO VSX Server";
-            sbdDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "aavso.org";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "AAVSO VSX Server";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "aavso.org";
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
-            foreach (DataColumn sb in sbdDesign.HeaderMap)
+            foreach (DataColumn sb in sdbDesign.HeaderMap)
             //for (int i = 0; i < sbdDesign .HeaderMap.Count; i++)
             //sbdDesign.DataFields.Single(f => f.SDBColumnName == SDBDesigner.LabelOrSearchX).TNSColumnName = "Name";
             {
@@ -182,7 +187,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "name":
@@ -192,7 +197,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "const":
@@ -202,7 +207,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "RA2000":
@@ -212,7 +217,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "Dec2000":
@@ -222,7 +227,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "varType":
@@ -232,7 +237,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "maxMag":
@@ -242,7 +247,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "maxPass":
@@ -260,7 +265,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "period":
@@ -270,7 +275,7 @@ namespace TransientSDB
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
-                        sbdDesign.DataFields.Add(sb);
+                        sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "riseDur":
@@ -285,18 +290,18 @@ namespace TransientSDB
                 }
             }
             //Generate the header xml
-            return sbdDesign.HeaderGenerator();
+            return sdbDesign.HeaderGenerator();
         }
 
         public void BuildSDBTextFile(string fileName)
         {
-            XMLParser.XMLToSDBText(fileName, sbdDesign, sdbXDoc, sdbXResults);
+            XMLParser.XMLToSDBText(fileName, sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
 
         public void BuildSDBClipboard()
         {
-            XMLParser.XMLToSDBClipboard(sbdDesign, sdbXDoc, sdbXResults);
+            XMLParser.XMLToSDBClipboard(sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
 

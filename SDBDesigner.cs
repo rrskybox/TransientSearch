@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using System;
+using System.Linq;
 
 namespace TransientSDB
 {
@@ -61,6 +62,10 @@ namespace TransientSDB
 
         public int DefaultObjectIndex { get; set; } = 60;
         public string DefaultObjectDescription { get; set; } = "Supernova";
+        public string SearchPrefix
+        {
+            set { ControlFields.Single(c => c.ControlName == SearchPrefixX).ControlValue = value; }
+        }
 
         public List<ControlDesc> ControlFields = new List<ControlDesc>()
         {
@@ -81,12 +86,12 @@ namespace TransientSDB
             new ControlDesc {ControlName = ReferenceFrameX, ControlValue = "0" },
             new ControlDesc {ControlName = CrossReferenceTypeX, ControlValue = "0" },
             new ControlDesc {ControlName = DefaultMaxFOVX, ControlValue = "360.0000" },
-            new ControlDesc {ControlName = RAMultiplierX , ControlValue = "0.06666667" },
+            new ControlDesc {ControlName = RAMultiplierX , ControlValue = "1.0" },
             new ControlDesc {ControlName = SampleColumnHeaderX, ControlValue = "" }
         };
 
         public List<DataColumn> DataFields = new List<DataColumn>();
-      
+
         public List<DataColumn> HeaderMap = new List<DataColumn>();
 
         public XDocument HeaderGenerator()
@@ -104,9 +109,9 @@ namespace TransientSDB
             //Custom fields
             foreach (DataColumn dc in DataFields)
             {
-                if (dc.IsBuiltIn) 
+                if (dc.IsBuiltIn)
                     xHeader.Add(BuiltInFieldGen(dc));
-                else 
+                else
                     xHeader.Add(CustomFieldGen(dc));
             }
             //Add header
