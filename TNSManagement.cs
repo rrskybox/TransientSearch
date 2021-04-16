@@ -34,7 +34,7 @@ namespace TransientSDB
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "TNT";
+            sdbDesign.SearchPrefix = "TNS";
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
