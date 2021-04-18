@@ -38,8 +38,8 @@ namespace TransientSDB
         const string NOVA_VTYPE5 = "NR";
         //const string QSO_VTYPE = "QSO";
 
-        const string vsxListIdentifier = "TNS Supernova List";
-        const string vsxName = "www.TNS.org";
+        const string vsxListDescription = "AAVSO VSX Nova Database";
+        const string vsxName = "VSX";
 
         public bool SearchNova { get; set; }
         public bool SearchAGN { get; set; }

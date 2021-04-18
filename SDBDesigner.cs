@@ -60,8 +60,8 @@ namespace TransientSDB
         const string FieldIDX = "fieldID";
         #endregion
 
-        public int DefaultObjectIndex { get; set; } = 60;
-        public string DefaultObjectDescription { get; set; } = "Supernova";
+        public int DefaultObjectIndex { get; set; } = 20;
+        public string DefaultObjectDescription { get; set; } = "Transient";
         public string SearchPrefix
         {
             set { ControlFields.Single(c => c.ControlName == SearchPrefixX).ControlValue = value; }

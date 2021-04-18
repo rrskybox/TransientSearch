@@ -77,6 +77,31 @@ namespace TransientSDB
             Utility.ButtonGreen(AAVSOVSXButton);
         }
 
-     }
+        private void ExoButton_Click(object sender, EventArgs e)
+        {
+            //Import TSX-specific catalog data
+            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
+            Utility.ButtonRed(ExoButton);
+            ExoManagement exoAcquisition = new ExoManagement();
+            //exoAcquisition.SearchNova = NovaSelectButton.Checked;
+            //exoAcquisition.SearchAGN = AGNSelectButton.Checked;
+
+            exoAcquisition.GetAndSet();
+            if (TextFileRadioButton.Checked)
+            {
+                DialogResult odr = SDBTextFileDialog.ShowDialog();
+                if (odr == DialogResult.OK)
+                {
+                    string textFileName = SDBTextFileDialog.FileName;
+                    if (TextFileRadioButton.Checked)
+                        exoAcquisition.BuildSDBTextFile(textFileName);
+                }
+            }
+            else
+                exoAcquisition.BuildSDBClipboard();
+            Utility.ButtonGreen(ExoButton);
+
+        }
+    }
 }
 

@@ -184,8 +184,8 @@ namespace TransientSDB
                         break;
                     case "Obj_Type":
                         sb.SourceDataName = "Obj_Type";
-                        sb.TSXEntryName = SDBDesigner.ObjectTypeX;
-                        sb.IsBuiltIn = true;
+                        sb.TSXEntryName = "TNS_Object_Type";
+                        sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
