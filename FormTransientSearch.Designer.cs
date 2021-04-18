@@ -69,7 +69,7 @@ namespace TransientSDB
             // 
             this.SDBTextFileDialog.CheckFileExists = false;
             this.SDBTextFileDialog.DefaultExt = "txt";
-            this.SDBTextFileDialog.FileName = "TNSdatabase.txt";
+            this.SDBTextFileDialog.FileName = "Database.txt";
             // 
             // TextFileRadioButton
             // 

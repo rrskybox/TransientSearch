@@ -39,6 +39,7 @@ namespace TransientSDB
             tnsAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
+                SDBTextFileDialog.FileName = "TNS Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -64,6 +65,7 @@ namespace TransientSDB
             vsxAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
+                SDBTextFileDialog.FileName = "VSX Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -89,6 +91,7 @@ namespace TransientSDB
             exoAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
+                SDBTextFileDialog.FileName = "EXO Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -102,6 +105,8 @@ namespace TransientSDB
             Utility.ButtonGreen(ExoButton);
 
         }
+
+     
     }
 }
 

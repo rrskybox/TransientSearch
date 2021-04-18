@@ -58,32 +58,21 @@ namespace TransientSDB
 
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
-            //string exoURLquery1 = URL_Exo_search + MakeSearchQuery();
-            string exoURLquery1 = URL_Exo_search + "table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml";
+            string exoURLquery = URL_Exo_search + MakeSearchQuery();
+            //string exoURLquery1 = URL_Exo_search + "table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml";
             try
             {
-               exoResults = client.DownloadString(exoURLquery1);
+                exoResults = client.DownloadString(exoURLquery);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Download Error: " + ex.Message);
                 return null;
             };
-
-            //XElement exoDoc = XElement.Load("C:\\Users\\rick-\\Documents\\Temp\\exo.txt");
-
-            //-< VOTABLE xmlns:stc = "http://www.ivoa.net/xml/STC/v1.30" 
-            //  xmlns = "http://www.ivoa.net/xml/VOTable/v1.3" 
-            //  xmlns: xsi = "http://www.w3.org/2001/XMLSchema-instance" version = "1.3" >
-
             //Standard VOTable parse
-
             XElement exoDoc = XElement.Parse(exoResults);
-
             XNamespace exoNS = XNamespace.Get(exoDoc.Attribute("xmlns").Value);
-
             XElement resource = exoDoc.Element(exoNS + "RESOURCE");
-            //string sdbDescription = resource.Element("DESCRIPTION").Value.ToString();
             XElement table = resource.Element(exoNS + "TABLE");
             XElement xdataTable = table.Element(exoNS + "DATA");
             XElement xData = xdataTable.Element(exoNS + "TABLEDATA");
@@ -95,7 +84,6 @@ namespace TransientSDB
             IEnumerable<XElement> fields = table.Elements(exoNS + "FIELD");
             foreach (XElement xf in fields)
             {
-                //string fid = xf.Attribute("id").Value.ToString();
                 string fname = xf.Attribute("name").Value.ToString();
                 dHeader.Add(fname);
             }
@@ -179,7 +167,7 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                      case "gaia_gmag":
+                    case "gaia_gmag":
                         sb.SourceDataName = "gaia_gmag";
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
@@ -190,14 +178,6 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "const":
-                        sb.SourceDataName = "const";
-                        sb.TSXEntryName = "Constellation";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
                         break;
                     case "maxPass":
                         break;
@@ -208,24 +188,8 @@ namespace TransientSDB
                     case "epoch":
                         break;
                     case "novaYr":
-                        sb.SourceDataName = "novaYr";
-                        sb.TSXEntryName = "Discovery_Date_UT";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
                         break;
                     case "period":
-                        sb.SourceDataName = "period";
-                        sb.TSXEntryName = "Period";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
                         break;
                     case "riseDur":
                         break;
@@ -256,14 +220,13 @@ namespace TransientSDB
         private string MakeSearchQuery()
         {
             //Returns a url string for querying the Exo website
-
+            //table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml
             NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            queryString["query"] = "select+*+from+ps+where+dec+<+0";
-            return "query=select+*+from+ps+where+disc_facility+=+'Transiting Exoplanet Survey Satellite (TESS)'";
-
-            //return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
+            queryString["table"] = "exoplanets";
+            queryString["select"] = "pl_hostname,ra,dec,gaia_gmag";
+            queryString["order"] = "dec";
+            queryString["format"] = "xml";
+            return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
         }
-
-
     }
 }
