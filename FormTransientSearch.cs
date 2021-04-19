@@ -1,10 +1,9 @@
 ﻿//This research has made use of data and/or services provided by the International Astronomical Union's Minor Planet Center.
 
 using System;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using System.Deployment.Application;
 using System.Drawing;
+using System.Windows.Forms;
 
 
 namespace TransientSDB
@@ -89,7 +88,7 @@ namespace TransientSDB
             //Import TSX-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(ExoButton);
-            ExoManagement exoAcquisition = new ExoManagement();
+            EXOManagement exoAcquisition = new EXOManagement();
             //exoAcquisition.SearchNova = NovaSelectButton.Checked;
             //exoAcquisition.SearchAGN = AGNSelectButton.Checked;
 

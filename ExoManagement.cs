@@ -7,8 +7,8 @@
 ///
 
 using System;
-using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
@@ -16,7 +16,7 @@ using System.Xml.Linq;
 
 namespace TransientSDB
 {
-    public class ExoManagement
+    public class EXOManagement
     {
         // url of Exo and Exo-sandbox api                                     
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
@@ -98,6 +98,9 @@ namespace TransientSDB
                 foreach (XElement dItem in dResults)
                 {
                     string dItemValue = dItem.Value.ToString();
+                    //Check for converstion of RA from decimal degrees to decimal hours
+                    if (dHeader[dIndex].Contains("ra"))
+                        dItemValue = ((Convert.ToDouble(dItem.Value.ToString())) * (24.0 / 360.0)).ToString();
                     xmlItem.Add(new XElement(dHeader[dIndex], dItemValue));
                     if (dItemValue.Length > widths[dIndex])
                         widths[dIndex] = dItemValue.Length;
@@ -173,6 +176,16 @@ namespace TransientSDB
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+
+                        DataColumn sbExtra = new DataColumn();
+                        sbExtra.SourceDataName = "gaia_gmag";
+                        sbExtra.TSXEntryName = "Magnitude";
+                        sbExtra.IsBuiltIn = false;
+                        sbExtra.ColumnStart = fieldStart;
+                        sbExtra.ColumnWidth = fieldWidth;
+                        sbExtra.IsPassed = true;
+
+                        sdbDesign.DataFields.Add(sbExtra);
                         fieldStart += fieldWidth;
                         break;
                     case "const":

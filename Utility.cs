@@ -6,7 +6,7 @@ namespace TransientSDB
 {
     public static class Utility
     {
-        public static int ColumnEnd(int startColumn, int columnWidth) => startColumn + columnWidth-1;
+        public static int ColumnEnd(int startColumn, int columnWidth) => startColumn + columnWidth - 1;
 
         public static double ReduceTo360(double degrees)
         {
@@ -81,7 +81,7 @@ namespace TransientSDB
             return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
 
-        public static double ParseRADecString(string radec,char separator)
+        public static double ParseRADecString(string radec, char separator)
         {
             //Converts a string in either decimal or sexidecimal format to a double
             //if the string splits because it has internal spaces, then treat as sexidecimal
@@ -112,7 +112,7 @@ namespace TransientSDB
             return name;
         }
 
-         public static bool MatchPoint(Point a, Point b)
+        public static bool MatchPoint(Point a, Point b)
         {
             if (a == b)
                 return true;

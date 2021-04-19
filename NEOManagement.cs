@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.IO;
 
 
 namespace TransientSDB
@@ -13,8 +12,8 @@ namespace TransientSDB
     {
         const string URL_NEO_search = "https://minorplanetcenter.net/iau/NEO/neocp.txt";
 
-        const string NEOName = "https://minorplanetcenter.net/iau/NEO/neocp.txt";
-        const string NEODescription = "Realtime NEO Query Listing";
+        const string NEOName = "NEOCP";
+        const string NEODescription = "Candidate Near Earth Objects";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
@@ -128,8 +127,8 @@ namespace TransientSDB
             //tsxSDBdesign = new SDBDesigner();
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "Minor Planet Server - NEOCP";
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "Candidate Near Earth Objects";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = NEOName;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = NEODescription;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -179,6 +178,16 @@ namespace TransientSDB
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+
+                        DataColumn sbExtra = new DataColumn();
+                        sbExtra.SourceDataName = "Magnitude";
+                        sbExtra.TSXEntryName = "Magnitude";
+                        sbExtra.IsBuiltIn = false;
+                        sbExtra.ColumnStart = fieldStart;
+                        sbExtra.ColumnWidth = fieldWidth;
+                        sbExtra.IsPassed = true;
+
+                        sdbDesign.DataFields.Add(sbExtra);
                         fieldStart += fieldWidth;
                         break;
                     case "Obj_Type":

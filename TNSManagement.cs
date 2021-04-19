@@ -20,8 +20,8 @@ namespace TransientSDB
         // url of TNS and TNS-sandbox api                                     
         const string url_tns_search = "http://wis-tns.weizmann.ac.il/search?";
 
-        const string tnsListIdentifier = "TNS Supernova List";
-        const string tnsName = "www.TNS.org";
+        const string tnsListIdentifier = "Transient Name Server";
+        const string tnsName = "Supernova Objects";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
@@ -129,8 +129,8 @@ namespace TransientSDB
             //tsxSDBdesign = new SDBDesigner();
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "Transient Name Server";
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "Supernova Objects";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = tnsListIdentifier;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = tnsName;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -163,7 +163,7 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "RA":
-                         sb.SourceDataName = "RA";
+                        sb.SourceDataName = "RA";
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -246,13 +246,24 @@ namespace TransientSDB
                     case "End_Prop_Period":
                         break;
                     case "Discovery_MagFlux":
-                         sb.SourceDataName = "Discovery_MagFlux";
-                       sb.TSXEntryName = SDBDesigner.MagnitudeX;
+                        sb.SourceDataName = "Discovery_MagFlux";
+                        sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+ 
+                        DataColumn sbExtra = new DataColumn();
+                        sbExtra.SourceDataName = "Discovery_MagFlux";
+                        sbExtra.TSXEntryName = "Magnitude";
+                        sbExtra.IsBuiltIn = false;
+                        sbExtra.ColumnStart = fieldStart;
+                        sbExtra.ColumnWidth = fieldWidth;
+                        sbExtra.IsPassed = true;
+
+                        sdbDesign.DataFields.Add(sbExtra);
+
                         fieldStart += fieldWidth;
                         break;
                     case "Discovery_Filter":
@@ -316,7 +327,7 @@ namespace TransientSDB
             if (SearchClassified)
                 queryString["unclassified_at"] = "0";
             else queryString["unclassified)at"] = "1";
-            if (SearchSN) 
+            if (SearchSN)
                 queryString["classified_sne"] = "1";
             else queryString["classified_sne"] = "0";
             queryString["ra"] = "";

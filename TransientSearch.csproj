@@ -27,7 +27,7 @@
     <ProductName>Transient Search</ProductName>
     <PublisherName>TSXToolKit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -79,7 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExoManagement.cs" />
+    <Compile Include="EXOManagement.cs" />
     <Compile Include="ExportTSXEditPastePhoto.cs" />
     <Compile Include="FormTransientSearch.cs">
       <SubType>Form</SubType>

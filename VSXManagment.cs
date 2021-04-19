@@ -15,13 +15,12 @@
 */
 
 using System;
-using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.Data;
 
 namespace TransientSDB
 
@@ -36,14 +35,14 @@ namespace TransientSDB
         const string NOVA_VTYPE3 = "NB";
         const string NOVA_VTYPE4 = "NC";
         const string NOVA_VTYPE5 = "NR";
-        //const string QSO_VTYPE = "QSO";
+        const string AGN_VTYPE = "AGN";
 
-        const string vsxListDescription = "AAVSO VSX Nova Database";
-        const string vsxName = "VSX";
+        const string vsxIdentifier = "VSX";
+        const string vsxDescription = "AAVSO VSX Database";
 
         public bool SearchNova { get; set; }
         public bool SearchAGN { get; set; }
-            
+
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
@@ -68,10 +67,10 @@ namespace TransientSDB
         {
             // url of vsx and vsx-sandbox api
             // 
-            string startYear = (DateTime.Now.Year - 10).ToString("0");
+            string startYear = (DateTime.Now.Year - 21).ToString("0");
             string endYear = (DateTime.Now.Year).ToString("0"); ;
             string url_vsx_search = VSXGETURL;
-            string contents1 = "";
+            string vsxResults = "";
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
@@ -79,7 +78,7 @@ namespace TransientSDB
 
             try
             {
-                contents1 = client.DownloadString(vsxURLquery1);
+                vsxResults = client.DownloadString(vsxURLquery1);
             }
             catch (Exception ex)
             {
@@ -87,7 +86,7 @@ namespace TransientSDB
                 return null;
             };
 
-            XElement xmlDoc1 = XElement.Parse(contents1);
+            XElement xmlDoc1 = XElement.Parse(vsxResults);
             XElement resource = xmlDoc1.Element("RESOURCE");
             string sdbDescription = resource.Element("DESCRIPTION").Value.ToString();
             XElement table = resource.Element("TABLE");
@@ -118,13 +117,13 @@ namespace TransientSDB
                     if (dHeader[dIndex] == "radec2000")
                     {
                         double dItemRAdegrees = Convert.ToDouble(dItemValue.Split(',')[0]);
-                        double dItemDecdegrees =Convert.ToDouble(dItemValue.Split(',')[1]);
+                        double dItemDecdegrees = Convert.ToDouble(dItemValue.Split(',')[1]);
                         //Convert RA Degrees to RA Hours as VSX delivers it in degrees and TSX wants it in hours
                         double dItemRAHours = dItemRAdegrees * 24.0 / 3600.0;
                         string dItemRA = dItemRAHours.ToString();
                         string dItemDec = dItemDecdegrees.ToString();
                         xmlItem.Add(new XElement("RA2000", dItemRA));
-                        xmlItem.Add(new XElement("Dec2000", dItemDecdegrees)) ;
+                        xmlItem.Add(new XElement("Dec2000", dItemDecdegrees));
                         if (dItemRA.Length > widths[dIndex])
                             widths[dIndex] = dItemRA.Length;
                         if (dItemDec.Length > widths[dIndex])
@@ -167,8 +166,8 @@ namespace TransientSDB
             //  and empty sets of builtin and user data fields
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "AAVSO VSX Server";
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "aavso.org";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = vsxIdentifier;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue =vsxDescription ;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -248,6 +247,17 @@ namespace TransientSDB
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+
+                        DataColumn sbExtra = new DataColumn();
+                        sbExtra.SourceDataName = "maxMag";
+                        sbExtra.TSXEntryName = "Magnitude";
+                        sbExtra.IsBuiltIn = false;
+                        sbExtra.ColumnStart = fieldStart;
+                        sbExtra.ColumnWidth = fieldWidth;
+                        sbExtra.IsPassed = true;
+
+                        sdbDesign.DataFields.Add(sbExtra);
+
                         fieldStart += fieldWidth;
                         break;
                     case "maxPass":
