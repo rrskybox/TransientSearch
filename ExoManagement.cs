@@ -21,7 +21,7 @@ namespace TransientSDB
         // url of Exo and Exo-sandbox api                                     
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
 
-        const string ExoName = "https://exoplanetarchive.ipac.caltech.edu";
+        const string ExoName = "Exoplanetarchive.ipac.caltech";
         const string ExoDescription = "Realtime Exo Planet Query Listing";
 
         private SDBDesigner sdbDesign;
@@ -116,7 +116,7 @@ namespace TransientSDB
 
         private XDocument ResultsXMLtoSDBHeader(XElement xmlDB)
         {
-            //Translates TNS Formatted data into TSX readable text header
+            //Translates EXO Formatted data into TSX readable text header
             //  but still XML formatted
             //
             //Create a TSXSDB formatter to work with
@@ -126,12 +126,10 @@ namespace TransientSDB
             // Except for identifier and sdbdescription
             sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = ExoName;
             sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = ExoDescription;
-            //Map the tns fields on to the tsx built-in and user-defined fields
+            //Map the exo fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
             foreach (DataColumn sb in sdbDesign.HeaderMap)
-            //for (int i = 0; i < sbdDesign .HeaderMap.Count; i++)
-            //sbdDesign.DataFields.Single(f => f.SDBColumnName == SDBDesigner.LabelOrSearchX).TNSColumnName = "Name";
             {
                 string fieldName = sb.SourceDataName;
                 int fieldWidth = sb.ColumnWidth;

@@ -1,27 +1,20 @@
-﻿///TNSManagemet Class
-///
-/// Class for TNS CSV Imported file conversions to TSX SDB Text file 
-/// 
-/// This class serves as method template for conversions from all 
-///   catalog sources
-///
-
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.IO;
+
 
 namespace TransientSDB
 {
-    public class TNSManagement
+    class NEOManagement
     {
-        // url of TNS and TNS-sandbox api                                     
-        const string url_tns_search = "http://wis-tns.weizmann.ac.il/search?";
+        const string URL_NEO_search = "https://minorplanetcenter.net/iau/NEO/neocp.txt";
 
-        const string tnsListIdentifier = "TNS Supernova List";
-        const string tnsName = "www.TNS.org";
+        const string NEOName = "https://minorplanetcenter.net/iau/NEO/neocp.txt";
+        const string NEODescription = "Realtime NEO Query Listing";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
@@ -34,7 +27,7 @@ namespace TransientSDB
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "TNS";
+            sdbDesign.SearchPrefix = "NEO";
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
@@ -54,14 +47,27 @@ namespace TransientSDB
         /// <returns></returns>
         private XElement ServerQueryToResultsXML()
         {
+            Tuple<int, int> nNameCol = new Tuple<int, int>(0, 8);
+            Tuple<int, int> nScoreCol = new Tuple<int, int>(9, 12);
+            Tuple<int, int> nDiscoveryCol = new Tuple<int, int>(13, 25);
+            Tuple<int, int> nRACol = new Tuple<int, int>(26, 34);
+            Tuple<int, int> nDecCol = new Tuple<int, int>(35, 42);
+            Tuple<int, int> nVCol = new Tuple<int, int>(43, 48);
+            Tuple<int, int> nUpdatedCol = new Tuple<int, int>(49, 70);
+            Tuple<int, int> nObservationsCol = new Tuple<int, int>(80, 85);
+            Tuple<int, int> nHCol = new Tuple<int, int>(86, 90);
+            Tuple<int, int> nArcCol = new Tuple<int, int>(91, 95);
+            Tuple<int, int> nNotSeenCol = new Tuple<int, int>(96, 101);
+
             string weburl = MakeSearchQuery();
-            string contents;
+            string neoResultText;
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
             {
-                string urlSearch = url_tns_search + MakeSearchQuery();
-                contents = client.DownloadString(urlSearch);
+                // string urlSearch = url_NEO_search + MakeSearchQuery();
+                string urlSearch = URL_NEO_search;
+                neoResultText = client.DownloadString(urlSearch);
             }
             catch (Exception ex)
             {
@@ -69,36 +75,29 @@ namespace TransientSDB
                 return null;
             };
 
-            //Clean up the column headers so they can be used as XML item names
-            string[] lines = contents.Split('\n');
-            lines[0] = lines[0].Replace(" ", "_");
-            lines[0] = lines[0].Replace("/", "");
-            lines[0] = lines[0].Replace("(", "");
-            lines[0] = lines[0].Replace(")", "");
-            lines[0] = lines[0].Replace(".", "");
-            lines[0] = lines[0].Replace("\"", "");
+            string[] headers = new string[4] { "Name", "RA", "DEC", "Magnitude" };
 
-            //Split into rows and load the header line as csv file
-            char[] csvSplit = new char[] { '\t' };
-            string[] headers = lines[0].Split(csvSplit, System.StringSplitOptions.None).Select(x => x.Trim('\"')).ToArray();
-            int[] widths = new int[headers.Length];
+            string[] entries = new string[4];
+            int[] widths = new int[4];
 
             //create an xml working database
             XElement xml = new XElement(XMLParser.SDBListX);
-            for (int line = 1; line < lines.Length; line++)
+            //Load DB based on columns of text
+            string[] neoResultLines = neoResultText.Split('\n');
+            for (int line = 0; line < neoResultLines.Count(); line++)
             {
-                lines[line] = lines[line].Replace("\"", "");
-                string[] entries = lines[line].Split(csvSplit, System.StringSplitOptions.None);
+                if (neoResultLines[line].Length < 100) break;
+                entries[0] = neoResultLines[line].Substring(nNameCol.Item1, QuickWidth(nNameCol));
+                entries[1] = neoResultLines[line].Substring(nRACol.Item1, QuickWidth(nRACol));
+                entries[2] = neoResultLines[line].Substring(nDecCol.Item1, QuickWidth(nDecCol));
+                entries[3] = neoResultLines[line].Substring(nVCol.Item1, QuickWidth(nVCol));
+
                 XElement xmlItem = new XElement(XMLParser.SDBEntryX);
                 for (int i = 0; i < headers.Length; i++)
                 {
-                    if (headers[i].Contains("RA") || headers[i].Contains("DEC"))
-                        entries[i] = Utility.ParseRADecString(entries[i], ':').ToString();
                     xmlItem.Add(new XElement(headers[i], entries[i]));
                     if (entries[i].Length > widths[i]) widths[i] = entries[i].Length;
                 }
-                //fill in clipboard fields
-                //Name
                 xml.Add(xmlItem);
             }
             XElement headerRecordX = new XElement("SDBDataFields");
@@ -129,8 +128,8 @@ namespace TransientSDB
             //tsxSDBdesign = new SDBDesigner();
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "Transient Name Server";
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "Supernova Objects";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = "Minor Planet Server - NEOCP";
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = "Candidate Near Earth Objects";
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -142,16 +141,6 @@ namespace TransientSDB
                 int fieldWidth = sb.ColumnWidth;
                 switch (fieldName)
                 {
-                    case "ID":
-                        sb.SourceDataName = "ID";
-                        sb.TSXEntryName = "ID";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
-                        break;
                     case "Name":
                         sb.SourceDataName = "Name";
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
@@ -163,7 +152,7 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "RA":
-                         sb.SourceDataName = "RA";
+                        sb.SourceDataName = "RA";
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -182,72 +171,9 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Obj_Type":
-                        sb.SourceDataName = "Obj_Type";
-                        sb.TSXEntryName = "TNS_Object_Type";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
-                        break;
-                    case "Redshift":
-                        sb.SourceDataName = "Redshift";
-                        sb.TSXEntryName = "Redshift";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
-                        break;
-                    case "Host_Name":
-                        sb.SourceDataName = "Host_Name";
-                        sb.TSXEntryName = "Host_Name";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
-                        break;
-                    case "Host_RedShift":
-                        sb.SourceDataName = "Red Shift";
-                        sb.TSXEntryName = "Host_RedShift";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
-                        break;
-                    case "Reporting_Groups":
-                        //sb.ColumnStart = fieldStart;
-                        //tsxHdr.DataFields.Add(sb);
-                        //fieldStart += fieldWidth;
-                        break;
-                    case "Discovery_Data_Sources":
-                        break;
-                    case "Classifying_Groups":
-                        break;
-                    case "Associated_Groups":
-                        break;
-                    case "Disc_Internal_Name":
-                        break;
-                    case "Disc_Instruments":
-                        break;
-                    case "Class_Instruments":
-                        break;
-                    case "TNS_AT":
-                        break;
-                    case "Public":
-                        break;
-                    case "End_Prop_Period":
-                        break;
-                    case "Discovery_MagFlux":
-                         sb.SourceDataName = "Discovery_MagFlux";
-                       sb.TSXEntryName = SDBDesigner.MagnitudeX;
+                    case "Magnitude":
+                        sb.SourceDataName = "Magnitude";
+                        sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
@@ -255,26 +181,15 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Discovery_Filter":
-                        //sb.ColumnStart = fieldStart;
-                        //tsxHdr.DataFields.Add(sb);
-                        //fieldStart += fieldWidth;
-                        break;
-                    case "Discovery_Date_UT":
-                        sb.SourceDataName = "Discovery_Date_UT";
-                        sb.TSXEntryName = "Discovery_Date_UT";
+                    case "Obj_Type":
+                        sb.SourceDataName = "Obj_Type";
+                        sb.TSXEntryName = "NEO_Object_Type";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
-                        break;
-                    case "Sender":
-                        break;
-                    case "Remarks":
-                        break;
-                    case "Ext_catalogs":
                         break;
                     default:
                         sb.IsPassed = false;
@@ -316,7 +231,7 @@ namespace TransientSDB
             if (SearchClassified)
                 queryString["unclassified_at"] = "0";
             else queryString["unclassified)at"] = "1";
-            if (SearchSN) 
+            if (SearchSN)
                 queryString["classified_sne"] = "1";
             else queryString["classified_sne"] = "0";
             queryString["ra"] = "";
@@ -368,6 +283,11 @@ namespace TransientSDB
             return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
         }
 
+        private int QuickWidth(Tuple<int, int> t)
+        {
+            return t.Item2 - t.Item1;
+        }
 
     }
 }
+

@@ -1,4 +1,6 @@
-﻿using System;
+﻿//This research has made use of data and/or services provided by the International Astronomical Union's Minor Planet Center.
+
+using System;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Deployment.Application;
@@ -20,9 +22,12 @@ namespace TransientSDB
                 //probably in debug mode
                 version = "  **in Debug**";
             }
-            this.Text = "Transient Search V"+version;
+            this.Text = "Transient Search V" + version;
             Utility.ButtonGreen(TNSReaderButton);
             Utility.ButtonGreen(AAVSOVSXButton);
+            Utility.ButtonGreen(ExoButton);
+            Utility.ButtonGreen(NEOButton);
+            Utility.ButtonGreen(CloseButton);
             OutputGroupBox.ForeColor = Color.Black;
         }
 
@@ -32,7 +37,7 @@ namespace TransientSDB
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(TNSReaderButton);
             TNSManagement tnsAcquisition = new TNSManagement();
-            tnsAcquisition.SearchBackDays =(int) SearchDaysBox.Value;
+            tnsAcquisition.SearchBackDays = (int)SearchDaysBox.Value;
             tnsAcquisition.SearchClassified = ATSelectButton.Checked;
             tnsAcquisition.SearchSN = SuperNovaSelectButton.Checked;
 
@@ -106,7 +111,34 @@ namespace TransientSDB
 
         }
 
-     
+        private void NEOButton_Click(object sender, EventArgs e)
+        {
+            //Import ESA NEO-specific catalog data
+            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
+            Utility.ButtonRed(NEOButton);
+            NEOManagement neoAcquisition = new NEOManagement();
+
+            neoAcquisition.GetAndSet();
+            if (TextFileRadioButton.Checked)
+            {
+                SDBTextFileDialog.FileName = "NEO Database.txt";
+                DialogResult odr = SDBTextFileDialog.ShowDialog();
+                if (odr == DialogResult.OK)
+                {
+                    string textFileName = SDBTextFileDialog.FileName;
+                    if (TextFileRadioButton.Checked)
+                        neoAcquisition.BuildSDBTextFile(textFileName);
+                }
+            }
+            else
+                neoAcquisition.BuildSDBClipboard();
+            Utility.ButtonGreen(NEOButton);
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
 

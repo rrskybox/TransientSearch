@@ -43,15 +43,16 @@ namespace TransientSDB
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.AGNSelectButton = new System.Windows.Forms.RadioButton();
             this.NovaSelectButton = new System.Windows.Forms.RadioButton();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.NEOGroupBox = new System.Windows.Forms.GroupBox();
+            this.NEOButton = new System.Windows.Forms.Button();
             this.ExoButton = new System.Windows.Forms.Button();
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
+            this.CloseButton = new System.Windows.Forms.Button();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.NEOGroupBox.SuspendLayout();
             this.ExoPlanetGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,7 +75,7 @@ namespace TransientSDB
             // TextFileRadioButton
             // 
             this.TextFileRadioButton.AutoSize = true;
-            this.TextFileRadioButton.Location = new System.Drawing.Point(9, 29);
+            this.TextFileRadioButton.Location = new System.Drawing.Point(85, 19);
             this.TextFileRadioButton.Name = "TextFileRadioButton";
             this.TextFileRadioButton.Size = new System.Drawing.Size(65, 17);
             this.TextFileRadioButton.TabIndex = 1;
@@ -85,7 +86,7 @@ namespace TransientSDB
             // 
             this.ClipboardRadioButton.AutoSize = true;
             this.ClipboardRadioButton.Checked = true;
-            this.ClipboardRadioButton.Location = new System.Drawing.Point(9, 52);
+            this.ClipboardRadioButton.Location = new System.Drawing.Point(85, 42);
             this.ClipboardRadioButton.Name = "ClipboardRadioButton";
             this.ClipboardRadioButton.Size = new System.Drawing.Size(69, 17);
             this.ClipboardRadioButton.TabIndex = 2;
@@ -98,16 +99,16 @@ namespace TransientSDB
             this.OutputGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
             this.OutputGroupBox.Controls.Add(this.ClipboardRadioButton);
             this.OutputGroupBox.Controls.Add(this.TextFileRadioButton);
-            this.OutputGroupBox.Location = new System.Drawing.Point(161, 186);
+            this.OutputGroupBox.Location = new System.Drawing.Point(7, 371);
             this.OutputGroupBox.Name = "OutputGroupBox";
-            this.OutputGroupBox.Size = new System.Drawing.Size(87, 104);
+            this.OutputGroupBox.Size = new System.Drawing.Size(235, 73);
             this.OutputGroupBox.TabIndex = 3;
             this.OutputGroupBox.TabStop = false;
             this.OutputGroupBox.Text = "Output";
             // 
             // AAVSOVSXButton
             // 
-            this.AAVSOVSXButton.Location = new System.Drawing.Point(44, 64);
+            this.AAVSOVSXButton.Location = new System.Drawing.Point(44, 38);
             this.AAVSOVSXButton.Name = "AAVSOVSXButton";
             this.AAVSOVSXButton.Size = new System.Drawing.Size(45, 31);
             this.AAVSOVSXButton.TabIndex = 4;
@@ -155,7 +156,7 @@ namespace TransientSDB
             this.TNSGroupBox.Controls.Add(this.SuperNovaSelectButton);
             this.TNSGroupBox.Controls.Add(this.TNSReaderButton);
             this.TNSGroupBox.Controls.Add(this.SearchDaysBox);
-            this.TNSGroupBox.Location = new System.Drawing.Point(7, 12);
+            this.TNSGroupBox.Location = new System.Drawing.Point(59, 7);
             this.TNSGroupBox.Name = "TNSGroupBox";
             this.TNSGroupBox.Size = new System.Drawing.Size(137, 104);
             this.TNSGroupBox.TabIndex = 4;
@@ -190,9 +191,9 @@ namespace TransientSDB
             this.groupBox1.Controls.Add(this.AGNSelectButton);
             this.groupBox1.Controls.Add(this.AAVSOVSXButton);
             this.groupBox1.Controls.Add(this.NovaSelectButton);
-            this.groupBox1.Location = new System.Drawing.Point(7, 122);
+            this.groupBox1.Location = new System.Drawing.Point(59, 117);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(137, 104);
+            this.groupBox1.Size = new System.Drawing.Size(137, 82);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "AAVSO VSX Server";
@@ -220,29 +221,30 @@ namespace TransientSDB
             this.NovaSelectButton.Text = "Nova";
             this.NovaSelectButton.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
+            // NEOGroupBox
             // 
-            this.groupBox3.BackColor = System.Drawing.Color.MediumTurquoise;
-            this.groupBox3.Controls.Add(this.button2);
-            this.groupBox3.Location = new System.Drawing.Point(7, 342);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(137, 104);
-            this.groupBox3.TabIndex = 8;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Minor Planet Server";
+            this.NEOGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.NEOGroupBox.Controls.Add(this.NEOButton);
+            this.NEOGroupBox.Location = new System.Drawing.Point(59, 286);
+            this.NEOGroupBox.Name = "NEOGroupBox";
+            this.NEOGroupBox.Size = new System.Drawing.Size(137, 79);
+            this.NEOGroupBox.TabIndex = 8;
+            this.NEOGroupBox.TabStop = false;
+            this.NEOGroupBox.Text = "ESA NEOScan Server";
             // 
-            // button2
+            // NEOButton
             // 
-            this.button2.Location = new System.Drawing.Point(44, 64);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(45, 31);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "TBD";
-            this.button2.UseVisualStyleBackColor = true;
+            this.NEOButton.Location = new System.Drawing.Point(43, 29);
+            this.NEOButton.Name = "NEOButton";
+            this.NEOButton.Size = new System.Drawing.Size(45, 31);
+            this.NEOButton.TabIndex = 4;
+            this.NEOButton.Text = "NEO";
+            this.NEOButton.UseVisualStyleBackColor = true;
+            this.NEOButton.Click += new System.EventHandler(this.NEOButton_Click);
             // 
             // ExoButton
             // 
-            this.ExoButton.Location = new System.Drawing.Point(44, 64);
+            this.ExoButton.Location = new System.Drawing.Point(43, 23);
             this.ExoButton.Name = "ExoButton";
             this.ExoButton.Size = new System.Drawing.Size(45, 31);
             this.ExoButton.TabIndex = 4;
@@ -254,20 +256,31 @@ namespace TransientSDB
             // 
             this.ExoPlanetGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
             this.ExoPlanetGroupBox.Controls.Add(this.ExoButton);
-            this.ExoPlanetGroupBox.Location = new System.Drawing.Point(7, 232);
+            this.ExoPlanetGroupBox.Location = new System.Drawing.Point(59, 205);
             this.ExoPlanetGroupBox.Name = "ExoPlanetGroupBox";
-            this.ExoPlanetGroupBox.Size = new System.Drawing.Size(137, 104);
+            this.ExoPlanetGroupBox.Size = new System.Drawing.Size(137, 75);
             this.ExoPlanetGroupBox.TabIndex = 8;
             this.ExoPlanetGroupBox.TabStop = false;
             this.ExoPlanetGroupBox.Text = "ExoPlanet Server";
+            // 
+            // CloseButton
+            // 
+            this.CloseButton.Location = new System.Drawing.Point(92, 455);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(67, 32);
+            this.CloseButton.TabIndex = 9;
+            this.CloseButton.Text = "Close";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // FormTransientServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cyan;
-            this.ClientSize = new System.Drawing.Size(254, 455);
-            this.Controls.Add(this.groupBox3);
+            this.ClientSize = new System.Drawing.Size(254, 497);
+            this.Controls.Add(this.CloseButton);
+            this.Controls.Add(this.NEOGroupBox);
             this.Controls.Add(this.ExoPlanetGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.TNSGroupBox);
@@ -283,7 +296,7 @@ namespace TransientSDB
             this.TNSGroupBox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
+            this.NEOGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -305,10 +318,11 @@ namespace TransientSDB
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton AGNSelectButton;
         private System.Windows.Forms.RadioButton NovaSelectButton;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.GroupBox NEOGroupBox;
+        private System.Windows.Forms.Button NEOButton;
         private System.Windows.Forms.Button ExoButton;
         private System.Windows.Forms.GroupBox ExoPlanetGroupBox;
+        private System.Windows.Forms.Button CloseButton;
     }
 }
 
