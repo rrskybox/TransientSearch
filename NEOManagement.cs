@@ -11,7 +11,6 @@ namespace TransientSDB
     class NEOManagement
     {
         const string URL_NEO_search = "https://minorplanetcenter.net/iau/NEO/neocp.txt";
-
         const string NEOName = "NEOCP";
         const string NEODescription = "Candidate Near Earth Objects";
 

@@ -27,21 +27,16 @@ namespace TransientSDB
 {
     class VSXManagement
     {
-
         const string VSXGETURL = "http://www.aavso.org/vsx/index.php?view=query.votable&";
-
-        const string NOVA_VTYPE1 = "N";
-        const string NOVA_VTYPE2 = "NA";
-        const string NOVA_VTYPE3 = "NB";
-        const string NOVA_VTYPE4 = "NC";
-        const string NOVA_VTYPE5 = "NR";
-        const string AGN_VTYPE = "AGN";
-
         const string vsxIdentifier = "VSX";
         const string vsxDescription = "AAVSO VSX Database";
 
-        public bool SearchNova { get; set; }
-        public bool SearchAGN { get; set; }
+        public const string NOVA_VTYPE = "N%";
+        public const string BLLAC_VTYPE = "BLLAC";
+        public const string AGN_VTYPE = "AGN";
+        public const string QSO_VTYPE = "QSO";
+
+        public string SearchType { get; set; } = NOVA_VTYPE; //default
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
@@ -74,7 +69,7 @@ namespace TransientSDB
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
-            string vsxURLquery1 = url_vsx_search + MakeSearchQuery(NOVA_VTYPE1, startYear, endYear);
+            string vsxURLquery1 = url_vsx_search + MakeSearchQuery(SearchType, startYear, endYear);
 
             try
             {
@@ -119,7 +114,7 @@ namespace TransientSDB
                         double dItemRAdegrees = Convert.ToDouble(dItemValue.Split(',')[0]);
                         double dItemDecdegrees = Convert.ToDouble(dItemValue.Split(',')[1]);
                         //Convert RA Degrees to RA Hours as VSX delivers it in degrees and TSX wants it in hours
-                        double dItemRAHours = dItemRAdegrees * 24.0 / 3600.0;
+                        double dItemRAHours = dItemRAdegrees * 24.0 / 360.0;
                         string dItemRA = dItemRAHours.ToString();
                         string dItemDec = dItemDecdegrees.ToString();
                         xmlItem.Add(new XElement("RA2000", dItemRA));
@@ -167,7 +162,7 @@ namespace TransientSDB
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
             sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = vsxIdentifier;
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue =vsxDescription ;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = vsxDescription;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -257,7 +252,6 @@ namespace TransientSDB
                         sbExtra.IsPassed = true;
 
                         sdbDesign.DataFields.Add(sbExtra);
-
                         fieldStart += fieldWidth;
                         break;
                     case "maxPass":
@@ -320,12 +314,10 @@ namespace TransientSDB
             //Returns a url string for querying the vsx website
 
             NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            //NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString("");
-
             //queryString[ "coords"]= "";
             //queryString[  "ident"] = "";
             //queryString[ "constid"] = "";
-            //queryString["format"] = "s";
+            queryString["format"] = "d";
             //queryString[  "geom"] = "";
             //queryString[  "size"] = "";
             //queryString[  "unit"] = "";
@@ -339,8 +331,8 @@ namespace TransientSDB
             //queryString[ "eplo"] = "";
             //queryString[  "riselo"] = "";
             //queryString[  "risehi"] = "";
-            queryString["yrlo"] = startYear;
-            queryString["yrhi"] = endYear;
+            //queryString["yrlo"] = startYear;
+           // queryString["yrhi"] = endYear;
             //queryString[  "filter"] = "";
             //queryString[ "order"] = "";
 

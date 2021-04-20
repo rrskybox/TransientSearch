@@ -20,7 +20,6 @@ namespace TransientSDB
     {
         // url of Exo and Exo-sandbox api                                     
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
-
         const string ExoName = "Exoplanetarchive.ipac.caltech";
         const string ExoDescription = "Realtime Exo Planet Query Listing";
 
