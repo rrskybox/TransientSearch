@@ -26,6 +26,8 @@ namespace TransientSDB
         {
             sdbDesign = new SDBDesigner();
             sdbDesign.SearchPrefix = "NEO";
+            sdbDesign.DefaultObjectIndex = 37;
+            sdbDesign.DefaultObjectDescription = "Near Earth Object";
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();

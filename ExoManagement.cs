@@ -35,6 +35,8 @@ namespace TransientSDB
         {
             sdbDesign = new SDBDesigner();
             sdbDesign.SearchPrefix = "Exo";
+            sdbDesign.DefaultObjectIndex = 20;
+            sdbDesign.DefaultObjectDescription = "Exoplanet Object";
 
             //Import Exo VOTable query and convert to an SDB XML database
             sdbXResults = ServerQueryToResultsXML();
