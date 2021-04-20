@@ -30,7 +30,6 @@ namespace TransientSDB
         private void InitializeComponent()
         {
             this.TNSReaderButton = new System.Windows.Forms.Button();
-            this.SDBTextFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.TextFileRadioButton = new System.Windows.Forms.RadioButton();
             this.ClipboardRadioButton = new System.Windows.Forms.RadioButton();
             this.OutputGroupBox = new System.Windows.Forms.GroupBox();
@@ -50,6 +49,7 @@ namespace TransientSDB
             this.ExoButton = new System.Windows.Forms.Button();
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
             this.CloseButton = new System.Windows.Forms.Button();
+            this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
@@ -67,12 +67,6 @@ namespace TransientSDB
             this.TNSReaderButton.Text = "TNS";
             this.TNSReaderButton.UseVisualStyleBackColor = true;
             this.TNSReaderButton.Click += new System.EventHandler(this.TNSReaderButton_Click);
-            // 
-            // SDBTextFileDialog
-            // 
-            this.SDBTextFileDialog.CheckFileExists = false;
-            this.SDBTextFileDialog.DefaultExt = "txt";
-            this.SDBTextFileDialog.FileName = "Database.txt";
             // 
             // TextFileRadioButton
             // 
@@ -296,6 +290,10 @@ namespace TransientSDB
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
+            // SDBTextFileDialog
+            // 
+            this.SDBTextFileDialog.DefaultExt = "*.txt";
+            // 
             // FormTransientServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -328,7 +326,6 @@ namespace TransientSDB
         #endregion
 
         private System.Windows.Forms.Button TNSReaderButton;
-        private System.Windows.Forms.OpenFileDialog SDBTextFileDialog;
         private System.Windows.Forms.RadioButton TextFileRadioButton;
         private System.Windows.Forms.RadioButton ClipboardRadioButton;
         private System.Windows.Forms.GroupBox OutputGroupBox;
@@ -348,6 +345,7 @@ namespace TransientSDB
         private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.RadioButton BLLACSelectButton;
         private System.Windows.Forms.RadioButton QSOSelectButton;
+        private System.Windows.Forms.SaveFileDialog SDBTextFileDialog;
     }
 }
 
