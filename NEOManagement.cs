@@ -187,6 +187,7 @@ namespace TransientSDB
                         sbExtra.ColumnStart = fieldStart;
                         sbExtra.ColumnWidth = fieldWidth;
                         sbExtra.IsPassed = true;
+                        sbExtra.IsDuplicate = true;
 
                         sdbDesign.DataFields.Add(sbExtra);
                         fieldStart += fieldWidth;

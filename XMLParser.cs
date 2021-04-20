@@ -73,7 +73,7 @@ namespace TransientSDB
             string outString = "";
             foreach (DataColumn fc in fieldSet)
             {
-                if (fc.IsPassed)
+                if (fc.IsPassed && !fc.IsDuplicate)
                 {
                     string recString = recX.Element(fc.SourceDataName).Value.ToString();
                     outString += recString.PadRight(fc.ColumnWidth);

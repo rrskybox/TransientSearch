@@ -167,6 +167,7 @@ namespace TransientSDB
         public int ColumnStart { get; set; } = 0;
         public int ColumnWidth { get; set; } = 0;
         public bool IsPassed { get; set; } = false;
+        public bool IsDuplicate { get; set; } = false;
     }
 
     public class ControlDesc
