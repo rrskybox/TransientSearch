@@ -59,14 +59,14 @@ namespace TransientSDB
                     sdbDesign.SearchPrefix = "VSX-BLLAC";
                     SDBIdentifier = "AAVSO VSX BLLAC";
                     SDBDescription = "VSX BLLAC Query";
-                    sdbDesign.DefaultObjectIndex = 37;
+                    sdbDesign.DefaultObjectIndex = 20;
                     sdbDesign.DefaultObjectDescription = "BLLAC";
                     break;
                 case AGN_VTYPE:
                     sdbDesign.SearchPrefix = "VSX-AGN";
                     SDBIdentifier = "AAVSO VSX AGN";
                      SDBDescription = "VSX AGN Query";
-                    sdbDesign.DefaultObjectIndex = 37;
+                    sdbDesign.DefaultObjectIndex = 20;
                     sdbDesign.DefaultObjectDescription = "AGN";
                     break;
                 case QSO_VTYPE:
