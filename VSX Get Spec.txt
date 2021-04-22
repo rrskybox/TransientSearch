@@ -1,0 +1,113 @@
+	 VSX HTTP GET Specification
+
+ 
+
+This is the preliminary specification for HTTP GET queries at VSX. The IP address for the server is temporary and will eventually become vsx.aavso.org, but not right now. The common portion of the URL is:
+
+http://www.aavso.org/vsx/index.php?view=results.get
+
+Following this root URL, any workable combination of the below described name/value pairs may be appended. They do not need to appear in the URL in the order given here, and they do not all need to be present. Selective absence and presence of these values from the URL are what make for all the different search types. All non-numeric argument values may include the SQL wildcard character (%) in order to create wildcard searches, but the character must be URL-encoded as %25. Spaces must be URL-encoded with the whitespace replacement character (the plus sign). Plus (+) characters present in designations or coordinates must be URL-encoded as %2B.
+
+&coords
+
+The central J2000 RA/DEC coordinates for a radius search, expressed sexagesimally (by default), or in decimal degrees if format is set to d. Northern hemisphere coordinates must have the plus (+) sign URL-encoded as %2B. Space characters between all other figures must be replaced with the URL whitespace character (+). The order argument (which see) must also be included in the query string with its value set to 9 in order to prompt VSX to display distances from the central coordinates in the results listing. Default is empty string (no radius search).
+
+&ident
+
+Object identification for name searches. Space characters must be replaced with the URL whitespace character (+). Other special characters may also need to be URL-encoded. Default is empty string (no name search).
+
+&constid
+
+The numeric constellation ID for constellation-bound searches. See http://www.sai.msu.su/groups/cluster/gcvs/gcvs/iii/constel.dat for codes. Default is 0 (not bounded by constellation).
+
+&format
+
+Explicit specification for format of coords. For sexagesimal, this value should be s. For decimal degrees, this value should be d. Default is s (sexagesimal).
+
+&geom
+
+The geometry for central coordinate-based searches. For radius searches, this value should be r. For box searches, this value should be b. Default is r (radius search).
+
+&size
+
+For box searches (geom=b), the width of the box. For radius searches (geom=r), the radius of the circle. Expressed in the units specified by unit (see next). Default is 10.0.
+
+&unit
+
+The unit of measurement used for the value given in size (see above). For arc degrees, this value should be 1. For arc minutes, this value should be 2. For arc seconds, this value should be 3. Default is 2 (arc minutes).
+
+&vtype
+
+The variability type. Used to limit search to only stars of specified variability type. Typically, this can be set to a standard GCVS variable type abbreviation (see http://www.sai.msu.su/groups/cluster/gcvs/gcvs/iii/vartype.txt), but VSX holds in its database many different non-standard variable types taken from other catalogs. Default is empty string (no limitation to variability type).
+
+&stype
+
+The spectral type. Used to limit search to only stars of specified spectral type. Default is empty string (no limitation to spectral type).
+
+Range values
+
+The following pairs of query string arguments are used to perform searches on values greater then, less then, or between given values. Including one value from the pair establishes only an upper or lower limit, and including both established a complete range.
+
+&maxhi
+&maxlo
+
+The upper and lower limits to a search within a range of maximum magnitudes. Defaults are empty strings.
+
+&minhi
+&minlo
+
+The upper and lower limits to a search within a range of minimum magnitudes. Defaults are empty strings.
+
+&perhi
+&perlo
+
+The upper and lower limits to a search within a range of periods. Defaults are empty strings.
+
+&ephi
+&eplo
+
+The upper and lower limits to a search within a range of epochs. Defaults are empty strings.
+
+&riselo
+&risehi
+
+The lower and upper limits to a search within a range of rise times. Defaults are empty strings.
+
+&yrlo
+&yrhi
+
+The lower and upper limits to a search within a range of outburst years. Defaults are empty strings.
+
+Additional Fields
+
+&filter
+
+A comma-delimited list of the values representing which class of objects should be included in the search results. This allows for filtering in/out proven variables, suspected variables, and/or non-variables. The value for proven variables is 0, for suspected variables is 1, and for non-variables is 2. For example, if you wanted to search for only proven variables, the value should be set to 0. If you wanted to search for all classes of objects, the value should be set to 0,1,2. Defaults to 0,1 (includes proven and suspected variables, but not non-variables).
+
+&order
+
+A value representing the desired sort order for the search results. The sort order values are as follows:
+
+1 ? by GCVS name sequence
+
+2 ? alphabetical by name
+
+3 ? by R.A.
+
+4 ? by Dec.
+
+5 ? by maximum magnitude
+
+6 ? by variable type
+
+7 ? by spectral type
+
+8 ? by constellation
+
+9 ? by angular separation from central coordinates
+
+Default is 1 (by GCVS name sequence).
+
+Notes
+
+There is a limit of 9999 records that can be returned from any HTTP GET query of VSX.

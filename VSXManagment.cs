@@ -33,10 +33,14 @@ namespace TransientSDB
         public const string BLLAC_VTYPE = "BLLAC";
         public const string AGN_VTYPE = "AGN";
         public const string QSO_VTYPE = "QSO";
+        public const string SUSPECTS_VTYPE = "%";
 
         public string SDBIdentifier { get; set; } = "AAVSO VSX";
         public string SDBDescription { get; set; } = "Variable Object Query";
+        public string SDBPeriodHigh { get; set; } = "0"; //future 
+        public string SDBPeriodLow { get; set; } = "1000"; //future 
 
+        public string SDBSuspect { get; set; } = "0,1,2";
         public string SearchType { get; set; } = NOVA_VTYPE; //default
 
         private SDBDesigner sdbDesign;
@@ -52,29 +56,36 @@ namespace TransientSDB
                     sdbDesign.SearchPrefix = "VSX-NOVA";
                     SDBIdentifier = "AAVSO VSX NOVA";
                     SDBDescription = "VSX Nova Query";
-                    sdbDesign.DefaultObjectIndex = 20;
+                    sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "Nova";
                     break;
                 case BLLAC_VTYPE:
                     sdbDesign.SearchPrefix = "VSX-BLLAC";
                     SDBIdentifier = "AAVSO VSX BLLAC";
                     SDBDescription = "VSX BLLAC Query";
-                    sdbDesign.DefaultObjectIndex = 20;
+                    sdbDesign.DefaultObjectIndex = 20; //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "BLLAC";
                     break;
                 case AGN_VTYPE:
                     sdbDesign.SearchPrefix = "VSX-AGN";
                     SDBIdentifier = "AAVSO VSX AGN";
-                     SDBDescription = "VSX AGN Query";
-                    sdbDesign.DefaultObjectIndex = 20;
+                    SDBDescription = "VSX AGN Query";
+                    sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "AGN";
                     break;
                 case QSO_VTYPE:
                     sdbDesign.SearchPrefix = "VSX-QSO";
                     SDBIdentifier = "AAVSO VSX QSO";
                     SDBDescription = "VSX QSO Query";
-                    sdbDesign.DefaultObjectIndex = 22;
+                    sdbDesign.DefaultObjectIndex = 22;  //Quasar
                     sdbDesign.DefaultObjectDescription = "Quasar";
+                    break;
+                case SUSPECTS_VTYPE:
+                    sdbDesign.SearchPrefix = "VSX-SUSPECTS";
+                    SDBIdentifier = "AAVSO VSX SUSPECTS";
+                    SDBDescription = "VSX Suspects Variable Query";
+                    sdbDesign.DefaultObjectIndex = 1;  //Variable Star
+                    sdbDesign.DefaultObjectDescription = "Suspected Variable Star";
                     break;
             }
             //Import TNS CSV text query and convert to an XML database
@@ -100,7 +111,7 @@ namespace TransientSDB
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
-            string vsxURLquery1 = url_vsx_search + MakeSearchQuery(SearchType, startYear, endYear);
+            string vsxURLquery1 = url_vsx_search + MakeSearchQuery();
 
             try
             {
@@ -389,7 +400,7 @@ namespace TransientSDB
             return;
         }
 
-        private string MakeSearchQuery(string vType, string startYear, string endYear)
+        private string MakeSearchQuery()
         {
             //Returns a url string for querying the vsx website
 
@@ -401,19 +412,19 @@ namespace TransientSDB
             //queryString[  "geom"] = "";
             //queryString[  "size"] = "";
             //queryString[  "unit"] = "";
-            queryString["vtype"] = vType;
+            queryString["vtype"] = SearchType;
             //queryString[  "stype"] = "";
             //queryString[  "maxhi"] = "";
             //queryString[ "maxlo"] = "";
-            //queryString[  "perhi"] = "";
-            //queryString[  "perlo"] = "";
+            queryString[  "perhi"] = SDBPeriodHigh;
+            queryString[  "perlo"] = SDBPeriodLow;
             //queryString[  "ephi"] = "";
             //queryString[ "eplo"] = "";
             //queryString[  "riselo"] = "";
             //queryString[  "risehi"] = "";
             //queryString["yrlo"] = startYear;
             // queryString["yrhi"] = endYear;
-            //queryString[  "filter"] = "";
+            queryString[  "filter"] = SDBSuspect;
             //queryString[ "order"] = "";
 
             return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded

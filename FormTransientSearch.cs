@@ -63,10 +63,31 @@ namespace TransientSDB
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(AAVSOVSXButton);
             VSXManagement vsxAcquisition = new VSXManagement();
-            if (NovaSelectButton.Checked) vsxAcquisition.SearchType = VSXManagement.NOVA_VTYPE;
-            if (AGNSelectButton.Checked) vsxAcquisition.SearchType = VSXManagement.AGN_VTYPE;
-            if (QSOSelectButton.Checked) vsxAcquisition.SearchType = VSXManagement.QSO_VTYPE;
-            if (BLLACSelectButton.Checked) vsxAcquisition.SearchType = VSXManagement.BLLAC_VTYPE;
+            if (NovaSelectButton.Checked)
+            {
+                vsxAcquisition.SearchType = VSXManagement.NOVA_VTYPE;
+                vsxAcquisition.SDBSuspect = "0,1,2";
+            }
+            if (AGNSelectButton.Checked)
+            {
+                vsxAcquisition.SearchType = VSXManagement.AGN_VTYPE;
+                vsxAcquisition.SDBSuspect = "0,1,2";
+            }
+            if (QSOSelectButton.Checked)
+            {
+                vsxAcquisition.SearchType = VSXManagement.QSO_VTYPE;
+                vsxAcquisition.SDBSuspect = "0,1,2";
+            }
+            if (BLLACSelectButton.Checked)
+            {
+                vsxAcquisition.SearchType = VSXManagement.BLLAC_VTYPE;
+                vsxAcquisition.SDBSuspect = "0,1,2";
+            }
+            if (SuspectsSelectButton.Checked)
+            {
+                vsxAcquisition.SearchType = VSXManagement.SUSPECTS_VTYPE;
+                vsxAcquisition.SDBSuspect = "1";
+            }
 
             vsxAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
@@ -141,7 +162,7 @@ namespace TransientSDB
             Close();
         }
 
-   
+
     }
 }
 
