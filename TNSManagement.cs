@@ -19,13 +19,13 @@ namespace TransientSDB
     {
         // url of TNS and TNS-sandbox api                                     
         const string url_tns_search = "http://wis-tns.weizmann.ac.il/search?";
-        const string tnsListIdentifier = "Transient Name Server";
-        const string tnsName = "Supernova Objects";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
 
+        public string SDBIdentifier { get; set; } = "Transient Name Server";
+        public string SDBDescription { get; set; } = "Supernova Query";
         public int SearchBackDays { get; set; }
         public bool SearchSN { get; set; }
         public bool SearchClassified { get; set; }
@@ -33,7 +33,23 @@ namespace TransientSDB
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "TNS";
+            sdbDesign.SearchPrefix = "TNS-Supernova";
+            if (SearchSN)
+            {
+                sdbDesign.DefaultObjectIndex = 60;
+                sdbDesign.DefaultObjectDescription = "Supernova";
+                SDBIdentifier = "Transient Name Server - Supernova";
+                SDBDescription = "Confirmed Supernova Reports";
+                sdbDesign.SearchPrefix = "TNS-Supernova";
+            }
+            else
+            {
+                sdbDesign.DefaultObjectIndex = 20;
+                sdbDesign.DefaultObjectDescription = "Unclassified Transient";
+                SDBIdentifier = "Transient Name Server - Unclassified";
+                SDBDescription = "Unclassified Transient Reports";
+                sdbDesign.SearchPrefix = "TNS-Unclassified";
+            }
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
@@ -128,8 +144,8 @@ namespace TransientSDB
             //tsxSDBdesign = new SDBDesigner();
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = tnsListIdentifier;
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = tnsName;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = SDBIdentifier;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = SDBDescription;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -141,7 +157,7 @@ namespace TransientSDB
                 int fieldWidth = sb.ColumnWidth;
                 switch (fieldName)
                 {
-                    case "ID":
+                    case "ID":  //1
                         sb.SourceDataName = "ID";
                         sb.TSXEntryName = "ID";
                         sb.IsBuiltIn = false;
@@ -181,7 +197,7 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Obj_Type":
+                    case "Obj_Type": //2
                         sb.SourceDataName = "Obj_Type";
                         sb.TSXEntryName = "TNS_Object_Type";
                         sb.IsBuiltIn = false;
@@ -191,7 +207,7 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Redshift":
+                    case "Redshift": //3
                         sb.SourceDataName = "Redshift";
                         sb.TSXEntryName = "Redshift";
                         sb.IsBuiltIn = false;
@@ -201,7 +217,7 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Host_Name":
+                    case "Host_Name":  //4
                         sb.SourceDataName = "Host_Name";
                         sb.TSXEntryName = "Host_Name";
                         sb.IsBuiltIn = false;
@@ -211,7 +227,7 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Host_RedShift":
+                    case "Host_RedShift": //5
                         sb.SourceDataName = "Red Shift";
                         sb.TSXEntryName = "Host_RedShift";
                         sb.IsBuiltIn = false;
@@ -221,30 +237,107 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "Reporting_Groups":
-                        //sb.ColumnStart = fieldStart;
-                        //tsxHdr.DataFields.Add(sb);
-                        //fieldStart += fieldWidth;
+                    case "Reporting_Groups":  //12
+                        sb.SourceDataName = "Reporting_Groups";
+                        sb.TSXEntryName = "Reporting_Groups";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
-                    case "Discovery_Data_Sources":
+                    //case "Discovery_Data_Sources":  
+                    //    sb.SourceDataName = "Discovery_Data_Sources";
+                    //    sb.TSXEntryName = "Discovery_Data_Sources";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    //case "Classifying_Groups":
+                    //    sb.SourceDataName = "Classifying_Groups";
+                    //    sb.TSXEntryName = "Classifying_Groups";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    //case "Associated_Groups":
+                    //    sb.SourceDataName = "Associated_Groups";
+                    //    sb.TSXEntryName = "Associated_Groups";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    case "Disc_Internal_Name":  //6
+                        sb.SourceDataName = "Disc_Internal_Name";
+                        sb.TSXEntryName = "Disc_Internal_Name";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
-                    case "Classifying_Groups":
+                    case "Disc_Instruments": //11
+                        sb.SourceDataName = "Disc_Instruments";
+                        sb.TSXEntryName = "Disc_Instruments";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
-                    case "Associated_Groups":
-                        break;
-                    case "Disc_Internal_Name":
-                        break;
-                    case "Disc_Instruments":
-                        break;
-                    case "Class_Instruments":
-                        break;
-                    case "TNS_AT":
-                        break;
-                    case "Public":
-                        break;
-                    case "End_Prop_Period":
-                        break;
-                    case "Discovery_MagFlux":
+                    //case "Class_Instruments":
+                    //    sb.SourceDataName = "Class_Instruments";
+                    //    sb.TSXEntryName = "Class_Instruments";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    //case "TNS_AT":
+                    //    sb.SourceDataName = "TNS_AT";
+                    //    sb.TSXEntryName = "TNS_AT";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    //case "Public":
+                    //    sb.SourceDataName = "Public";
+                    //    sb.TSXEntryName = "Public";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    //case "End_Prop_Period":
+                    //    sb.SourceDataName = "End_Prop_Period";
+                    //    sb.TSXEntryName = "End_Prop_Period";
+                    //    sb.IsBuiltIn = false;
+                    //    sb.ColumnStart = fieldStart;
+                    //    sb.ColumnWidth = fieldWidth;
+                    //    sb.IsPassed = true;
+                    //    sdbDesign.DataFields.Add(sb);
+                    //    fieldStart += fieldWidth;
+                    //    break;
+                    case "Discovery_MagFlux": //7
                         sb.SourceDataName = "Discovery_MagFlux";
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
@@ -252,7 +345,7 @@ namespace TransientSDB
                         sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
- 
+
                         DataColumn sbExtra = new DataColumn();
                         sbExtra.SourceDataName = "Discovery_MagFlux";
                         sbExtra.TSXEntryName = "Magnitude";
@@ -266,12 +359,17 @@ namespace TransientSDB
 
                         fieldStart += fieldWidth;
                         break;
-                    case "Discovery_Filter":
-                        //sb.ColumnStart = fieldStart;
-                        //tsxHdr.DataFields.Add(sb);
-                        //fieldStart += fieldWidth;
+                    case "Discovery_Filter":  //8
+                        sb.SourceDataName = "Discovery_Filter";
+                        sb.TSXEntryName = "Discovery_Filter";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
-                    case "Discovery_Date_UT":
+                    case "Discovery_Date_UT": //9
                         sb.SourceDataName = "Discovery_Date_UT";
                         sb.TSXEntryName = "Discovery_Date_UT";
                         sb.IsBuiltIn = false;
@@ -283,7 +381,15 @@ namespace TransientSDB
                         break;
                     case "Sender":
                         break;
-                    case "Remarks":
+                    case "Remarks": //10
+                        sb.SourceDataName = "Remarks";
+                        sb.TSXEntryName = "Remarks";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case "Ext_catalogs":
                         break;

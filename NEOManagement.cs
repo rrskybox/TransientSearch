@@ -11,12 +11,13 @@ namespace TransientSDB
     class NEOManagement
     {
         const string URL_NEO_search = "https://minorplanetcenter.net/iau/NEO/neocp.txt";
-        const string NEOName = "NEOCP";
-        const string NEODescription = "Candidate Near Earth Objects";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
+        
+        public string SDBIdentifier { get; set; } = "MPC NEOCP";
+        public string SDBDescription { get; set; } = "Minor Planet Center Confirmed NEO";
 
         public int SearchBackDays { get; set; }
         public bool SearchSN { get; set; }
@@ -128,8 +129,8 @@ namespace TransientSDB
             //tsxSDBdesign = new SDBDesigner();
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = NEOName;
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = NEODescription;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = SDBIdentifier;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = SDBDescription;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -194,7 +195,7 @@ namespace TransientSDB
                         break;
                     case "Obj_Type":
                         sb.SourceDataName = "Obj_Type";
-                        sb.TSXEntryName = "NEO_Object_Type";
+                        sb.TSXEntryName = "Obj_Type";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;

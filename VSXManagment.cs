@@ -28,13 +28,14 @@ namespace TransientSDB
     class VSXManagement
     {
         const string VSXGETURL = "http://www.aavso.org/vsx/index.php?view=query.votable&";
-        const string vsxIdentifier = "VSX";
-        const string vsxDescription = "AAVSO VSX Database";
 
         public const string NOVA_VTYPE = "N%";
         public const string BLLAC_VTYPE = "BLLAC";
         public const string AGN_VTYPE = "AGN";
         public const string QSO_VTYPE = "QSO";
+
+        public string SDBIdentifier { get; set; } = "AAVSO VSX";
+        public string SDBDescription { get; set; } = "Variable Object Query";
 
         public string SearchType { get; set; } = NOVA_VTYPE; //default
 
@@ -45,7 +46,37 @@ namespace TransientSDB
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "VSX";
+            switch (SearchType)
+            {
+                case NOVA_VTYPE:
+                    sdbDesign.SearchPrefix = "VSX-NOVA";
+                    SDBIdentifier = "AAVSO VSX NOVA";
+                    SDBDescription = "VSX Nova Query";
+                    sdbDesign.DefaultObjectIndex = 20;
+                    sdbDesign.DefaultObjectDescription = "Nova";
+                    break;
+                case BLLAC_VTYPE:
+                    sdbDesign.SearchPrefix = "VSX-BLLAC";
+                    SDBIdentifier = "AAVSO VSX BLLAC";
+                    SDBDescription = "VSX BLLAC Query";
+                    sdbDesign.DefaultObjectIndex = 37;
+                    sdbDesign.DefaultObjectDescription = "BLLAC";
+                    break;
+                case AGN_VTYPE:
+                    sdbDesign.SearchPrefix = "VSX-AGN";
+                    SDBIdentifier = "AAVSO VSX AGN";
+                     SDBDescription = "VSX AGN Query";
+                    sdbDesign.DefaultObjectIndex = 37;
+                    sdbDesign.DefaultObjectDescription = "AGN";
+                    break;
+                case QSO_VTYPE:
+                    sdbDesign.SearchPrefix = "VSX-QSO";
+                    SDBIdentifier = "AAVSO VSX QSO";
+                    SDBDescription = "VSX QSO Query";
+                    sdbDesign.DefaultObjectIndex = 22;
+                    sdbDesign.DefaultObjectDescription = "Quasar";
+                    break;
+            }
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
             //Parse the TNS-specific catalog data for names and widths to be used
@@ -161,8 +192,8 @@ namespace TransientSDB
             //  and empty sets of builtin and user data fields
             //Stick with the standard set of control fields
             // Except for identifier and sdbdescription
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = vsxIdentifier;
-            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = vsxDescription;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = SDBIdentifier;
+            sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = SDBDescription;
             //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
@@ -176,7 +207,7 @@ namespace TransientSDB
                 {
                     case "auid":
                         sb.SourceDataName = "auid";
-                        sb.TSXEntryName = "ID";
+                        sb.TSXEntryName = "auid";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
@@ -196,7 +227,7 @@ namespace TransientSDB
                         break;
                     case "const":
                         sb.SourceDataName = "const";
-                        sb.TSXEntryName = "Constellation";
+                        sb.TSXEntryName = "const";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
@@ -226,7 +257,7 @@ namespace TransientSDB
                         break;
                     case "varType":
                         sb.SourceDataName = "varType";
-                        sb.TSXEntryName = "Variable Type";
+                        sb.TSXEntryName = "varType";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
@@ -245,7 +276,7 @@ namespace TransientSDB
 
                         DataColumn sbExtra = new DataColumn();
                         sbExtra.SourceDataName = "maxMag";
-                        sbExtra.TSXEntryName = "Magnitude";
+                        sbExtra.TSXEntryName = "maxMag";
                         sbExtra.IsBuiltIn = false;
                         sbExtra.ColumnStart = fieldStart;
                         sbExtra.ColumnWidth = fieldWidth;
@@ -256,16 +287,40 @@ namespace TransientSDB
 
                         break;
                     case "maxPass":
+                        sb.SourceDataName = "maxPass";
+                        sb.TSXEntryName = "maxPass";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case "minMag":
+                        sb.SourceDataName = "minMag";
+                        sb.TSXEntryName = "minMag";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
-                    case "MinPass":
+                    case "minPass":
+                        sb.SourceDataName = "minPass";
+                        sb.TSXEntryName = "minPass";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case "epoch":
                         break;
                     case "novaYr":
                         sb.SourceDataName = "novaYr";
-                        sb.TSXEntryName = "Discovery_Date_UT";
+                        sb.TSXEntryName = "novaYr";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
@@ -275,7 +330,7 @@ namespace TransientSDB
                         break;
                     case "period":
                         sb.SourceDataName = "period";
-                        sb.TSXEntryName = "Period";
+                        sb.TSXEntryName = "period";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
                         sb.ColumnWidth = fieldWidth;
@@ -284,10 +339,34 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "riseDur":
+                        sb.SourceDataName = "riseDur";
+                        sb.TSXEntryName = "riseDur";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case "specType":
+                        sb.SourceDataName = "specType";
+                        sb.TSXEntryName = "specType";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case "disc":
+                        sb.SourceDataName = "disc";
+                        sb.TSXEntryName = "disc";
+                        sb.IsBuiltIn = false;
+                        sb.ColumnStart = fieldStart;
+                        sb.ColumnWidth = fieldWidth;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     default:
                         sb.IsPassed = false;
