@@ -1,49 +1,41 @@
-﻿///ExoManagemet Class
-///
-/// Class for downloading Exo Planet database query results
-/// 
-/// This class serves as method template for conversions from all 
-///   catalog sources
-///
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
+
 namespace TransientSDB
 {
-    public class EXOManagement
+    class VZRManagement
     {
-        // url of Exo and Exo-sandbox api                                     
-        const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
+
+        const string VZRQueryURL = "http://vizier.u-strasbg.fr/viz-bin/votable?";
+        const string WhiteDwarfCatalog = "J/AJ/154/32/table2";
+
+        public string SDBIdentifier { get; set; } = "VIZIER WD";
+        public string SDBDescription { get; set; } = "Vizier White Dwarf Query";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
 
-        public string SDBIdentifier { get; set; }
-        public string SDBDescription { get; set; }
-
-        public int SearchBackDays { get; set; }
-        public bool SearchSN { get; set; }
-        public bool SearchClassified { get; set; }
-
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "Exo";
-            SDBIdentifier = "EXO IPAC";
-            SDBDescription = "Exo Planet Query Listing, IPAC, CalTech";
-            sdbDesign.DefaultObjectIndex = 20;
-            sdbDesign.DefaultObjectDescription = "Exoplanet Object";
 
-            //Import Exo VOTable query and convert to an SDB XML database
+            sdbDesign.SearchPrefix = "VWD";
+            SDBIdentifier = "VIZIER WD";
+            SDBDescription = "VIZIER White Dwarf Query";
+            sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
+            sdbDesign.DefaultObjectDescription = "White Dwarf";
+
+            //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
-            //Parse the Exo-specific catalog data for names and widths to be used
+            //Parse the TNS-specific catalog data for names and widths to be used
             //  for defining columns in the output text data to TSX SDB text file
             //colMap is the generic list of column names and maximum data widths
             sdbDesign.MakeHeaderMap(sdbXResults);
@@ -55,18 +47,19 @@ namespace TransientSDB
 
         private XElement ServerQueryToResultsXML()
         {
-            // url of exo APR
+            // url of vsx and vsx-sandbox api
             // 
-            string exoResults = "";
+            string startYear = (DateTime.Now.Year - 21).ToString("0");
+            string endYear = (DateTime.Now.Year).ToString("0"); ;
+            string vzrResults = "";
             WebClient client = new WebClient();
-
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
-            string exoURLquery = URL_Exo_search + MakeSearchQuery();
-            //string exoURLquery1 = URL_Exo_search + "table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml";
+            string vzrURLquery = VZRQueryURL + MakeSearchQuery();
+            //string vzrURLquery1 = URL_vzr_search + "table=vzrplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml";
             try
             {
-                exoResults = client.DownloadString(exoURLquery);
+                vzrResults = client.DownloadString(vzrURLquery);
             }
             catch (Exception ex)
             {
@@ -74,37 +67,40 @@ namespace TransientSDB
                 return null;
             };
             //Standard VOTable parse
-            XElement exoDoc = XElement.Parse(exoResults);
-            XNamespace exoNS = XNamespace.Get(exoDoc.Attribute("xmlns").Value);
-            XElement resource = exoDoc.Element(exoNS + "RESOURCE");
-            XElement table = resource.Element(exoNS + "TABLE");
-            XElement xdataTable = table.Element(exoNS + "DATA");
-            XElement xData = xdataTable.Element(exoNS + "TABLEDATA");
+            XElement vzrDoc = XElement.Parse(vzrResults);
+            XNamespace vzrNS = XNamespace.Get(vzrDoc.Attribute("xmlns").Value);
+            XElement resource = vzrDoc.Element(vzrNS + "RESOURCE");
+            XElement table = resource.Element(vzrNS + "TABLE");
+            XElement xdataTable = table.Element(vzrNS + "DATA");
+            XElement xData = xdataTable.Element(vzrNS + "TABLEDATA");
 
             XElement headerRecordX = new XElement("SDBDataFields");
 
-            //EXO parse
+            //vzr parse
             List<string> dHeader = new List<string>();
-            IEnumerable<XElement> fields = table.Elements(exoNS + "FIELD");
+            IEnumerable<XElement> fields = table.Elements(vzrNS + "FIELD");
             foreach (XElement xf in fields)
             {
                 string fname = xf.Attribute("name").Value.ToString();
                 dHeader.Add(fname);
             }
             int[] widths = new int[dHeader.Count];
-            IEnumerable<XElement> dRecords = xData.Elements(exoNS + "TR");
+            IEnumerable<XElement> dRecords = xData.Elements(vzrNS + "TR");
             XElement sdbX = new XElement(XMLParser.SDBListX);
             foreach (XElement rec in dRecords)
             {
-                IEnumerable<XElement> dResults = rec.Elements(exoNS + "TD");
+                IEnumerable<XElement> dResults = rec.Elements(vzrNS + "TD");
                 XElement xmlItem = new XElement(XMLParser.SDBEntryX);
                 int dIndex = 0;
                 foreach (XElement dItem in dResults)
                 {
                     string dItemValue = dItem.Value.ToString();
-                    //Check for converstion of RA from decimal degrees to decimal hours
-                    if (dHeader[dIndex].Contains("ra"))
-                        dItemValue = ((Convert.ToDouble(dItem.Value.ToString())) * (24.0 / 360.0)).ToString();
+                    //Convert RA from Sexidecimal hours to decimal hours
+                    if (dHeader[dIndex].Contains("RAJ2000"))
+                        dItemValue = (Utility.ParseRADecString(dItem.Value.ToString(), ' ')).ToString();
+                    //Convert Dec from Sexidecimal degrees to decimal degrees
+                    if (dHeader[dIndex].Contains("DEJ2000"))
+                        dItemValue = (Utility.ParseRADecString(dItem.Value.ToString(), ' ')).ToString();
                     xmlItem.Add(new XElement(dHeader[dIndex], dItemValue));
                     if (dItemValue.Length > widths[dIndex])
                         widths[dIndex] = dItemValue.Length;
@@ -120,10 +116,9 @@ namespace TransientSDB
             sdbX.Add(headerRecordX);
             return sdbX;
         }
-
         private XDocument ResultsXMLtoSDBHeader(XElement xmlDB)
         {
-            //Translates EXO Formatted data into TSX readable text header
+            //Translates TNS Formatted data into TSX readable text header
             //  but still XML formatted
             //
             //Create a TSXSDB formatter to work with
@@ -133,17 +128,19 @@ namespace TransientSDB
             // Except for identifier and sdbdescription
             sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = SDBIdentifier;
             sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.SDBDescriptionX).ControlValue = SDBDescription;
-            //Map the exo fields on to the tsx built-in and user-defined fields
+            //Map the tns fields on to the tsx built-in and user-defined fields
             //  keeping track of the start of the column
             int fieldStart = 1;
             foreach (DataColumn sb in sdbDesign.HeaderMap)
+            //for (int i = 0; i < sbdDesign .HeaderMap.Count; i++)
+            //sbdDesign.DataFields.Single(f => f.SDBColumnName == SDBDesigner.LabelOrSearchX).TNSColumnName = "Name";
             {
                 string fieldName = sb.SourceDataName;
                 int fieldWidth = sb.ColumnWidth;
                 switch (fieldName)
                 {
-                    case "pl_hostname":
-                        sb.SourceDataName = "pl_hostname";
+                    case "WD":
+                        sb.SourceDataName = "WD";
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -152,8 +149,9 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "ra":
-                        sb.SourceDataName = "ra";
+                        break;
+                    case "RAJ2000":
+                        sb.SourceDataName = "RAJ2000";
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -162,8 +160,8 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "dec":
-                        sb.SourceDataName = "dec";
+                    case "DEJ2000":
+                        sb.SourceDataName = "DEJ2000";
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -171,54 +169,6 @@ namespace TransientSDB
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
-                        break;
-                    case "gaia_gmag":
-                        sb.SourceDataName = "gaia_gmag";
-                        sb.TSXEntryName = SDBDesigner.MagnitudeX;
-                        sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-
-                        DataColumn sbExtra = new DataColumn();
-                        sbExtra.SourceDataName = "gaia_gmag";
-                        sbExtra.TSXEntryName = "gaia_gmag";
-                        sbExtra.IsBuiltIn = false;
-                        sbExtra.ColumnStart = fieldStart;
-                        sbExtra.ColumnWidth = fieldWidth;
-                        sbExtra.IsPassed = true;
-                        sbExtra.IsDuplicate = true;
-
-                        sdbDesign.DataFields.Add(sbExtra);
-                        fieldStart += fieldWidth;
-                        break;
-                    case "pl_orbper":
-                        sb.SourceDataName = "pl_orbper";
-                        sb.TSXEntryName = "pl_orbper";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        break;
-                    case "st_dist":
-                        sb.SourceDataName = "st_dist";
-                        sb.TSXEntryName = "st_dist";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        break;
-                    case "st_optmag":
-                        sb.SourceDataName = "st_optmag";
-                        sb.TSXEntryName = "st_optmag";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
                         break;
                     default:
                         sb.IsPassed = false;
@@ -240,16 +190,31 @@ namespace TransientSDB
             XMLParser.XMLToSDBClipboard(sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
+
         private string MakeSearchQuery()
         {
-            //Returns a url string for querying the Exo website
-            //table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml
+            //Returns a url string for querying the vsx website
+
             NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            queryString["table"] = "exoplanets";
-            queryString["select"] = "pl_hostname,ra,dec,gaia_gmag,pl_orbper,st_dist,st_optmag";
-            queryString["order"] = "dec";
-            queryString["format"] = "xml";
+            queryString["-source"] = WhiteDwarfCatalog;
+            //queryString["-out"] = "ID_MAIN _RA(J2000,J2000) _DE(J2000,J2000)";
+            queryString["-out"] = "**";
+
             return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
         }
+
+        public static string FitFormat(string entry, int slotSize)
+        {
+            //Returns a string which is the entry truncated to the slot Size, if necessary
+            if (entry == null) return "                    ".Substring(0, slotSize);
+            if (entry.Length > slotSize)
+                return entry.Substring(0, slotSize - 1).PadRight(slotSize);
+            else
+                return entry.PadRight(slotSize);
+        }
+
+
     }
+
 }
+

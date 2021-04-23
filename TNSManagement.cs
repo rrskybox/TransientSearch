@@ -1,4 +1,4 @@
-﻿///TNSManagemet Class
+﻿///TNSManagement Class
 ///
 /// Class for TNS CSV Imported file conversions to TSX SDB Text file 
 /// 
@@ -33,7 +33,6 @@ namespace TransientSDB
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "TNS-Supernova";
             if (SearchSN)
             {
                 sdbDesign.DefaultObjectIndex = 60;

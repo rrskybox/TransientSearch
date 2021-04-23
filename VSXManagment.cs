@@ -84,7 +84,7 @@ namespace TransientSDB
                     sdbDesign.SearchPrefix = "VSX-SUSPECTS";
                     SDBIdentifier = "AAVSO VSX SUSPECTS";
                     SDBDescription = "VSX Suspects Variable Query";
-                    sdbDesign.DefaultObjectIndex = 1;  //Variable Star
+                    sdbDesign.DefaultObjectIndex = 2;  //Suspected Variable Star
                     sdbDesign.DefaultObjectDescription = "Suspected Variable Star";
                     break;
             }
@@ -329,15 +329,7 @@ namespace TransientSDB
                         break;
                     case "epoch":
                         break;
-                    case "novaYr":
-                        sb.SourceDataName = "novaYr";
-                        sb.TSXEntryName = "novaYr";
-                        sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
-                        sb.IsPassed = true;
-                        sdbDesign.DataFields.Add(sb);
-                        fieldStart += fieldWidth;
+                    case "novaYr":  //culled -- not useful and very often empty
                         break;
                     case "period":
                         sb.SourceDataName = "period";
@@ -416,15 +408,15 @@ namespace TransientSDB
             //queryString[  "stype"] = "";
             //queryString[  "maxhi"] = "";
             //queryString[ "maxlo"] = "";
-            queryString[  "perhi"] = SDBPeriodHigh;
-            queryString[  "perlo"] = SDBPeriodLow;
+            queryString["perhi"] = SDBPeriodHigh;
+            queryString["perlo"] = SDBPeriodLow;
             //queryString[  "ephi"] = "";
             //queryString[ "eplo"] = "";
             //queryString[  "riselo"] = "";
             //queryString[  "risehi"] = "";
             //queryString["yrlo"] = startYear;
             // queryString["yrhi"] = endYear;
-            queryString[  "filter"] = SDBSuspect;
+            queryString["filter"] = SDBSuspect;
             //queryString[ "order"] = "";
 
             return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded

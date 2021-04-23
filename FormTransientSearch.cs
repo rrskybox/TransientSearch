@@ -26,6 +26,7 @@ namespace TransientSDB
             Utility.ButtonGreen(AAVSOVSXButton);
             Utility.ButtonGreen(ExoButton);
             Utility.ButtonGreen(NEOButton);
+            Utility.ButtonGreen(VZRButton);
             Utility.ButtonGreen(CloseButton);
             OutputGroupBox.ForeColor = Color.Black;
         }
@@ -157,11 +158,35 @@ namespace TransientSDB
             Utility.ButtonGreen(NEOButton);
         }
 
+        private void VZRButton_Click(object sender, EventArgs e)
+        {
+            //Import ESA NEO-specific catalog data
+            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
+            Utility.ButtonRed(VZRButton);
+            VZRManagement vzrAcquisition = new VZRManagement();
+
+            vzrAcquisition.GetAndSet();
+            if (TextFileRadioButton.Checked)
+            {
+                SDBTextFileDialog.FileName = "VZR Database.txt";
+                DialogResult odr = SDBTextFileDialog.ShowDialog();
+                if (odr == DialogResult.OK)
+                {
+                    string textFileName = SDBTextFileDialog.FileName;
+                    if (TextFileRadioButton.Checked)
+                        vzrAcquisition.BuildSDBTextFile(textFileName);
+                }
+            }
+            else
+                vzrAcquisition.BuildSDBClipboard();
+            Utility.ButtonGreen(VZRButton);
+
+        }
+
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }
-
 
     }
 }

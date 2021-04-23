@@ -54,12 +54,15 @@ namespace TransientSDB
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.VZRGroupBox = new System.Windows.Forms.GroupBox();
+            this.VZRButton = new System.Windows.Forms.Button();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.NEOGroupBox.SuspendLayout();
             this.ExoPlanetGroupBox.SuspendLayout();
+            this.VZRGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNSReaderButton
@@ -75,7 +78,7 @@ namespace TransientSDB
             // TextFileRadioButton
             // 
             this.TextFileRadioButton.AutoSize = true;
-            this.TextFileRadioButton.Location = new System.Drawing.Point(526, 19);
+            this.TextFileRadioButton.Location = new System.Drawing.Point(624, 19);
             this.TextFileRadioButton.Name = "TextFileRadioButton";
             this.TextFileRadioButton.Size = new System.Drawing.Size(65, 17);
             this.TextFileRadioButton.TabIndex = 1;
@@ -86,7 +89,7 @@ namespace TransientSDB
             // 
             this.ClipboardRadioButton.AutoSize = true;
             this.ClipboardRadioButton.Checked = true;
-            this.ClipboardRadioButton.Location = new System.Drawing.Point(526, 42);
+            this.ClipboardRadioButton.Location = new System.Drawing.Point(624, 42);
             this.ClipboardRadioButton.Name = "ClipboardRadioButton";
             this.ClipboardRadioButton.Size = new System.Drawing.Size(69, 17);
             this.ClipboardRadioButton.TabIndex = 2;
@@ -101,14 +104,14 @@ namespace TransientSDB
             this.OutputGroupBox.Controls.Add(this.TextFileRadioButton);
             this.OutputGroupBox.Location = new System.Drawing.Point(12, 127);
             this.OutputGroupBox.Name = "OutputGroupBox";
-            this.OutputGroupBox.Size = new System.Drawing.Size(604, 73);
+            this.OutputGroupBox.Size = new System.Drawing.Size(708, 73);
             this.OutputGroupBox.TabIndex = 3;
             this.OutputGroupBox.TabStop = false;
             this.OutputGroupBox.Text = "Output";
             // 
             // AAVSOVSXButton
             // 
-            this.AAVSOVSXButton.Location = new System.Drawing.Point(160, 45);
+            this.AAVSOVSXButton.Location = new System.Drawing.Point(87, 70);
             this.AAVSOVSXButton.Name = "AAVSOVSXButton";
             this.AAVSOVSXButton.Size = new System.Drawing.Size(45, 31);
             this.AAVSOVSXButton.TabIndex = 4;
@@ -188,9 +191,6 @@ namespace TransientSDB
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.MediumTurquoise;
-            this.groupBox1.Controls.Add(this.radioButton4);
-            this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.SuspectsSelectButton);
             this.groupBox1.Controls.Add(this.BLLACSelectButton);
             this.groupBox1.Controls.Add(this.QSOSelectButton);
@@ -199,7 +199,7 @@ namespace TransientSDB
             this.groupBox1.Controls.Add(this.NovaSelectButton);
             this.groupBox1.Location = new System.Drawing.Point(398, 7);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(218, 114);
+            this.groupBox1.Size = new System.Drawing.Size(164, 114);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "AAVSO VSX Server";
@@ -208,7 +208,7 @@ namespace TransientSDB
             // 
             this.radioButton4.AutoSize = true;
             this.radioButton4.Enabled = false;
-            this.radioButton4.Location = new System.Drawing.Point(87, 81);
+            this.radioButton4.Location = new System.Drawing.Point(6, 67);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(47, 17);
             this.radioButton4.TabIndex = 10;
@@ -219,7 +219,7 @@ namespace TransientSDB
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Enabled = false;
-            this.radioButton3.Location = new System.Drawing.Point(87, 59);
+            this.radioButton3.Location = new System.Drawing.Point(6, 45);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(47, 17);
             this.radioButton3.TabIndex = 9;
@@ -229,12 +229,13 @@ namespace TransientSDB
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Enabled = false;
-            this.radioButton2.Location = new System.Drawing.Point(87, 36);
+            this.radioButton2.Checked = true;
+            this.radioButton2.Location = new System.Drawing.Point(6, 22);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(47, 17);
+            this.radioButton2.Size = new System.Drawing.Size(89, 17);
             this.radioButton2.TabIndex = 8;
-            this.radioButton2.Text = "TBD";
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "White Dwarfs";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // SuspectsSelectButton
@@ -250,7 +251,7 @@ namespace TransientSDB
             // BLLACSelectButton
             // 
             this.BLLACSelectButton.AutoSize = true;
-            this.BLLACSelectButton.Location = new System.Drawing.Point(15, 82);
+            this.BLLACSelectButton.Location = new System.Drawing.Point(87, 38);
             this.BLLACSelectButton.Name = "BLLACSelectButton";
             this.BLLACSelectButton.Size = new System.Drawing.Size(58, 17);
             this.BLLACSelectButton.TabIndex = 6;
@@ -333,7 +334,7 @@ namespace TransientSDB
             // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(549, 206);
+            this.CloseButton.Location = new System.Drawing.Point(653, 206);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(67, 32);
             this.CloseButton.TabIndex = 9;
@@ -345,12 +346,37 @@ namespace TransientSDB
             // 
             this.SDBTextFileDialog.DefaultExt = "*.txt";
             // 
+            // VZRGroupBox
+            // 
+            this.VZRGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.VZRGroupBox.Controls.Add(this.radioButton4);
+            this.VZRGroupBox.Controls.Add(this.VZRButton);
+            this.VZRGroupBox.Controls.Add(this.radioButton3);
+            this.VZRGroupBox.Controls.Add(this.radioButton2);
+            this.VZRGroupBox.Location = new System.Drawing.Point(568, 7);
+            this.VZRGroupBox.Name = "VZRGroupBox";
+            this.VZRGroupBox.Size = new System.Drawing.Size(152, 114);
+            this.VZRGroupBox.TabIndex = 9;
+            this.VZRGroupBox.TabStop = false;
+            this.VZRGroupBox.Text = "VIZIER Server";
+            // 
+            // VZRButton
+            // 
+            this.VZRButton.Location = new System.Drawing.Point(101, 45);
+            this.VZRButton.Name = "VZRButton";
+            this.VZRButton.Size = new System.Drawing.Size(45, 31);
+            this.VZRButton.TabIndex = 4;
+            this.VZRButton.Text = "VZR";
+            this.VZRButton.UseVisualStyleBackColor = true;
+            this.VZRButton.Click += new System.EventHandler(this.VZRButton_Click);
+            // 
             // FormTransientServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cyan;
-            this.ClientSize = new System.Drawing.Size(624, 244);
+            this.ClientSize = new System.Drawing.Size(729, 244);
+            this.Controls.Add(this.VZRGroupBox);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.NEOGroupBox);
             this.Controls.Add(this.ExoPlanetGroupBox);
@@ -370,6 +396,8 @@ namespace TransientSDB
             this.groupBox1.PerformLayout();
             this.NEOGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.ResumeLayout(false);
+            this.VZRGroupBox.ResumeLayout(false);
+            this.VZRGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -401,6 +429,8 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton SuspectsSelectButton;
+        private System.Windows.Forms.GroupBox VZRGroupBox;
+        private System.Windows.Forms.Button VZRButton;
     }
 }
 

@@ -15,9 +15,9 @@ namespace TransientSDB
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
-        
-        public string SDBIdentifier { get; set; } = "MPC NEOCP";
-        public string SDBDescription { get; set; } = "Minor Planet Center Confirmed NEO";
+
+        public string SDBIdentifier { get; set; }
+        public string SDBDescription { get; set; }
 
         public int SearchBackDays { get; set; }
         public bool SearchSN { get; set; }
@@ -29,6 +29,8 @@ namespace TransientSDB
             sdbDesign.SearchPrefix = "NEO";
             sdbDesign.DefaultObjectIndex = 37;
             sdbDesign.DefaultObjectDescription = "Near Earth Object";
+            SDBIdentifier = "MPC NEOCP";
+            SDBDescription = "Minor Planet Center Confirmed NEO";
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();

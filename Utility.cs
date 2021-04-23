@@ -140,7 +140,7 @@ namespace TransientSDB
             else return "N/A";
         }
 
-        public static string SexidecimalRADec(double radec, bool hourFlag)
+        public static string RADecToSexidecimal(double radec, bool hourFlag)
         {
             //turn the double value into xxh yym zzs or xxd yym zzs
             //  depending on hourFlag -- if true then it's RA: hours
