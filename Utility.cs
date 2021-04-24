@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*
+* Utility Class
+*
+* Class of common routines used by the Transient Server app
+* 
+* Author:           Rick McAlister
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
+* 
+* Change Log:
+* 
+* 4/23/21 Rev 1.0  Release
+* 
+*/
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -7,14 +24,6 @@ namespace TransientSDB
     public static class Utility
     {
         public static int ColumnEnd(int startColumn, int columnWidth) => startColumn + columnWidth - 1;
-
-        public static double ReduceTo360(double degrees)
-        {
-            degrees = Math.IEEERemainder(degrees, 360);
-            if (degrees < 0)
-            { degrees += 360; }
-            return degrees;
-        }
 
         public static void ButtonRed(Button genericButton)
         {
@@ -28,57 +37,6 @@ namespace TransientSDB
             genericButton.ForeColor = Color.Black;
             genericButton.BackColor = Color.PaleGreen;
             return;
-        }
-
-        public static bool IsButtonRed(Button genericButton)
-        {
-            if (genericButton.BackColor == Color.LightSalmon)
-            { return true; }
-            else
-            { return false; }
-        }
-
-        public static bool IsButtonGreen(Button genericButton)
-        {
-            if (genericButton.BackColor == Color.PaleGreen)
-            { return true; }
-            else
-            { return false; }
-        }
-
-        public static bool CloseEnough(double testval, double targetval, double percentnear)
-        {
-            //Cute little method for determining if a value is withing a certain percentatge of
-            // another value.
-            //testval is the value under consideration
-            //targetval is the value to be tested against
-            //npercentnear is how close (in percent of target val, i.e. x100) the two need to be within to test true
-            // otherwise returns false
-
-            if (Math.Abs(targetval - testval) <= Math.Abs((targetval * percentnear / 100)))
-            { return true; }
-            else
-            { return false; }
-        }
-
-        public static string CreateStarLabel(string catName, double RA, double Dec)
-        {
-            //Creates a name for a blank "Gaia" star
-            return (catName + " " + RA.ToString("0.0000") + " " + Dec.ToString("0.0000"));
-        }
-
-        public static string ParsePathToFileName(string fullPath)
-        {
-            //return just the file or directory name from a string containing the full path
-            char[] splitter = new char[] { '\\' };
-            string[] allwords = fullPath.Split(splitter);
-            string lastword = allwords[allwords.Length - 1];
-            return lastword;
-        }
-
-        public static double RMS(double x, double y)
-        {
-            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
 
         public static double ParseRADecString(string radec, char separator)
@@ -101,43 +59,6 @@ namespace TransientSDB
                     (Math.Abs(Convert.ToDouble(radecSplit[0])) + Convert.ToDouble(radecSplit[1]) / 60.0 + Convert.ToDouble(radecSplit[2]) / 3600.0);
                 return radecDouble;
             }
-        }
-
-        public static string ParseNameString(string name)
-        {
-            //Converts a string in either decimal or sexidecimal format to a double
-            //if the string splits because it has internal spaces, then treat as sexidecimal
-            //  otherwise treat as decimal 
-            for (int i = 0; i < name.Length; i++) if (name[i] == '\"') { name = name.Remove(i, 1); }
-            return name;
-        }
-
-        public static bool MatchPoint(Point a, Point b)
-        {
-            if (a == b)
-                return true;
-            else
-                return false;
-        }
-
-        /// <summary>
-        /// Returns true if b is between a and c, inclusive
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        public static bool IsBetween(double a, double b, double c)
-        {
-            if (a <= c && a <= b && b <= c) return true;
-            else if (a >= c && a >= b && b >= c) return true;
-            else return false;
-        }
-
-        public static string NAGenerator(int iValue, double maxNotNA)
-        {
-            if (iValue <= maxNotNA) return iValue.ToString("0");
-            else return "N/A";
         }
 
         public static string RADecToSexidecimal(double radec, bool hourFlag)
@@ -185,7 +106,7 @@ namespace TransientSDB
             return sexOut;
         }
 
-        public static double RAHoursToDegrees (double ra)
+        public static double RAHoursToDegrees(double ra)
         {
             return ra * 24.0 / 360.0;
         }

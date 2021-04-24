@@ -1,17 +1,16 @@
 ﻿/*
-* TennisNet is a Transient Name Server client for assembling supernova data
+* XML Parser converts an SDBDesigner-formated data to the format accepted by TSX as a SDB Text file
 * 
 * Author:           Rick McAlister
-* Date:             12/21/18
-* Current Version:  0.1
-* Developed in:     Visual Studio 2017
-* Coded in:         C# 7.0
-* App Envioronment: Windows 10 Pro (V1809)
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
 * 
 * Change Log:
 * 
-* 12/22/18 Rev 1.0  Release
-* 03/22/21 Rev 1.1  Release
+* 4/23/21 Rev 1.0  Release
 * 
 */
 
@@ -23,7 +22,6 @@ using System.Xml.Linq;
 namespace TransientSDB
 
 {
-
     public partial class XMLParser
     {
 

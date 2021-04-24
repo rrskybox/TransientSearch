@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+* SearchNEO Class
+*
+* Class for downloading and parsing MPC NEOCP database query results
+* 
+* This class serves as method template for conversions from all 
+*  catalog sources
+* 
+* Author:           Rick McAlister
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
+* 
+* Change Log:
+* 
+* 4/23/21 Rev 1.0  Release
+* 
+*/
+
+using System;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
@@ -117,13 +138,15 @@ namespace TransientSDB
             {
                 string fieldName = sb.SourceDataName;
                 int fieldWidth = sb.ColumnWidth;
+                sb.TSXEntryName = fieldName;
+                sb.ColumnStart = fieldStart;
+                sb.ColumnWidth = fieldWidth;
+
                 switch (fieldName)
                 {
                     case "Name":
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -131,8 +154,6 @@ namespace TransientSDB
                     case "RA":
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -140,8 +161,6 @@ namespace TransientSDB
                     case "DEC":
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -149,14 +168,12 @@ namespace TransientSDB
                     case "Magnitude":
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
 
                         DataColumn sbExtra = new DataColumn();
-                        sbExtra.SourceDataName = "Magnitude";
-                        sbExtra.TSXEntryName = "Magnitude";
+                        sbExtra.SourceDataName = fieldName;
+                        sbExtra.TSXEntryName = fieldName;
                         sbExtra.IsBuiltIn = false;
                         sbExtra.ColumnStart = fieldStart;
                         sbExtra.ColumnWidth = fieldWidth;
@@ -167,10 +184,7 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "NotSeen":
-                        sb.TSXEntryName = "NotSeen";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -196,11 +210,6 @@ namespace TransientSDB
             XMLParser.XMLToSDBClipboard(sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
-
-        /// <summary>
-        /// Generates URL query to TNS Server
-        /// </summary>
-        /// <returns></returns>
 
         private int QuickWidth(Tuple<int, int> t)
         {

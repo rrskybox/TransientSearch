@@ -1,4 +1,19 @@
-﻿//This research has made use of data and/or services provided by the International Astronomical Union's Minor Planet Center.
+﻿/*
+* Form TransientSearch is the control form for Transient Search
+* 
+* Author:           Rick McAlister
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
+* 
+* Change Log:
+* 
+* 4/23/21 Rev 1.0  Release
+* 
+*/
+//This research has made use of data and/or services provided by the International Astronomical Union's Minor Planet Center.
 
 using System;
 using System.Deployment.Application;
@@ -22,6 +37,7 @@ namespace TransientSDB
                 version = "  **in Debug**";
             }
             this.Text = "Transient Search V" + version;
+            //turn the buttons green
             Utility.ButtonGreen(TNSReaderButton);
             Utility.ButtonGreen(AAVSOVSXButton);
             Utility.ButtonGreen(ExoButton);
@@ -33,8 +49,6 @@ namespace TransientSDB
 
         private void TNSReaderButton_Click(object sender, EventArgs e)
         {
-            //Import TNS-specific catalog data
-            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(TNSReaderButton);
             SearchTNS tnsAcquisition = new SearchTNS();
             tnsAcquisition.SearchBackDays = (int)SearchDaysBox.Value;
@@ -60,8 +74,6 @@ namespace TransientSDB
 
         private void AAVSOVSXButton_Click(object sender, EventArgs e)
         {
-            //Import TSX-specific catalog data
-            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(AAVSOVSXButton);
             VSXManagement vsxAcquisition = new VSXManagement();
             if (NovaSelectButton.Checked)
@@ -109,8 +121,6 @@ namespace TransientSDB
 
         private void ExoButton_Click(object sender, EventArgs e)
         {
-            //Import TSX-specific catalog data
-            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(ExoButton);
             SearchEXO exoAcquisition = new SearchEXO();
             exoAcquisition.SearchType = "EXO";
@@ -135,8 +145,6 @@ namespace TransientSDB
 
         private void NEOButton_Click(object sender, EventArgs e)
         {
-            //Import ESA NEO-specific catalog data
-            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(NEOButton);
             SearchNEO neoAcquisition = new SearchNEO();
             neoAcquisition.SearchType = "NEO";
@@ -160,8 +168,6 @@ namespace TransientSDB
 
         private void VZRButton_Click(object sender, EventArgs e)
         {
-            //Import ESA NEO-specific catalog data
-            //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(VZRButton);
             SearchVZR vzrAcquisition = new SearchVZR();
             if (WhiteDwarfSelectButton.Checked)
@@ -196,6 +202,6 @@ namespace TransientSDB
             Close();
         }
 
-    }
+      }
 }
 

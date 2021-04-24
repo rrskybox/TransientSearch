@@ -1,10 +1,23 @@
-﻿///ExoManagemet Class
-///
-/// Class for downloading Exo Planet database query results
-/// 
-/// This class serves as method template for conversions from all 
-///   catalog sources
-///
+﻿/*
+* SearchEXO Class
+*
+* Class for downloading and parsing Exo Planet database query results
+* 
+* This class serves as method template for conversions from all 
+*  catalog sources
+* 
+* Author:           Rick McAlister
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
+* 
+* Change Log:
+* 
+* 4/23/21 Rev 1.0  Release
+* 
+*/
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +31,6 @@ namespace TransientSDB
 {
     public class SearchEXO
     {
-        // url of Exo and Exo-sandbox api                                     
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
 
         private SDBDesigner sdbDesign;
@@ -138,13 +150,15 @@ namespace TransientSDB
             {
                 string fieldName = sb.SourceDataName;
                 int fieldWidth = sb.ColumnWidth;
+                sb.TSXEntryName = fieldName;
+                sb.ColumnStart = fieldStart;
+                sb.ColumnWidth = fieldWidth;
+
                 switch (fieldName)
                 {
                     case "pl_hostname":
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -152,8 +166,6 @@ namespace TransientSDB
                     case "ra":
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -161,8 +173,6 @@ namespace TransientSDB
                     case "dec":
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -170,44 +180,33 @@ namespace TransientSDB
                     case "gaia_gmag":
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
 
                         DataColumn sbExtra = new DataColumn();
                         sbExtra.SourceDataName = fieldName;
-                        sbExtra.TSXEntryName = "fieldName";
+                        sbExtra.TSXEntryName = fieldName;
                         sbExtra.IsBuiltIn = false;
                         sbExtra.ColumnStart = fieldStart;
                         sbExtra.ColumnWidth = fieldWidth;
                         sbExtra.IsPassed = true;
                         sbExtra.IsDuplicate = true;
-
                         sdbDesign.DataFields.Add(sbExtra);
+
                         fieldStart += fieldWidth;
                         break;
                     case "pl_orbper":
-                        sb.TSXEntryName = "pl_orbper";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
                     case "st_dist":
-                        sb.TSXEntryName = "st_dist";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
                     case "st_optmag":
-                        sb.TSXEntryName = "st_optmag";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
@@ -234,7 +233,6 @@ namespace TransientSDB
         private string MakeSearchQuery()
         {
             //Returns a url string for querying the Exo website
-            //table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml
             NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
             queryString["table"] = "exoplanets";
             queryString["select"] = "pl_hostname,ra,dec,gaia_gmag,pl_orbper,st_dist,st_optmag";

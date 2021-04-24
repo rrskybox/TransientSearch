@@ -1,16 +1,21 @@
 ﻿/*
-* AAVSO Reader is a VSX client for assembling nova data
+* SearchVSX Class
+*
+* Class for downloading and parsing AAVSO TSX database query results
+* 
+* This class serves as method template for conversions from all 
+*  catalog sources
 * 
 * Author:           Rick McAlister
-* Date:             03/21/2021
-* Current Version:  0.1
+* Date:             4/23/21
+* Current Version:  1.0
 * Developed in:     Visual Studio 2019
 * Coded in:         C# 8.0
-* App Envioronment: Windows 10 Pro x32 and x64 (DB12978)
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
 * 
 * Change Log:
 * 
-* 
+* 4/23/21 Rev 1.0  Release
 * 
 */
 
@@ -42,7 +47,7 @@ namespace TransientSDB
 
         public string SDBSuspect { get; set; } = "0,1,2";
         public string SearchType { get; set; } = NOVA_VTYPE; //default
-            
+
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
@@ -217,80 +222,60 @@ namespace TransientSDB
             {
                 string fieldName = sb.SourceDataName;
                 int fieldWidth = sb.ColumnWidth;
+                sb.TSXEntryName = fieldName;
+                sb.ColumnStart = fieldStart;
+                sb.ColumnWidth = fieldWidth;
+
                 switch (fieldName)
                 {
                     case "auid":
-                        sb.SourceDataName = "auid";
-                        sb.TSXEntryName = "auid";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "name":
-                        sb.SourceDataName = "name";
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "const":
-                        sb.SourceDataName = "const";
-                        sb.TSXEntryName = "const";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "RA2000":
-                        sb.SourceDataName = "RA2000";
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "Dec2000":
-                        sb.SourceDataName = "Dec2000";
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "varType":
-                        sb.SourceDataName = "varType";
-                        sb.TSXEntryName = "varType";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "maxMag":
-                        sb.SourceDataName = "maxMag";
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
 
                         DataColumn sbExtra = new DataColumn();
-                        sbExtra.SourceDataName = "maxMag";
-                        sbExtra.TSXEntryName = "maxMag";
+                        sbExtra.SourceDataName = fieldName;
+                        sbExtra.TSXEntryName = fieldName;
                         sbExtra.IsBuiltIn = false;
                         sbExtra.ColumnStart = fieldStart;
                         sbExtra.ColumnWidth = fieldWidth;
@@ -301,31 +286,19 @@ namespace TransientSDB
 
                         break;
                     case "maxPass":
-                        sb.SourceDataName = "maxPass";
-                        sb.TSXEntryName = "maxPass";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "minMag":
-                        sb.SourceDataName = "minMag";
-                        sb.TSXEntryName = "minMag";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "minPass":
-                        sb.SourceDataName = "minPass";
-                        sb.TSXEntryName = "minPass";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -335,41 +308,25 @@ namespace TransientSDB
                     case "novaYr":  //culled -- not useful and very often empty
                         break;
                     case "period":
-                        sb.SourceDataName = "period";
-                        sb.TSXEntryName = "period";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "riseDur":
-                        sb.SourceDataName = "riseDur";
-                        sb.TSXEntryName = "riseDur";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "specType":
-                        sb.SourceDataName = "specType";
-                        sb.TSXEntryName = "specType";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
                     case "disc":
-                        sb.SourceDataName = "disc";
-                        sb.TSXEntryName = "disc";
                         sb.IsBuiltIn = false;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;

@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+* SearchVZR Class
+*
+* Class for downloading and parsing VizieR database query results
+* 
+* This class serves as method template for conversions from all 
+*  catalog sources
+* 
+* Author:           Rick McAlister
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
+* 
+* Change Log:
+* 
+* 4/23/21 Rev 1.0  Release
+* 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -156,13 +177,15 @@ namespace TransientSDB
             {
                 string fieldName = sb.SourceDataName;
                 int fieldWidth = sb.ColumnWidth;
+                sb.TSXEntryName = fieldName;
+                sb.ColumnStart = fieldStart;
+                sb.ColumnWidth = fieldWidth;
+
                 switch (fieldName)
                 {
                     case "WD":
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -170,8 +193,6 @@ namespace TransientSDB
                     case "DENIS":
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -179,8 +200,6 @@ namespace TransientSDB
                     case "Name":
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -188,8 +207,6 @@ namespace TransientSDB
                     case "RAJ2000":
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -197,8 +214,6 @@ namespace TransientSDB
                     case "DEJ2000":
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -206,8 +221,6 @@ namespace TransientSDB
                     case "_RA":
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -215,8 +228,6 @@ namespace TransientSDB
                     case "_DE":
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
@@ -224,8 +235,6 @@ namespace TransientSDB
                     case "gmag":
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
 
@@ -238,13 +247,12 @@ namespace TransientSDB
                         sbExtra.IsPassed = true;
                         sbExtra.IsDuplicate = true;
                         sdbDesign.DataFields.Add(sbExtra);
+
                         fieldStart += fieldWidth;
                         break;
                     case "Imag":
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
-                        sb.ColumnStart = fieldStart;
-                        sb.ColumnWidth = fieldWidth;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
 
@@ -257,6 +265,7 @@ namespace TransientSDB
                         sbImag.IsPassed = true;
                         sbImag.IsDuplicate = true;
                         sdbDesign.DataFields.Add(sbImag);
+
                         fieldStart += fieldWidth;
                         break;
                     default:

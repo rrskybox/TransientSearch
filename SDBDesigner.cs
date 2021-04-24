@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+* SDBDesigner class holds the conversion of web data to SDB data
+* 
+* Author:           Rick McAlister
+* Date:             4/23/21
+* Current Version:  1.0
+* Developed in:     Visual Studio 2019
+* Coded in:         C# 8.0
+* App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
+* 
+* Change Log:
+* 
+* 4/23/21 Rev 1.0  Release
+* 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -124,7 +140,7 @@ namespace TransientSDB
 
         public List<DataColumn> MakeHeaderMap(XElement sdbXML)
         {
-            //the purpose of this method is to create a map of datafields to textcolumns
+            //create a map of datafields to textcolumns
             //for the tns xml data file to be convert to a sdb.text file
             //Load in the header record from the tnsXML 
             XElement headX = new XElement(sdbXML.Element("SDBDataFields"));
