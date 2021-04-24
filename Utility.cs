@@ -185,6 +185,9 @@ namespace TransientSDB
             return sexOut;
         }
 
-
+        public static double RAHoursToDegrees (double ra)
+        {
+            return ra * 24.0 / 360.0;
+        }
     }
 }

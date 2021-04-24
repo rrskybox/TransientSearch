@@ -15,7 +15,7 @@ using System.Xml.Linq;
 
 namespace TransientSDB
 {
-    public class TNSManagement
+    public class SearchTNS
     {
         // url of TNS and TNS-sandbox api                                     
         const string url_tns_search = "http://wis-tns.weizmann.ac.il/search?";

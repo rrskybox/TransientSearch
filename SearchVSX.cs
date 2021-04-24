@@ -37,11 +37,12 @@ namespace TransientSDB
 
         public string SDBIdentifier { get; set; } = "AAVSO VSX";
         public string SDBDescription { get; set; } = "Variable Object Query";
-        public string SDBPeriodHigh { get; set; } = "0"; //future 
-        public string SDBPeriodLow { get; set; } = "1000"; //future 
+        public string SDBPeriodHigh { get; set; } = ""; //future 
+        public string SDBPeriodLow { get; set; } = ""; //future 
 
         public string SDBSuspect { get; set; } = "0,1,2";
         public string SearchType { get; set; } = NOVA_VTYPE; //default
+            
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
@@ -86,6 +87,8 @@ namespace TransientSDB
                     SDBDescription = "VSX Suspects Variable Query";
                     sdbDesign.DefaultObjectIndex = 2;  //Suspected Variable Star
                     sdbDesign.DefaultObjectDescription = "Suspected Variable Star";
+                    SDBPeriodHigh = "0";
+                    SDBPeriodLow = "1000";
                     break;
             }
             //Import TNS CSV text query and convert to an XML database
@@ -408,8 +411,8 @@ namespace TransientSDB
             //queryString[  "stype"] = "";
             //queryString[  "maxhi"] = "";
             //queryString[ "maxlo"] = "";
-            queryString["perhi"] = SDBPeriodHigh;
-            queryString["perlo"] = SDBPeriodLow;
+            if (SDBPeriodHigh != "") queryString["perhi"] = SDBPeriodHigh;
+            if (SDBPeriodLow != "") queryString["perlo"] = SDBPeriodLow;
             //queryString[  "ephi"] = "";
             //queryString[ "eplo"] = "";
             //queryString[  "riselo"] = "";

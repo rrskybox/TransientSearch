@@ -16,7 +16,7 @@ using System.Xml.Linq;
 
 namespace TransientSDB
 {
-    public class EXOManagement
+    public class SearchEXO
     {
         // url of Exo and Exo-sandbox api                                     
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
@@ -28,15 +28,13 @@ namespace TransientSDB
         public string SDBIdentifier { get; set; }
         public string SDBDescription { get; set; }
 
-        public int SearchBackDays { get; set; }
-        public bool SearchSN { get; set; }
-        public bool SearchClassified { get; set; }
+        public string SearchType { get; set; }
 
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
             sdbDesign.SearchPrefix = "Exo";
-            SDBIdentifier = "EXO IPAC";
+            SDBIdentifier = "IPAC EXO";
             SDBDescription = "Exo Planet Query Listing, IPAC, CalTech";
             sdbDesign.DefaultObjectIndex = 20;
             sdbDesign.DefaultObjectDescription = "Exoplanet Object";
@@ -143,7 +141,6 @@ namespace TransientSDB
                 switch (fieldName)
                 {
                     case "pl_hostname":
-                        sb.SourceDataName = "pl_hostname";
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -153,7 +150,6 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "ra":
-                        sb.SourceDataName = "ra";
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -163,7 +159,6 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "dec":
-                        sb.SourceDataName = "dec";
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -173,7 +168,6 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "gaia_gmag":
-                        sb.SourceDataName = "gaia_gmag";
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
                         sb.ColumnStart = fieldStart;
@@ -182,8 +176,8 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
 
                         DataColumn sbExtra = new DataColumn();
-                        sbExtra.SourceDataName = "gaia_gmag";
-                        sbExtra.TSXEntryName = "gaia_gmag";
+                        sbExtra.SourceDataName = fieldName;
+                        sbExtra.TSXEntryName = "fieldName";
                         sbExtra.IsBuiltIn = false;
                         sbExtra.ColumnStart = fieldStart;
                         sbExtra.ColumnWidth = fieldWidth;
@@ -194,7 +188,6 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case "pl_orbper":
-                        sb.SourceDataName = "pl_orbper";
                         sb.TSXEntryName = "pl_orbper";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
@@ -203,7 +196,6 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         break;
                     case "st_dist":
-                        sb.SourceDataName = "st_dist";
                         sb.TSXEntryName = "st_dist";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;
@@ -212,7 +204,6 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         break;
                     case "st_optmag":
-                        sb.SourceDataName = "st_optmag";
                         sb.TSXEntryName = "st_optmag";
                         sb.IsBuiltIn = false;
                         sb.ColumnStart = fieldStart;

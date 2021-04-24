@@ -36,7 +36,7 @@ namespace TransientSDB
             //Import TNS-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(TNSReaderButton);
-            TNSManagement tnsAcquisition = new TNSManagement();
+            SearchTNS tnsAcquisition = new SearchTNS();
             tnsAcquisition.SearchBackDays = (int)SearchDaysBox.Value;
             tnsAcquisition.SearchClassified = ATSelectButton.Checked;
             tnsAcquisition.SearchSN = SuperNovaSelectButton.Checked;
@@ -44,7 +44,7 @@ namespace TransientSDB
             tnsAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
-                SDBTextFileDialog.FileName = "TNS Database.txt";
+                SDBTextFileDialog.FileName = tnsAcquisition.SDBIdentifier + " Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -93,7 +93,7 @@ namespace TransientSDB
             vsxAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
-                SDBTextFileDialog.FileName = "VSX Database.txt";
+                SDBTextFileDialog.FileName = vsxAcquisition.SDBIdentifier + " Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -112,14 +112,13 @@ namespace TransientSDB
             //Import TSX-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(ExoButton);
-            EXOManagement exoAcquisition = new EXOManagement();
-            //exoAcquisition.SearchNova = NovaSelectButton.Checked;
-            //exoAcquisition.SearchAGN = AGNSelectButton.Checked;
+            SearchEXO exoAcquisition = new SearchEXO();
+            exoAcquisition.SearchType = "EXO";
 
             exoAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
-                SDBTextFileDialog.FileName = "EXO Database.txt";
+                SDBTextFileDialog.FileName = exoAcquisition.SDBIdentifier + " Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -139,12 +138,13 @@ namespace TransientSDB
             //Import ESA NEO-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(NEOButton);
-            NEOManagement neoAcquisition = new NEOManagement();
+            SearchNEO neoAcquisition = new SearchNEO();
+            neoAcquisition.SearchType = "NEO";
 
             neoAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
-                SDBTextFileDialog.FileName = "NEO Database.txt";
+                SDBTextFileDialog.FileName = neoAcquisition.SDBIdentifier + " Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {
@@ -163,12 +163,20 @@ namespace TransientSDB
             //Import ESA NEO-specific catalog data
             //sbXTNS is the TNS-specific xml db that has caught all the TNS header and data
             Utility.ButtonRed(VZRButton);
-            VZRManagement vzrAcquisition = new VZRManagement();
+            SearchVZR vzrAcquisition = new SearchVZR();
+            if (WhiteDwarfSelectButton.Checked)
+            {
+                vzrAcquisition.SearchType = SearchVZR.WhiteDwarfCatalog;
+            }
+            if (RedDwarfSelectButton.Checked)
+            {
+                vzrAcquisition.SearchType = SearchVZR.RedDwarfCatalog;
+            }
 
             vzrAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
             {
-                SDBTextFileDialog.FileName = "VZR Database.txt";
+                SDBTextFileDialog.FileName = vzrAcquisition.SDBIdentifier + " Database.txt";
                 DialogResult odr = SDBTextFileDialog.ShowDialog();
                 if (odr == DialogResult.OK)
                 {

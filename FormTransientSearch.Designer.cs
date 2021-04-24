@@ -40,14 +40,14 @@ namespace TransientSDB
             this.ATSelectButton = new System.Windows.Forms.RadioButton();
             this.SuperNovaSelectButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.SuspectsSelectButton = new System.Windows.Forms.RadioButton();
             this.BLLACSelectButton = new System.Windows.Forms.RadioButton();
             this.QSOSelectButton = new System.Windows.Forms.RadioButton();
             this.AGNSelectButton = new System.Windows.Forms.RadioButton();
             this.NovaSelectButton = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.RedDwarfSelectButton = new System.Windows.Forms.RadioButton();
+            this.WhiteDwarfSelectButton = new System.Windows.Forms.RadioButton();
             this.NEOGroupBox = new System.Windows.Forms.GroupBox();
             this.NEOButton = new System.Windows.Forms.Button();
             this.ExoButton = new System.Windows.Forms.Button();
@@ -204,40 +204,6 @@ namespace TransientSDB
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "AAVSO VSX Server";
             // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Enabled = false;
-            this.radioButton4.Location = new System.Drawing.Point(6, 67);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(47, 17);
-            this.radioButton4.TabIndex = 10;
-            this.radioButton4.Text = "TBD";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Enabled = false;
-            this.radioButton3.Location = new System.Drawing.Point(6, 45);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(47, 17);
-            this.radioButton3.TabIndex = 9;
-            this.radioButton3.Text = "TBD";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(6, 22);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(89, 17);
-            this.radioButton2.TabIndex = 8;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "White Dwarfs";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
             // SuspectsSelectButton
             // 
             this.SuspectsSelectButton.AutoSize = true;
@@ -289,6 +255,39 @@ namespace TransientSDB
             this.NovaSelectButton.TabStop = true;
             this.NovaSelectButton.Text = "Nova";
             this.NovaSelectButton.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Enabled = false;
+            this.radioButton4.Location = new System.Drawing.Point(6, 67);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(47, 17);
+            this.radioButton4.TabIndex = 10;
+            this.radioButton4.Text = "TBD";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // RedDwarfSelectButton
+            // 
+            this.RedDwarfSelectButton.AutoSize = true;
+            this.RedDwarfSelectButton.Location = new System.Drawing.Point(6, 45);
+            this.RedDwarfSelectButton.Name = "RedDwarfSelectButton";
+            this.RedDwarfSelectButton.Size = new System.Drawing.Size(76, 17);
+            this.RedDwarfSelectButton.TabIndex = 9;
+            this.RedDwarfSelectButton.Text = "Red Dwarf";
+            this.RedDwarfSelectButton.UseVisualStyleBackColor = true;
+            // 
+            // WhiteDwarfSelectButton
+            // 
+            this.WhiteDwarfSelectButton.AutoSize = true;
+            this.WhiteDwarfSelectButton.Checked = true;
+            this.WhiteDwarfSelectButton.Location = new System.Drawing.Point(6, 22);
+            this.WhiteDwarfSelectButton.Name = "WhiteDwarfSelectButton";
+            this.WhiteDwarfSelectButton.Size = new System.Drawing.Size(84, 17);
+            this.WhiteDwarfSelectButton.TabIndex = 8;
+            this.WhiteDwarfSelectButton.TabStop = true;
+            this.WhiteDwarfSelectButton.Text = "White Dwarf";
+            this.WhiteDwarfSelectButton.UseVisualStyleBackColor = true;
             // 
             // NEOGroupBox
             // 
@@ -351,8 +350,8 @@ namespace TransientSDB
             this.VZRGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
             this.VZRGroupBox.Controls.Add(this.radioButton4);
             this.VZRGroupBox.Controls.Add(this.VZRButton);
-            this.VZRGroupBox.Controls.Add(this.radioButton3);
-            this.VZRGroupBox.Controls.Add(this.radioButton2);
+            this.VZRGroupBox.Controls.Add(this.RedDwarfSelectButton);
+            this.VZRGroupBox.Controls.Add(this.WhiteDwarfSelectButton);
             this.VZRGroupBox.Location = new System.Drawing.Point(568, 7);
             this.VZRGroupBox.Name = "VZRGroupBox";
             this.VZRGroupBox.Size = new System.Drawing.Size(152, 114);
@@ -426,8 +425,8 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton QSOSelectButton;
         private System.Windows.Forms.SaveFileDialog SDBTextFileDialog;
         private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton RedDwarfSelectButton;
+        private System.Windows.Forms.RadioButton WhiteDwarfSelectButton;
         private System.Windows.Forms.RadioButton SuspectsSelectButton;
         private System.Windows.Forms.GroupBox VZRGroupBox;
         private System.Windows.Forms.Button VZRButton;
