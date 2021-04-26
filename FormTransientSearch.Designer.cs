@@ -1,7 +1,7 @@
 ﻿
 namespace TransientSDB
 {
-    partial class FormTransientServer
+    partial class FormTransientSearch
     {
         /// <summary>
         /// Required designer variable.
@@ -45,23 +45,18 @@ namespace TransientSDB
             this.QSOSelectButton = new System.Windows.Forms.RadioButton();
             this.AGNSelectButton = new System.Windows.Forms.RadioButton();
             this.NovaSelectButton = new System.Windows.Forms.RadioButton();
-            this.RedDwarfSelectButton = new System.Windows.Forms.RadioButton();
-            this.WhiteDwarfSelectButton = new System.Windows.Forms.RadioButton();
             this.NEOGroupBox = new System.Windows.Forms.GroupBox();
             this.NEOButton = new System.Windows.Forms.Button();
             this.ExoButton = new System.Windows.Forms.Button();
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.VZRGroupBox = new System.Windows.Forms.GroupBox();
-            this.VZRButton = new System.Windows.Forms.Button();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.NEOGroupBox.SuspendLayout();
             this.ExoPlanetGroupBox.SuspendLayout();
-            this.VZRGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNSReaderButton
@@ -77,7 +72,7 @@ namespace TransientSDB
             // TextFileRadioButton
             // 
             this.TextFileRadioButton.AutoSize = true;
-            this.TextFileRadioButton.Location = new System.Drawing.Point(565, 19);
+            this.TextFileRadioButton.Location = new System.Drawing.Point(399, 19);
             this.TextFileRadioButton.Name = "TextFileRadioButton";
             this.TextFileRadioButton.Size = new System.Drawing.Size(65, 17);
             this.TextFileRadioButton.TabIndex = 1;
@@ -88,7 +83,7 @@ namespace TransientSDB
             // 
             this.ClipboardRadioButton.AutoSize = true;
             this.ClipboardRadioButton.Checked = true;
-            this.ClipboardRadioButton.Location = new System.Drawing.Point(565, 42);
+            this.ClipboardRadioButton.Location = new System.Drawing.Point(399, 42);
             this.ClipboardRadioButton.Name = "ClipboardRadioButton";
             this.ClipboardRadioButton.Size = new System.Drawing.Size(69, 17);
             this.ClipboardRadioButton.TabIndex = 2;
@@ -103,7 +98,7 @@ namespace TransientSDB
             this.OutputGroupBox.Controls.Add(this.TextFileRadioButton);
             this.OutputGroupBox.Location = new System.Drawing.Point(12, 127);
             this.OutputGroupBox.Name = "OutputGroupBox";
-            this.OutputGroupBox.Size = new System.Drawing.Size(673, 73);
+            this.OutputGroupBox.Size = new System.Drawing.Size(517, 73);
             this.OutputGroupBox.TabIndex = 3;
             this.OutputGroupBox.TabStop = false;
             this.OutputGroupBox.Text = "Output";
@@ -255,28 +250,6 @@ namespace TransientSDB
             this.NovaSelectButton.Text = "Nova";
             this.NovaSelectButton.UseVisualStyleBackColor = true;
             // 
-            // RedDwarfSelectButton
-            // 
-            this.RedDwarfSelectButton.AutoSize = true;
-            this.RedDwarfSelectButton.Location = new System.Drawing.Point(6, 45);
-            this.RedDwarfSelectButton.Name = "RedDwarfSelectButton";
-            this.RedDwarfSelectButton.Size = new System.Drawing.Size(76, 17);
-            this.RedDwarfSelectButton.TabIndex = 9;
-            this.RedDwarfSelectButton.Text = "Red Dwarf";
-            this.RedDwarfSelectButton.UseVisualStyleBackColor = true;
-            // 
-            // WhiteDwarfSelectButton
-            // 
-            this.WhiteDwarfSelectButton.AutoSize = true;
-            this.WhiteDwarfSelectButton.Checked = true;
-            this.WhiteDwarfSelectButton.Location = new System.Drawing.Point(6, 22);
-            this.WhiteDwarfSelectButton.Name = "WhiteDwarfSelectButton";
-            this.WhiteDwarfSelectButton.Size = new System.Drawing.Size(84, 17);
-            this.WhiteDwarfSelectButton.TabIndex = 8;
-            this.WhiteDwarfSelectButton.TabStop = true;
-            this.WhiteDwarfSelectButton.Text = "White Dwarf";
-            this.WhiteDwarfSelectButton.UseVisualStyleBackColor = true;
-            // 
             // NEOGroupBox
             // 
             this.NEOGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
@@ -321,7 +294,7 @@ namespace TransientSDB
             // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(601, 206);
+            this.CloseButton.Location = new System.Drawing.Point(437, 206);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(67, 32);
             this.CloseButton.TabIndex = 9;
@@ -333,36 +306,12 @@ namespace TransientSDB
             // 
             this.SDBTextFileDialog.DefaultExt = "*.txt";
             // 
-            // VZRGroupBox
-            // 
-            this.VZRGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
-            this.VZRGroupBox.Controls.Add(this.VZRButton);
-            this.VZRGroupBox.Controls.Add(this.RedDwarfSelectButton);
-            this.VZRGroupBox.Controls.Add(this.WhiteDwarfSelectButton);
-            this.VZRGroupBox.Location = new System.Drawing.Point(535, 7);
-            this.VZRGroupBox.Name = "VZRGroupBox";
-            this.VZRGroupBox.Size = new System.Drawing.Size(150, 114);
-            this.VZRGroupBox.TabIndex = 9;
-            this.VZRGroupBox.TabStop = false;
-            this.VZRGroupBox.Text = "VIZIER Server";
-            // 
-            // VZRButton
-            // 
-            this.VZRButton.Location = new System.Drawing.Point(88, 66);
-            this.VZRButton.Name = "VZRButton";
-            this.VZRButton.Size = new System.Drawing.Size(45, 31);
-            this.VZRButton.TabIndex = 4;
-            this.VZRButton.Text = "VZR";
-            this.VZRButton.UseVisualStyleBackColor = true;
-            this.VZRButton.Click += new System.EventHandler(this.VZRButton_Click);
-            // 
-            // FormTransientServer
+            // FormTransientSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cyan;
-            this.ClientSize = new System.Drawing.Size(697, 244);
-            this.Controls.Add(this.VZRGroupBox);
+            this.ClientSize = new System.Drawing.Size(540, 244);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.NEOGroupBox);
             this.Controls.Add(this.ExoPlanetGroupBox);
@@ -371,8 +320,8 @@ namespace TransientSDB
             this.Controls.Add(this.OutputGroupBox);
             this.ForeColor = System.Drawing.Color.Black;
             this.MaximizeBox = false;
-            this.Name = "FormTransientServer";
-            this.Text = "Transient Server";
+            this.Name = "FormTransientSearch";
+            this.Text = "Transient Search";
             this.OutputGroupBox.ResumeLayout(false);
             this.OutputGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).EndInit();
@@ -382,8 +331,6 @@ namespace TransientSDB
             this.groupBox1.PerformLayout();
             this.NEOGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.ResumeLayout(false);
-            this.VZRGroupBox.ResumeLayout(false);
-            this.VZRGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -411,11 +358,7 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton BLLACSelectButton;
         private System.Windows.Forms.RadioButton QSOSelectButton;
         private System.Windows.Forms.SaveFileDialog SDBTextFileDialog;
-        private System.Windows.Forms.RadioButton RedDwarfSelectButton;
-        private System.Windows.Forms.RadioButton WhiteDwarfSelectButton;
         private System.Windows.Forms.RadioButton SuspectsSelectButton;
-        private System.Windows.Forms.GroupBox VZRGroupBox;
-        private System.Windows.Forms.Button VZRButton;
     }
 }
 

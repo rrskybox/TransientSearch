@@ -28,7 +28,7 @@ namespace TransientSDB
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormTransientServer());
+            Application.Run(new FormTransientSearch());
         }
     }
 }

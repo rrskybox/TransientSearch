@@ -20,12 +20,11 @@ using System.Deployment.Application;
 using System.Drawing;
 using System.Windows.Forms;
 
-
 namespace TransientSDB
 {
-    public partial class FormTransientServer : Form
+    public partial class FormTransientSearch : Form
     {
-        public FormTransientServer()
+        public FormTransientSearch()
         {
             InitializeComponent();
             string version;
@@ -42,7 +41,6 @@ namespace TransientSDB
             Utility.ButtonGreen(AAVSOVSXButton);
             Utility.ButtonGreen(ExoButton);
             Utility.ButtonGreen(NEOButton);
-            Utility.ButtonGreen(VZRButton);
             Utility.ButtonGreen(CloseButton);
             OutputGroupBox.ForeColor = Color.Black;
         }
@@ -166,42 +164,11 @@ namespace TransientSDB
             Utility.ButtonGreen(NEOButton);
         }
 
-        private void VZRButton_Click(object sender, EventArgs e)
-        {
-            Utility.ButtonRed(VZRButton);
-            SearchVZR vzrAcquisition = new SearchVZR();
-            if (WhiteDwarfSelectButton.Checked)
-            {
-                vzrAcquisition.SearchType = SearchVZR.WhiteDwarfCatalog;
-            }
-            if (RedDwarfSelectButton.Checked)
-            {
-                vzrAcquisition.SearchType = SearchVZR.RedDwarfCatalog;
-            }
-
-            vzrAcquisition.GetAndSet();
-            if (TextFileRadioButton.Checked)
-            {
-                SDBTextFileDialog.FileName = vzrAcquisition.SDBIdentifier + " Database.txt";
-                DialogResult odr = SDBTextFileDialog.ShowDialog();
-                if (odr == DialogResult.OK)
-                {
-                    string textFileName = SDBTextFileDialog.FileName;
-                    if (TextFileRadioButton.Checked)
-                        vzrAcquisition.BuildSDBTextFile(textFileName);
-                }
-            }
-            else
-                vzrAcquisition.BuildSDBClipboard();
-            Utility.ButtonGreen(VZRButton);
-
-        }
-
         private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-      }
+    }
 }
 
