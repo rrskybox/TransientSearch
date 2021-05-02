@@ -27,7 +27,7 @@
     <ProductName>Transient Search</ProductName>
     <PublisherName>TSXToolKit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>27</ApplicationRevision>
+    <ApplicationRevision>28</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -116,6 +116,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Transient Server Description.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TransientSearch_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
