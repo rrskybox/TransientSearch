@@ -31,8 +31,8 @@ namespace TransientSDB
 {
     public class SearchEXO
     {
-        const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
-
+        //const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
+        const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?";
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
@@ -73,7 +73,9 @@ namespace TransientSDB
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
             string exoURLquery = URL_Exo_search + MakeSearchQuery();
-            //string exoURLquery1 = URL_Exo_search + "table=exoplanets&select=pl_hostname,ra,dec,gaia_gmag&order=dec&format=xml";
+            string exoURLquery1 = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+*+from+ps+where+pl_orbper+>+=+1000&format=votable";
+            int t = exoURLquery.CompareTo(exoURLquery1);
+
             try
             {
                 exoResults = client.DownloadString(exoURLquery);
@@ -156,7 +158,7 @@ namespace TransientSDB
 
                 switch (fieldName)
                 {
-                    case "pl_hostname":
+                    case "pl_name":
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
                         sb.IsPassed = true;
@@ -177,7 +179,7 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "gaia_gmag":
+                    case "sy_vmag":
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
                         sb.IsPassed = true;
@@ -200,12 +202,12 @@ namespace TransientSDB
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
-                    case "st_dist":
+                    case "sy_dist":
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
-                    case "st_optmag":
+                    case "st_spectype":
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
@@ -233,12 +235,14 @@ namespace TransientSDB
         private string MakeSearchQuery()
         {
             //Returns a url string for querying the Exo website
-            NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            queryString["table"] = "exoplanets";
-            queryString["select"] = "pl_hostname,ra,dec,gaia_gmag,pl_orbper,st_dist,st_optmag";
-            queryString["order"] = "dec";
-            queryString["format"] = "xml";
-            return queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
+            string queryString =
+                "query="+
+                //"select+pl_name+rastr,radec,sy_vmag+from+ps+" +
+                "select+pl_name,ra,dec,sy_vmag,pl_orbper,sy_dist,st_spectype+from+ps+" +
+                //"select+*+from+ps+" +
+                "where+pl_orbper+<+=+1000" +
+                "&format=votable";
+            return queryString;
         }
     }
 }
