@@ -13,6 +13,10 @@
 * Coded in:         C# 8.0
 * App Envioronment: Windows 10 Pro, .Net 4.8, TSX 5.0 Build 12978
 * 
+* Support documents
+* 
+* Table Access Protocol: https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html
+* 
 * Change Log:
 * 
 * 4/23/21 Rev 1.0  Release
@@ -21,7 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
@@ -33,6 +36,19 @@ namespace TransientSDB
     {
         //const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?";
+
+        const string TAPName = "pl_name";
+        const string TAPRA = "ra";
+        const string TAPDec = "dec";
+        const string TAPVMag = "sy_vmag";
+        const string TAPPeriod = "pl_orbper";
+        const string TAPDistance = "sy_dist";
+        const string TAPSpecType = "st_spectype";
+        const string TAPTransitFlag = "tran_flag";
+        const string TAPMaxPeriod = "1000";
+        const string TAPMinMag = "14";
+        const string TAPTrue = "1";
+
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
@@ -53,6 +69,7 @@ namespace TransientSDB
 
             //Import Exo VOTable query and convert to an SDB XML database
             sdbXResults = ServerQueryToResultsXML();
+            if (sdbXResults == null) return;
             //Parse the Exo-specific catalog data for names and widths to be used
             //  for defining columns in the output text data to TSX SDB text file
             //colMap is the generic list of column names and maximum data widths
@@ -73,8 +90,7 @@ namespace TransientSDB
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
 
             string exoURLquery = URL_Exo_search + MakeSearchQuery();
-            string exoURLquery1 = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+*+from+ps+where+pl_orbper+>+=+1000&format=votable";
-            int t = exoURLquery.CompareTo(exoURLquery1);
+            int t = exoURLquery.CompareTo(exoURLquery);
 
             try
             {
@@ -158,28 +174,28 @@ namespace TransientSDB
 
                 switch (fieldName)
                 {
-                    case "pl_name":
+                    case TAPName:
                         sb.TSXEntryName = SDBDesigner.LabelOrSearchX;
                         sb.IsBuiltIn = true;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "ra":
+                    case TAPRA:
                         sb.TSXEntryName = SDBDesigner.RAHoursX;
                         sb.IsBuiltIn = true;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "dec":
+                    case TAPDec:
                         sb.TSXEntryName = SDBDesigner.DecDegreesX;
                         sb.IsBuiltIn = true;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
-                    case "sy_vmag":
+                    case TAPVMag:
                         sb.TSXEntryName = SDBDesigner.MagnitudeX;
                         sb.IsBuiltIn = true;
                         sb.IsPassed = true;
@@ -197,17 +213,17 @@ namespace TransientSDB
 
                         fieldStart += fieldWidth;
                         break;
-                    case "pl_orbper":
+                    case TAPPeriod:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
-                    case "sy_dist":
+                    case TAPDistance:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
-                    case "st_spectype":
+                    case TAPSpecType:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
@@ -223,24 +239,24 @@ namespace TransientSDB
 
         public void BuildSDBTextFile(string fileName)
         {
-            XMLParser.XMLToSDBText(fileName, sdbDesign, sdbXDoc, sdbXResults);
+            if (sdbXResults != null) 
+                XMLParser.XMLToSDBText(fileName, sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
 
         public void BuildSDBClipboard()
         {
-            XMLParser.XMLToSDBClipboard(sdbDesign, sdbXDoc, sdbXResults);
+            if (sdbXResults != null)
+                XMLParser.XMLToSDBClipboard(sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
         private string MakeSearchQuery()
         {
             //Returns a url string for querying the Exo website
             string queryString =
-                "query="+
-                //"select+pl_name+rastr,radec,sy_vmag+from+ps+" +
-                "select+pl_name,ra,dec,sy_vmag,pl_orbper,sy_dist,st_spectype+from+ps+" +
-                //"select+*+from+ps+" +
-                "where+pl_orbper+<+=+1000" +
+                "query=" +
+                "select+" + TAPName + "," + TAPRA + "," + TAPDec + "," + TAPVMag + "," + TAPPeriod + "," + TAPDistance + "," + TAPSpecType + "+from+ps+" +
+                "where+" + TAPPeriod + "+<+"+TAPMaxPeriod+"+and+" + TAPVMag + "+<+"+TAPMinMag+"+and+" + TAPTransitFlag + "+=+"+TAPTrue+"+" +
                 "&format=votable";
             return queryString;
         }
