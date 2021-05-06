@@ -235,36 +235,43 @@ namespace TransientSDB
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case TAPPeriod:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case TAPDistance:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case TAPSpecType:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case TAPTransitDuration:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case TAPTransitDepth:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     case TAPTransitMid:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
                         break;
                     default:
                         sb.IsPassed = false;
