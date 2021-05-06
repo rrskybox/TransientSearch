@@ -120,8 +120,12 @@ namespace TransientSDB
         private void ExoButton_Click(object sender, EventArgs e)
         {
             Utility.ButtonRed(ExoButton);
+            ExoButton.Text = "Busy";
             SearchEXO exoAcquisition = new SearchEXO();
-            exoAcquisition.SearchType = "EXO";
+            if (ConfirmedButton.Checked)
+                exoAcquisition.SearchType = SearchEXO.PSSearchType.Confirmed; 
+            else
+                exoAcquisition.SearchType = SearchEXO.PSSearchType.Candidate; 
 
             exoAcquisition.GetAndSet();
             if (TextFileRadioButton.Checked)
@@ -137,6 +141,7 @@ namespace TransientSDB
             }
             else
                 exoAcquisition.BuildSDBClipboard();
+            ExoButton.Text = "EXO";
             Utility.ButtonGreen(ExoButton);
 
         }
@@ -169,6 +174,7 @@ namespace TransientSDB
             Close();
         }
 
+  
     }
 }
 

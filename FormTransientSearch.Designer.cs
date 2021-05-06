@@ -49,6 +49,8 @@ namespace TransientSDB
             this.NEOButton = new System.Windows.Forms.Button();
             this.ExoButton = new System.Windows.Forms.Button();
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
+            this.ConfirmedButton = new System.Windows.Forms.RadioButton();
+            this.CandidateButton = new System.Windows.Forms.RadioButton();
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OutputGroupBox.SuspendLayout();
@@ -72,7 +74,7 @@ namespace TransientSDB
             // TextFileRadioButton
             // 
             this.TextFileRadioButton.AutoSize = true;
-            this.TextFileRadioButton.Location = new System.Drawing.Point(399, 19);
+            this.TextFileRadioButton.Location = new System.Drawing.Point(494, 19);
             this.TextFileRadioButton.Name = "TextFileRadioButton";
             this.TextFileRadioButton.Size = new System.Drawing.Size(65, 17);
             this.TextFileRadioButton.TabIndex = 1;
@@ -83,7 +85,7 @@ namespace TransientSDB
             // 
             this.ClipboardRadioButton.AutoSize = true;
             this.ClipboardRadioButton.Checked = true;
-            this.ClipboardRadioButton.Location = new System.Drawing.Point(399, 42);
+            this.ClipboardRadioButton.Location = new System.Drawing.Point(494, 42);
             this.ClipboardRadioButton.Name = "ClipboardRadioButton";
             this.ClipboardRadioButton.Size = new System.Drawing.Size(69, 17);
             this.ClipboardRadioButton.TabIndex = 2;
@@ -98,7 +100,7 @@ namespace TransientSDB
             this.OutputGroupBox.Controls.Add(this.TextFileRadioButton);
             this.OutputGroupBox.Location = new System.Drawing.Point(12, 127);
             this.OutputGroupBox.Name = "OutputGroupBox";
-            this.OutputGroupBox.Size = new System.Drawing.Size(517, 73);
+            this.OutputGroupBox.Size = new System.Drawing.Size(575, 73);
             this.OutputGroupBox.TabIndex = 3;
             this.OutputGroupBox.TabStop = false;
             this.OutputGroupBox.Text = "Output";
@@ -191,7 +193,7 @@ namespace TransientSDB
             this.groupBox1.Controls.Add(this.AGNSelectButton);
             this.groupBox1.Controls.Add(this.AAVSOVSXButton);
             this.groupBox1.Controls.Add(this.NovaSelectButton);
-            this.groupBox1.Location = new System.Drawing.Point(365, 7);
+            this.groupBox1.Location = new System.Drawing.Point(423, 7);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(164, 114);
             this.groupBox1.TabIndex = 7;
@@ -254,7 +256,7 @@ namespace TransientSDB
             // 
             this.NEOGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
             this.NEOGroupBox.Controls.Add(this.NEOButton);
-            this.NEOGroupBox.Location = new System.Drawing.Point(279, 7);
+            this.NEOGroupBox.Location = new System.Drawing.Point(337, 7);
             this.NEOGroupBox.Name = "NEOGroupBox";
             this.NEOGroupBox.Size = new System.Drawing.Size(80, 114);
             this.NEOGroupBox.TabIndex = 8;
@@ -273,7 +275,7 @@ namespace TransientSDB
             // 
             // ExoButton
             // 
-            this.ExoButton.Location = new System.Drawing.Point(15, 66);
+            this.ExoButton.Location = new System.Drawing.Point(42, 66);
             this.ExoButton.Name = "ExoButton";
             this.ExoButton.Size = new System.Drawing.Size(45, 31);
             this.ExoButton.TabIndex = 4;
@@ -284,17 +286,41 @@ namespace TransientSDB
             // ExoPlanetGroupBox
             // 
             this.ExoPlanetGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.ExoPlanetGroupBox.Controls.Add(this.ConfirmedButton);
             this.ExoPlanetGroupBox.Controls.Add(this.ExoButton);
+            this.ExoPlanetGroupBox.Controls.Add(this.CandidateButton);
             this.ExoPlanetGroupBox.Location = new System.Drawing.Point(199, 7);
             this.ExoPlanetGroupBox.Name = "ExoPlanetGroupBox";
-            this.ExoPlanetGroupBox.Size = new System.Drawing.Size(74, 114);
+            this.ExoPlanetGroupBox.Size = new System.Drawing.Size(132, 114);
             this.ExoPlanetGroupBox.TabIndex = 8;
             this.ExoPlanetGroupBox.TabStop = false;
             this.ExoPlanetGroupBox.Text = "ExoPlanet Server";
             // 
+            // ConfirmedButton
+            // 
+            this.ConfirmedButton.AutoSize = true;
+            this.ConfirmedButton.Checked = true;
+            this.ConfirmedButton.Location = new System.Drawing.Point(15, 42);
+            this.ConfirmedButton.Name = "ConfirmedButton";
+            this.ConfirmedButton.Size = new System.Drawing.Size(72, 17);
+            this.ConfirmedButton.TabIndex = 9;
+            this.ConfirmedButton.TabStop = true;
+            this.ConfirmedButton.Text = "Confirmed";
+            this.ConfirmedButton.UseVisualStyleBackColor = true;
+            // 
+            // CandidateButton
+            // 
+            this.CandidateButton.AutoSize = true;
+            this.CandidateButton.Location = new System.Drawing.Point(15, 19);
+            this.CandidateButton.Name = "CandidateButton";
+            this.CandidateButton.Size = new System.Drawing.Size(73, 17);
+            this.CandidateButton.TabIndex = 8;
+            this.CandidateButton.Text = "Candidate";
+            this.CandidateButton.UseVisualStyleBackColor = true;
+            // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(437, 206);
+            this.CloseButton.Location = new System.Drawing.Point(520, 206);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(67, 32);
             this.CloseButton.TabIndex = 9;
@@ -311,7 +337,7 @@ namespace TransientSDB
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cyan;
-            this.ClientSize = new System.Drawing.Size(540, 244);
+            this.ClientSize = new System.Drawing.Size(595, 244);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.NEOGroupBox);
             this.Controls.Add(this.ExoPlanetGroupBox);
@@ -331,6 +357,7 @@ namespace TransientSDB
             this.groupBox1.PerformLayout();
             this.NEOGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.ResumeLayout(false);
+            this.ExoPlanetGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -359,6 +386,8 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton QSOSelectButton;
         private System.Windows.Forms.SaveFileDialog SDBTextFileDialog;
         private System.Windows.Forms.RadioButton SuspectsSelectButton;
+        private System.Windows.Forms.RadioButton ConfirmedButton;
+        private System.Windows.Forms.RadioButton CandidateButton;
     }
 }
 

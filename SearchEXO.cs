@@ -34,9 +34,10 @@ namespace TransientSDB
 {
     public class SearchEXO
     {
-        //const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?";
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?";
 
+        const string TAPSolutionType = "soltype";
+        const string TAPPublishedConfirmed = "\'Published Confirmed\'";
         const string TAPName = "pl_name";
         const string TAPRA = "ra";
         const string TAPDec = "dec";
@@ -49,6 +50,17 @@ namespace TransientSDB
         const string TAPMinMag = "14";
         const string TAPTrue = "1";
 
+        const string TAPTransitDuration = "pl_trandur";
+        const string TAPTransitDepth = "pl_trandep";
+
+        const string TAPTransitMid = "pl_tranmid";
+
+        public enum PSSearchType
+        {
+            Confirmed,
+            Candidate
+        }
+
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
         private XDocument sdbXDoc;
@@ -56,13 +68,19 @@ namespace TransientSDB
         public string SDBIdentifier { get; set; }
         public string SDBDescription { get; set; }
 
-        public string SearchType { get; set; }
+        public PSSearchType SearchType { get; set; }
 
         public void GetAndSet()
         {
             sdbDesign = new SDBDesigner();
             sdbDesign.SearchPrefix = "Exo";
-            SDBIdentifier = "IPAC EXO";
+            switch (SearchType)
+            {
+                case PSSearchType.Confirmed:
+                    { SDBIdentifier = "Confirmed EXO"; break; }
+                case PSSearchType.Candidate:
+                    { SDBIdentifier = "Candidate EXO"; break; }
+            }
             SDBDescription = "Exo Planet Query Listing, IPAC, CalTech";
             sdbDesign.DefaultObjectIndex = 20;
             sdbDesign.DefaultObjectDescription = "Exoplanet Object";
@@ -131,7 +149,7 @@ namespace TransientSDB
                 {
                     string dItemValue = dItem.Value.ToString();
                     //Check for converstion of RA from decimal degrees to decimal hours
-                    if (dHeader[dIndex].Contains("ra"))
+                    if (dHeader[dIndex] == ("ra"))
                         dItemValue = ((Convert.ToDouble(dItem.Value.ToString())) * (24.0 / 360.0)).ToString();
                     xmlItem.Add(new XElement(dHeader[dIndex], dItemValue));
                     if (dItemValue.Length > widths[dIndex])
@@ -213,6 +231,11 @@ namespace TransientSDB
 
                         fieldStart += fieldWidth;
                         break;
+                    case TAPSolutionType:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        break;
                     case TAPPeriod:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
@@ -228,6 +251,21 @@ namespace TransientSDB
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);
                         break;
+                    case TAPTransitDuration:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        break;
+                    case TAPTransitDepth:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        break;
+                    case TAPTransitMid:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        break;
                     default:
                         sb.IsPassed = false;
                         break;
@@ -239,7 +277,7 @@ namespace TransientSDB
 
         public void BuildSDBTextFile(string fileName)
         {
-            if (sdbXResults != null) 
+            if (sdbXResults != null)
                 XMLParser.XMLToSDBText(fileName, sdbDesign, sdbXDoc, sdbXResults);
             return;
         }
@@ -253,10 +291,32 @@ namespace TransientSDB
         private string MakeSearchQuery()
         {
             //Returns a url string for querying the Exo website
+            string exoType = "";
+            switch (SearchType)
+            {
+                case PSSearchType.Confirmed:
+                    { exoType = ""; break; }
+                case PSSearchType.Candidate:
+                    { exoType = "+not"; break; }
+            }
             string queryString =
                 "query=" +
-                "select+" + TAPName + "," + TAPRA + "," + TAPDec + "," + TAPVMag + "," + TAPPeriod + "," + TAPDistance + "," + TAPSpecType + "+from+ps+" +
-                "where+" + TAPPeriod + "+<+"+TAPMaxPeriod+"+and+" + TAPVMag + "+<+"+TAPMinMag+"+and+" + TAPTransitFlag + "+=+"+TAPTrue+"+" +
+                "select+" + TAPName + "," +
+                            TAPSolutionType + "," +
+                            TAPRA + "," +
+                            TAPDec + "," +
+                            TAPVMag + "," +
+                            TAPPeriod + "," +
+                            TAPDistance + "," +
+                            TAPSpecType + "," +
+                            TAPTransitDuration + "," +
+                            TAPTransitDepth + "," +
+                            TAPTransitMid +
+                            "+from+ps+" +
+                "where+" + "upper(" + TAPSolutionType + ")" + exoType + "+like+\'%CONF%\'" + "+and+" +
+                           TAPPeriod + "+<+" + TAPMaxPeriod + "+and+" +
+                           TAPVMag + "+<+" + TAPMinMag + "+and+" +
+                           TAPTransitFlag + "+=+" + TAPTrue + "+" +
                 "&format=votable";
             return queryString;
         }
