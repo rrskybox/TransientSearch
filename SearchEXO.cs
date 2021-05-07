@@ -54,7 +54,12 @@ namespace TransientSDB
         const string TAPTransitDepth = "pl_trandep";
 
         public const string TAPTransitMid = "pl_tranmid";
+        public const string TAPPeriodPlusError = "pl_orbpererr1";
+        public const string TAPPeriodMinusError = "pl_orbpererr2";
+ 
         public const string NextTransitX = "NextTransit";
+        public const string NextTransitEarliestX = "NextTransitEarliest";
+        public const string NextTransitLatestX = "NextTransitLatest";
 
         public enum PSSearchType
         {
@@ -167,8 +172,10 @@ namespace TransientSDB
             }
             //Figure out the transit ephemeris for all the targets, if possible
             int ntWidth = Ephemeris.AddCalculatedEphemeris(sdbX);
-            //Add the NextTransitField
+            //Add the NextTransitFields
             headerRecordX.Add(new XElement(NextTransitX, ntWidth));
+            headerRecordX.Add(new XElement(NextTransitEarliestX, ntWidth));
+            headerRecordX.Add(new XElement(NextTransitLatestX, ntWidth));
             sdbX.Add(headerRecordX);
             return sdbX;
         }
@@ -285,6 +292,18 @@ namespace TransientSDB
                         sdbDesign.DataFields.Add(sb);
                         fieldStart += fieldWidth;
                         break;
+                    case NextTransitEarliestX:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
+                        break;
+                    case NextTransitLatestX:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
+                        break;
                     default:
                         sb.IsPassed = false;
                         break;
@@ -330,7 +349,9 @@ namespace TransientSDB
                             TAPSpecType + "," +
                             TAPTransitDuration + "," +
                             TAPTransitDepth + "," +
-                            TAPTransitMid +
+                            TAPTransitMid + "," +
+                            TAPPeriodPlusError + "," +
+                            TAPPeriodMinusError +
                             "+from+ps+" +
                 "where+" + "upper(" + TAPSolutionType + ")" + exoType + "+like+\'%CONF%\'" + "+and+" +
                            TAPPeriod + "+<+" + TAPMaxPeriod + "+and+" +

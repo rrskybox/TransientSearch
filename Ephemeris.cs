@@ -18,8 +18,13 @@ namespace TransientSDB
             foreach (XElement tgtX in sdbXResults.Elements(XMLParser.SDBEntryX))
             {
                 string nextTransitString = "";
+                string nextEarliestTransitString = "";
+                string nextLatestTransitString = "";
                 string periodX = tgtX.Element(SearchEXO.TAPPeriod).Value;
                 string julDateX = tgtX.Element(SearchEXO.TAPTransitMid).Value;
+                string periodMinusErrorX = tgtX.Element(SearchEXO.TAPPeriodMinusError).Value;
+                string periodPlusErrorX = tgtX.Element(SearchEXO.TAPPeriodPlusError).Value;
+
                 if (periodX != "" && julDateX != "")
                 {
                     double period = Convert.ToDouble(periodX);
@@ -27,8 +32,25 @@ namespace TransientSDB
                     DateTime nextTransit = NextTransit(jDate, period);
                     nextTransitString = nextTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     width = Utility.Bigger(nextTransitString.Length, width);
+
+                    if (periodMinusErrorX != "")
+                    {
+                        double periodMin = Convert.ToDouble(periodX)+Convert.ToDouble(periodMinusErrorX);
+                        DateTime nextEarliestTransit = NextTransit(jDate, periodMin);
+                        nextEarliestTransitString = nextEarliestTransit.ToString("MM/dd/yyyy HH:mm:ss");
+                    }
+
+                    if (periodPlusErrorX != "")
+                    {
+                        double periodMax = Convert.ToDouble(periodX) + Convert.ToDouble(periodPlusErrorX);
+                        DateTime nextLatestTransit = NextTransit(jDate, periodMax);
+                        nextLatestTransitString = nextLatestTransit.ToString("MM/dd/yyyy HH:mm:ss");
+                    }
+
                 }
-                tgtX.Add(new XElement("NextTransit", nextTransitString));
+                tgtX.Add(new XElement(SearchEXO.NextTransitX, nextTransitString));
+                tgtX.Add(new XElement(SearchEXO.NextTransitEarliestX, nextEarliestTransitString));
+                tgtX.Add(new XElement(SearchEXO.NextTransitLatestX, nextLatestTransitString));
             }
             return width;
         }
