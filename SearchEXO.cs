@@ -82,8 +82,8 @@ namespace TransientSDB
                     { SDBIdentifier = "Candidate EXO"; break; }
             }
             SDBDescription = "Exo Planet Query Listing, IPAC, CalTech";
-            sdbDesign.DefaultObjectIndex = 20;
-            sdbDesign.DefaultObjectDescription = "Exoplanet Object";
+            sdbDesign.DefaultObjectIndex = 28;
+            sdbDesign.DefaultObjectDescription = "Exoplanet";
 
             //Import Exo VOTable query and convert to an SDB XML database
             sdbXResults = ServerQueryToResultsXML();
