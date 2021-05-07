@@ -42,7 +42,7 @@ namespace TransientSDB
         const string TAPRA = "ra";
         const string TAPDec = "dec";
         const string TAPVMag = "sy_vmag";
-        const string TAPPeriod = "pl_orbper";
+        public const string TAPPeriod = "pl_orbper";
         const string TAPDistance = "sy_dist";
         const string TAPSpecType = "st_spectype";
         const string TAPTransitFlag = "tran_flag";
@@ -50,10 +50,11 @@ namespace TransientSDB
         const string TAPMinMag = "14";
         const string TAPTrue = "1";
 
-        const string TAPTransitDuration = "pl_trandur";
+        public const string TAPTransitDuration = "pl_trandur";
         const string TAPTransitDepth = "pl_trandep";
 
-        const string TAPTransitMid = "pl_tranmid";
+        public const string TAPTransitMid = "pl_tranmid";
+        public const string NextTransitX = "NextTransit";
 
         public enum PSSearchType
         {
@@ -70,7 +71,7 @@ namespace TransientSDB
 
         public PSSearchType SearchType { get; set; }
 
-        public void GetAndSet()
+        public bool GetAndSet()
         {
             sdbDesign = new SDBDesigner();
             sdbDesign.SearchPrefix = "Exo";
@@ -87,7 +88,7 @@ namespace TransientSDB
 
             //Import Exo VOTable query and convert to an SDB XML database
             sdbXResults = ServerQueryToResultsXML();
-            if (sdbXResults == null) return;
+            if (sdbXResults == null) return false;
             //Parse the Exo-specific catalog data for names and widths to be used
             //  for defining columns in the output text data to TSX SDB text file
             //colMap is the generic list of column names and maximum data widths
@@ -95,7 +96,7 @@ namespace TransientSDB
             //Create the TSX SDB Text header by mapping the column map to the 
             //  TSX built-in and user data fields
             sdbXDoc = ResultsXMLtoSDBHeader(sdbXResults);
-            return;
+            return true;
         }
 
         private XElement ServerQueryToResultsXML()
@@ -158,11 +159,16 @@ namespace TransientSDB
                 }
                 sdbX.Add(xmlItem);
             }
+
             //pull out the field information
             for (int i = 0; i < widths.Length; i++)
             {
                 headerRecordX.Add(new XElement(dHeader[i], widths[i]));
             }
+            //Figure out the transit ephemeris for all the targets, if possible
+            int ntWidth = Ephemeris.AddCalculatedEphemeris(sdbX);
+            //Add the NextTransitField
+            headerRecordX.Add(new XElement(NextTransitX, ntWidth));
             sdbX.Add(headerRecordX);
             return sdbX;
         }
@@ -268,6 +274,12 @@ namespace TransientSDB
                         fieldStart += fieldWidth;
                         break;
                     case TAPTransitMid:
+                        sb.IsBuiltIn = false;
+                        sb.IsPassed = true;
+                        sdbDesign.DataFields.Add(sb);
+                        fieldStart += fieldWidth;
+                        break;
+                    case NextTransitX:
                         sb.IsBuiltIn = false;
                         sb.IsPassed = true;
                         sdbDesign.DataFields.Add(sb);

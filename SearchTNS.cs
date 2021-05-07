@@ -43,7 +43,7 @@ namespace TransientSDB
         public bool SearchSN { get; set; }
         public bool SearchClassified { get; set; }
 
-        public void GetAndSet()
+        public bool GetAndSet()
         {
             sdbDesign = new SDBDesigner();
             if (SearchSN)
@@ -65,6 +65,7 @@ namespace TransientSDB
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
+            if (sdbXResults == null) return false;
             //Parse the TNS-specific catalog data for names and widths to be used
             //  for defining columns in the output text data to TSX SDB text file
             //colMap is the generic list of column names and maximum data widths
@@ -72,7 +73,7 @@ namespace TransientSDB
             //Create the TSX SDB Text header by mapping the column map to the 
             //  TSX built-in and user data fields
             sdbXDoc = ResultsXMLtoSDBHeader(sdbXResults);
-            return;
+            return true;
         }
 
         private XElement ServerQueryToResultsXML()

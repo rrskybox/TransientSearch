@@ -110,5 +110,11 @@ namespace TransientSDB
         {
             return ra * 24.0 / 360.0;
         }
+
+        public static int Bigger (int a, int b)
+        {
+            if (a > b) return a;
+            else return b;
+        }
     }
 }

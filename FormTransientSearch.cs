@@ -48,31 +48,37 @@ namespace TransientSDB
         private void TNSReaderButton_Click(object sender, EventArgs e)
         {
             Utility.ButtonRed(TNSReaderButton);
+            TNSReaderButton.Text = "Busy";
             SearchTNS tnsAcquisition = new SearchTNS();
             tnsAcquisition.SearchBackDays = (int)SearchDaysBox.Value;
             tnsAcquisition.SearchClassified = ATSelectButton.Checked;
             tnsAcquisition.SearchSN = SuperNovaSelectButton.Checked;
 
-            tnsAcquisition.GetAndSet();
-            if (TextFileRadioButton.Checked)
+            if (tnsAcquisition.GetAndSet())
             {
-                SDBTextFileDialog.FileName = tnsAcquisition.SDBIdentifier + " Database.txt";
-                DialogResult odr = SDBTextFileDialog.ShowDialog();
-                if (odr == DialogResult.OK)
+                if (TextFileRadioButton.Checked)
                 {
-                    string textFileName = SDBTextFileDialog.FileName;
-                    if (TextFileRadioButton.Checked)
-                        tnsAcquisition.BuildSDBTextFile(textFileName);
+                    SDBTextFileDialog.FileName = tnsAcquisition.SDBIdentifier + " Database.txt";
+                    DialogResult odr = SDBTextFileDialog.ShowDialog();
+                    if (odr == DialogResult.OK)
+                    {
+                        string textFileName = SDBTextFileDialog.FileName;
+                        if (TextFileRadioButton.Checked)
+                            tnsAcquisition.BuildSDBTextFile(textFileName);
+                    }
                 }
+                else
+                    tnsAcquisition.BuildSDBClipboard();
             }
-            else
-                tnsAcquisition.BuildSDBClipboard();
+            else MessageBox.Show("Failed to find any targets");
+            TNSReaderButton.Text = "TNS";
             Utility.ButtonGreen(TNSReaderButton);
         }
 
         private void AAVSOVSXButton_Click(object sender, EventArgs e)
         {
             Utility.ButtonRed(AAVSOVSXButton);
+            AAVSOVSXButton.Text = "Busy";
             VSXManagement vsxAcquisition = new VSXManagement();
             if (NovaSelectButton.Checked)
             {
@@ -100,20 +106,24 @@ namespace TransientSDB
                 vsxAcquisition.SDBSuspect = "1";
             }
 
-            vsxAcquisition.GetAndSet();
-            if (TextFileRadioButton.Checked)
+            if (vsxAcquisition.GetAndSet())
             {
-                SDBTextFileDialog.FileName = vsxAcquisition.SDBIdentifier + " Database.txt";
-                DialogResult odr = SDBTextFileDialog.ShowDialog();
-                if (odr == DialogResult.OK)
+                if (TextFileRadioButton.Checked)
                 {
-                    string textFileName = SDBTextFileDialog.FileName;
-                    if (TextFileRadioButton.Checked)
-                        vsxAcquisition.BuildSDBTextFile(textFileName);
+                    SDBTextFileDialog.FileName = vsxAcquisition.SDBIdentifier + " Database.txt";
+                    DialogResult odr = SDBTextFileDialog.ShowDialog();
+                    if (odr == DialogResult.OK)
+                    {
+                        string textFileName = SDBTextFileDialog.FileName;
+                        if (TextFileRadioButton.Checked)
+                            vsxAcquisition.BuildSDBTextFile(textFileName);
+                    }
                 }
+                else
+                    vsxAcquisition.BuildSDBClipboard();
             }
-            else
-                vsxAcquisition.BuildSDBClipboard();
+            else MessageBox.Show("Failed to find any targets");
+            AAVSOVSXButton.Text = "VSX";
             Utility.ButtonGreen(AAVSOVSXButton);
         }
 
@@ -123,50 +133,57 @@ namespace TransientSDB
             ExoButton.Text = "Busy";
             SearchEXO exoAcquisition = new SearchEXO();
             if (ConfirmedButton.Checked)
-                exoAcquisition.SearchType = SearchEXO.PSSearchType.Confirmed; 
+                exoAcquisition.SearchType = SearchEXO.PSSearchType.Confirmed;
             else
-                exoAcquisition.SearchType = SearchEXO.PSSearchType.Candidate; 
+                exoAcquisition.SearchType = SearchEXO.PSSearchType.Candidate;
 
-            exoAcquisition.GetAndSet();
-            if (TextFileRadioButton.Checked)
+            if (exoAcquisition.GetAndSet())
             {
-                SDBTextFileDialog.FileName = exoAcquisition.SDBIdentifier + " Database.txt";
-                DialogResult odr = SDBTextFileDialog.ShowDialog();
-                if (odr == DialogResult.OK)
+                if (TextFileRadioButton.Checked)
                 {
-                    string textFileName = SDBTextFileDialog.FileName;
-                    if (TextFileRadioButton.Checked)
-                        exoAcquisition.BuildSDBTextFile(textFileName);
+                    SDBTextFileDialog.FileName = exoAcquisition.SDBIdentifier + " Database.txt";
+                    DialogResult odr = SDBTextFileDialog.ShowDialog();
+                    if (odr == DialogResult.OK)
+                    {
+                        string textFileName = SDBTextFileDialog.FileName;
+                        if (TextFileRadioButton.Checked)
+                            exoAcquisition.BuildSDBTextFile(textFileName);
+                    }
                 }
+                else
+                    exoAcquisition.BuildSDBClipboard();
             }
-            else
-                exoAcquisition.BuildSDBClipboard();
+            else MessageBox.Show("Failed to find any targets");
             ExoButton.Text = "EXO";
             Utility.ButtonGreen(ExoButton);
-
         }
 
         private void NEOButton_Click(object sender, EventArgs e)
         {
             Utility.ButtonRed(NEOButton);
+            NEOButton.Text = "Busy";
             SearchNEO neoAcquisition = new SearchNEO();
             neoAcquisition.SearchType = "NEO";
 
-            neoAcquisition.GetAndSet();
-            if (TextFileRadioButton.Checked)
+            if (neoAcquisition.GetAndSet())
             {
-                SDBTextFileDialog.FileName = neoAcquisition.SDBIdentifier + " Database.txt";
-                DialogResult odr = SDBTextFileDialog.ShowDialog();
-                if (odr == DialogResult.OK)
+                if (TextFileRadioButton.Checked)
                 {
-                    string textFileName = SDBTextFileDialog.FileName;
-                    if (TextFileRadioButton.Checked)
-                        neoAcquisition.BuildSDBTextFile(textFileName);
+                    SDBTextFileDialog.FileName = neoAcquisition.SDBIdentifier + " Database.txt";
+                    DialogResult odr = SDBTextFileDialog.ShowDialog();
+                    if (odr == DialogResult.OK)
+                    {
+                        string textFileName = SDBTextFileDialog.FileName;
+                        if (TextFileRadioButton.Checked)
+                            neoAcquisition.BuildSDBTextFile(textFileName);
+                    }
                 }
+                else
+                    neoAcquisition.BuildSDBClipboard();
             }
-            else
-                neoAcquisition.BuildSDBClipboard();
+            else MessageBox.Show("Failed to find any targets");
             Utility.ButtonGreen(NEOButton);
+            NEOButton.Text = "NEO";
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -174,7 +191,7 @@ namespace TransientSDB
             Close();
         }
 
-  
+
     }
 }
 
