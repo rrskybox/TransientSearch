@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 
@@ -35,7 +31,7 @@ namespace TransientSDB
 
                     if (periodMinusErrorX != "")
                     {
-                        double periodMin = Convert.ToDouble(periodX)+Convert.ToDouble(periodMinusErrorX);
+                        double periodMin = Convert.ToDouble(periodX) + Convert.ToDouble(periodMinusErrorX);
                         DateTime nextEarliestTransit = NextTransit(jDate, periodMin);
                         nextEarliestTransitString = nextEarliestTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     }
@@ -46,7 +42,6 @@ namespace TransientSDB
                         DateTime nextLatestTransit = NextTransit(jDate, periodMax);
                         nextLatestTransitString = nextLatestTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     }
-
                 }
                 tgtX.Add(new XElement(SearchEXO.NextTransitX, nextTransitString));
                 tgtX.Add(new XElement(SearchEXO.NextTransitEarliestX, nextEarliestTransitString));

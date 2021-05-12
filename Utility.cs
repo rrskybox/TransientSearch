@@ -46,17 +46,22 @@ namespace TransientSDB
             //  otherwise treat as decimal 
             char[] remChar = { 'h', 'm', 's', 'd' };
 
-            for (int i = 0; i < radec.Length; i++) if (radec[i] == '\"') radec = radec.Remove(i, 1);
+            for (int i = 0; i < radec.Length; i++) 
+                if (radec[i] == '\"') radec = radec.Remove(i, 1);
             string[] radecSplit = radec.Split(separator);
             if (radecSplit.Length == 1) return Convert.ToDouble(radec);
             else
             {
-                if (radecSplit.Length < 3) return 0;
-                for (int i = 0; i < 3; i++) radecSplit[i] = radecSplit[i].TrimEnd(remChar);
                 int radecsign = 1;
-                if (radecSplit[0].Contains("-")) radecsign = -1;
+                double radecSec = 0;
+                 for (int i = 0; i < radecSplit.Length;i++) radecSplit[i] = radecSplit[i].TrimEnd(remChar);
+                if (radecSplit.Length == 2)
+                    radecSec = 0.0;
+                else
+                    radecSec = Convert.ToDouble(radecSplit[2]);
+               if (radecSplit[0].Contains("-")) radecsign = -1;
                 double radecDouble = radecsign *
-                    (Math.Abs(Convert.ToDouble(radecSplit[0])) + Convert.ToDouble(radecSplit[1]) / 60.0 + Convert.ToDouble(radecSplit[2]) / 3600.0);
+                    (Math.Abs(Convert.ToDouble(radecSplit[0])) + Convert.ToDouble(radecSplit[1]) / 60.0 + radecSec / 3600.0);
                 return radecDouble;
             }
         }

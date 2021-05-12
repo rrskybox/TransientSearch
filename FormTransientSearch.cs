@@ -162,26 +162,53 @@ namespace TransientSDB
         {
             Utility.ButtonRed(NEOButton);
             NEOButton.Text = "Busy";
-            SearchNEO neoAcquisition = new SearchNEO();
-            neoAcquisition.SearchType = "NEO";
-
-            if (neoAcquisition.GetAndSet())
+            if (NEOCPButton.Checked)
             {
-                if (TextFileRadioButton.Checked)
+
+                SearchNEO neoAcquisition = new SearchNEO();
+                neoAcquisition.SearchType = "NEO";
+                if (neoAcquisition.GetAndSet())
                 {
-                    SDBTextFileDialog.FileName = neoAcquisition.SDBIdentifier + " Database.txt";
-                    DialogResult odr = SDBTextFileDialog.ShowDialog();
-                    if (odr == DialogResult.OK)
+                    if (TextFileRadioButton.Checked)
                     {
-                        string textFileName = SDBTextFileDialog.FileName;
-                        if (TextFileRadioButton.Checked)
-                            neoAcquisition.BuildSDBTextFile(textFileName);
+                        SDBTextFileDialog.FileName = neoAcquisition.SDBIdentifier + " Database.txt";
+                        DialogResult odr = SDBTextFileDialog.ShowDialog();
+                        if (odr == DialogResult.OK)
+                        {
+                            string textFileName = SDBTextFileDialog.FileName;
+                            if (TextFileRadioButton.Checked)
+                                neoAcquisition.BuildSDBTextFile(textFileName);
+                        }
                     }
+                    else
+                        neoAcquisition.BuildSDBClipboard();
                 }
                 else
-                    neoAcquisition.BuildSDBClipboard();
+                    MessageBox.Show("Failed to find any targets");
             }
-            else MessageBox.Show("Failed to find any targets");
+            else
+            {
+                SearchScout neoAcquisition = new SearchScout();
+                neoAcquisition.SearchType = "Scout";
+                if (neoAcquisition.GetAndSet())
+                {
+                    if (TextFileRadioButton.Checked)
+                    {
+                        SDBTextFileDialog.FileName = neoAcquisition.SDBIdentifier + " Database.txt";
+                        DialogResult odr = SDBTextFileDialog.ShowDialog();
+                        if (odr == DialogResult.OK)
+                        {
+                            string textFileName = SDBTextFileDialog.FileName;
+                            if (TextFileRadioButton.Checked)
+                                neoAcquisition.BuildSDBTextFile(textFileName);
+                        }
+                    }
+                    else
+                        neoAcquisition.BuildSDBClipboard();
+                }
+                else
+                    MessageBox.Show("Failed to find any targets");
+            }
             Utility.ButtonGreen(NEOButton);
             NEOButton.Text = "NEO";
         }
