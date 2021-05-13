@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
 using System.Text.Json;
+using Newtonsoft.Json;
 //using System.Net.Http.Json;
 
 namespace TransientSDB
@@ -137,13 +138,14 @@ namespace TransientSDB
                 // string urlSearch = url_NEO_search + MakeSearchQuery();
                 string urlSearch = URL_NEO_search;
                 neoResultText = client.DownloadString(urlSearch);
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Download Error: " + ex.Message);
                 return null;
             };
-            ScoutJSON scoutBase = JsonSerializer.Deserialize<ScoutJSON>(neoResultText);
+            ScoutJSON scoutBase = System.Text.Json.JsonSerializer.Deserialize<ScoutJSON>(neoResultText);
             int headerCount = Convert.ToInt16(scoutBase.count);
             string[] entries = new string[headerCount];
             int[] widths = new int[headerFields.Count()];
@@ -242,6 +244,93 @@ namespace TransientSDB
             return targetsXML;
         }
 
+        private XElement ServerQueryToResultsXML2()
+        {
+            string[] headerFields = new string[]
+            {
+                         Xneo1kmScore,
+                         XlastRun ,
+                         XuncP1 ,
+                         Xdec ,
+                         XneoScore,
+                         Xrating ,
+                         Xrate ,
+                         Xunc ,
+                         XphaScore ,
+                         Xra ,
+                         Xelong ,
+                         XnObs ,
+                         Xarc ,
+                         XtEphem ,
+                         XobjectName ,
+                         XtisserandScore ,
+                         XcaDist ,
+                         XvInf,
+                         XH ,
+                         XrmsN ,
+                         XieoScore ,
+                         XgeocentricScore ,
+                         Xmoid ,
+                         XVmag
+            };
+
+            string neoResultText;
+            WebClient client = new WebClient();
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                // string urlSearch = url_NEO_search + MakeSearchQuery();
+                string urlSearch = URL_NEO_search;
+                neoResultText = client.DownloadString(urlSearch);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Download Error: " + ex.Message);
+                return null;
+            };
+            //ScoutJSON scoutBase = Newtonsoft.Json.JsonSerializer.Deserialize<ScoutJSON>(neoResultText);
+            XDocument scoutXML = JsonConvert.DeserializeXNode(neoResultText, "Root");
+
+            IEnumerable<XElement> sDataFieldsX = scoutXML.Element("Root").Elements("data-fields");
+            IEnumerable<XElement> sEphX = scoutXML.Element("Root").Elements("eph");
+            IEnumerable<XElement> sDataX = sEphX.First().Element("data").Elements("data");
+            //List<XElement> sOrbitList = sOrbitX.ToList();
+            //TgtRA = (Convert.ToDouble(sOrbitList[idx_ra].Value)) * 24.0 / 360.0;  //degrees to hours
+            //TgtDec = Convert.ToDouble(sOrbitList[idx_dec].Value);
+            //TgtRate = Convert.ToDouble(sOrbitList[idx_rate].Value);
+            //TgtPA = (Convert.ToDouble(sOrbitList[idx_pa].Value)) * Math.PI / 180.0;
+            //TgtRateRA = TgtRate * Math.Cos(TgtPA);
+            //TgtRateDec = TgtRate * Math.Sin(TgtPA);
+            
+            int headerCount = Convert.ToInt16(sDataFieldsX .Count());
+            string[] entries = new string[headerCount];
+            int[] widths = new int[headerFields.Count()];
+
+            //create an xml working database
+            XElement targetsXML = new XElement(XMLParser.SDBListX);
+            //Load DB based on JSON entries
+            foreach (XElement jdata in sDataX)
+            {
+                foreach (XElement tdata in jdata.Elements())
+                {
+                    int i = 0;
+                    XElement xmlItem = new XElement(XMLParser.SDBEntryX);
+                    xmlItem.Add(jdata);
+                    widths[i] = Utility.Bigger(widths[i], tdata.Value.Length);
+                    i++;
+                     targetsXML.Add(xmlItem);
+                }
+            }
+            XElement headerRecordX = new XElement("SDBDataFields");
+            for (int i = 0; i < widths.Length; i++)
+            {
+                XElement colRecordX = new XElement(headerFields[i], widths[i]);
+                headerRecordX.Add(colRecordX);
+            }
+            targetsXML.Add(headerRecordX);
+            return targetsXML;
+        }
         private XDocument ResultsXMLtoSDBHeader(XElement xmlDB)
         {
             sdbDesign.ControlFields.Single(cf => cf.ControlName == SDBDesigner.IdentifierX).ControlValue = SDBIdentifier;
