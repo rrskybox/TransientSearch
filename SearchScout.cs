@@ -18,11 +18,13 @@
 * Change Log:
 * 
 * Added this class to make V1.1 Release (5/12/21)
+* Added CNEOS Scout NEO query/parse/translate to SDB.txt
 * 
 */
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -96,11 +98,7 @@ namespace TransientSDB
             return true;
         }
 
-        /// <summary>
-        /// Method to import TNS server database and convert to internal XML db
-        /// </summary>
-        /// <returns></returns>
-        private XElement ServerQueryToResultsXML()
+        private XElement ServerQueryToResultsXML_Old()
         {
             string[] headerFields = new string[]
             {
@@ -244,36 +242,8 @@ namespace TransientSDB
             return targetsXML;
         }
 
-        private XElement ServerQueryToResultsXML2()
+        private XElement ServerQueryToResultsXML()
         {
-            string[] headerFields = new string[]
-            {
-                         Xneo1kmScore,
-                         XlastRun ,
-                         XuncP1 ,
-                         Xdec ,
-                         XneoScore,
-                         Xrating ,
-                         Xrate ,
-                         Xunc ,
-                         XphaScore ,
-                         Xra ,
-                         Xelong ,
-                         XnObs ,
-                         Xarc ,
-                         XtEphem ,
-                         XobjectName ,
-                         XtisserandScore ,
-                         XcaDist ,
-                         XvInf,
-                         XH ,
-                         XrmsN ,
-                         XieoScore ,
-                         XgeocentricScore ,
-                         Xmoid ,
-                         XVmag
-            };
-
             string neoResultText;
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
@@ -289,43 +259,40 @@ namespace TransientSDB
                 MessageBox.Show("Download Error: " + ex.Message);
                 return null;
             };
-            //ScoutJSON scoutBase = Newtonsoft.Json.JsonSerializer.Deserialize<ScoutJSON>(neoResultText);
+            //Convert JSON to XML
             XDocument scoutXML = JsonConvert.DeserializeXNode(neoResultText, "Root");
-
-            IEnumerable<XElement> sDataFieldsX = scoutXML.Element("Root").Elements("data-fields");
-            IEnumerable<XElement> sEphX = scoutXML.Element("Root").Elements("eph");
-            IEnumerable<XElement> sDataX = sEphX.First().Element("data").Elements("data");
-            //List<XElement> sOrbitList = sOrbitX.ToList();
-            //TgtRA = (Convert.ToDouble(sOrbitList[idx_ra].Value)) * 24.0 / 360.0;  //degrees to hours
-            //TgtDec = Convert.ToDouble(sOrbitList[idx_dec].Value);
-            //TgtRate = Convert.ToDouble(sOrbitList[idx_rate].Value);
-            //TgtPA = (Convert.ToDouble(sOrbitList[idx_pa].Value)) * Math.PI / 180.0;
-            //TgtRateRA = TgtRate * Math.Cos(TgtPA);
-            //TgtRateDec = TgtRate * Math.Sin(TgtPA);
-            
-            int headerCount = Convert.ToInt16(sDataFieldsX .Count());
-            string[] entries = new string[headerCount];
-            int[] widths = new int[headerFields.Count()];
-
-            //create an xml working database
+            //Pull out data entities
+            IEnumerable<XElement> sDataX = scoutXML.Element("Root").Elements("data");
+            //Create list of header names
+            List<string> sHdrFields = new List<string>();
+            IEnumerable<XElement> firstData = sDataX.First().Elements();
+            foreach (XElement sX in firstData)
+                sHdrFields.Add(sX.Name.LocalName);
+            //Create array to take data widths (for SDB.txt table columns)
+            int[] widths = new int[sHdrFields.Count()];
+            //create an xml database to be used for conversion to SDB.txt
             XElement targetsXML = new XElement(XMLParser.SDBListX);
-            //Load DB based on JSON entries
+            //Load DB based on data entries
             foreach (XElement jdata in sDataX)
             {
+                int i = 0;
+                XElement xmlItem = new XElement(XMLParser.SDBEntryX);
                 foreach (XElement tdata in jdata.Elements())
                 {
-                    int i = 0;
-                    XElement xmlItem = new XElement(XMLParser.SDBEntryX);
-                    xmlItem.Add(jdata);
+                    //if RA, convert to decimal hours
+                    if (tdata.Name.LocalName == Xra)
+                        tdata.Value =  Utility.ParseRADecString(tdata.Value, ':').ToString("0.000"); 
+                    xmlItem.Add(tdata);
                     widths[i] = Utility.Bigger(widths[i], tdata.Value.Length);
                     i++;
-                     targetsXML.Add(xmlItem);
                 }
+                targetsXML.Add(xmlItem);
             }
+            //Save data to create header record
             XElement headerRecordX = new XElement("SDBDataFields");
             for (int i = 0; i < widths.Length; i++)
             {
-                XElement colRecordX = new XElement(headerFields[i], widths[i]);
+                XElement colRecordX = new XElement(sHdrFields[i], widths[i]);
                 headerRecordX.Add(colRecordX);
             }
             targetsXML.Add(headerRecordX);
