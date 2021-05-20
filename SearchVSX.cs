@@ -94,7 +94,7 @@ namespace TransientSDB
                     sdbDesign.DefaultObjectDescription = "Quasar";
                     break;
                 case SUSPECTS_VTYPE:
-                    sdbDesign.SearchPrefix = "Variable Suspect";
+                    sdbDesign.SearchPrefix = "";
                     SDBIdentifier = "AAVSO VSX SUSPECTS";
                     SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 2;  //Suspected Variable Star
