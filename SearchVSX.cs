@@ -40,8 +40,15 @@ namespace TransientSDB
         public const string QSO_VTYPE = "QSO";
         public const string SUSPECTS_VTYPE = "%";
 
+        public const string VSX_DATABASE_DESCRIPTION = "AAVSO Variable Star Index" + "\r\n;\r\n" +
+            "We acknowledge with thanks the variable star observations from the " +
+            "AAVSO International Database contributed by observers worldwide and" +
+            " used in this research." + "\r\n;\r\n" +
+            "https://www.aavso.org/vsx/";
+
+
         public string SDBIdentifier { get; set; } = "AAVSO VSX";
-        public string SDBDescription { get; set; } = "Variable Object Query";
+        public string SDBDescription { get; set; } = VSX_DATABASE_DESCRIPTION ;
         public string SDBPeriodHigh { get; set; } = ""; //future 
         public string SDBPeriodLow { get; set; } = ""; //future 
 
@@ -59,37 +66,37 @@ namespace TransientSDB
             switch (SearchType)
             {
                 case NOVA_VTYPE:
-                    sdbDesign.SearchPrefix = "VSX-NOVA";
+                    sdbDesign.SearchPrefix = "NOVA";
                     SDBIdentifier = "AAVSO VSX NOVA";
-                    SDBDescription = "VSX Nova Query";
+                    SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "Nova";
                     break;
                 case BLLAC_VTYPE:
-                    sdbDesign.SearchPrefix = "VSX-BLLAC";
+                    sdbDesign.SearchPrefix = "BLLAC";
                     SDBIdentifier = "AAVSO VSX BLLAC";
-                    SDBDescription = "VSX BLLAC Query";
+                    SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 20; //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "BLLAC";
                     break;
                 case AGN_VTYPE:
-                    sdbDesign.SearchPrefix = "VSX-AGN";
+                    sdbDesign.SearchPrefix = "AGN";
                     SDBIdentifier = "AAVSO VSX AGN";
-                    SDBDescription = "VSX AGN Query";
+                    SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "AGN";
                     break;
                 case QSO_VTYPE:
-                    sdbDesign.SearchPrefix = "VSX-QSO";
+                    sdbDesign.SearchPrefix = "QSO";
                     SDBIdentifier = "AAVSO VSX QSO";
-                    SDBDescription = "VSX QSO Query";
+                    SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 22;  //Quasar
                     sdbDesign.DefaultObjectDescription = "Quasar";
                     break;
                 case SUSPECTS_VTYPE:
-                    sdbDesign.SearchPrefix = "VSX-SUSPECTS";
+                    sdbDesign.SearchPrefix = "Variable Suspect";
                     SDBIdentifier = "AAVSO VSX SUSPECTS";
-                    SDBDescription = "VSX Suspects Variable Query";
+                    SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 2;  //Suspected Variable Star
                     sdbDesign.DefaultObjectDescription = "Suspected Variable Star";
                     SDBPeriodHigh = "0";

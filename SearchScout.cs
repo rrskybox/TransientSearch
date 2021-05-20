@@ -79,11 +79,11 @@ namespace TransientSDB
         public bool GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "CNEOS";
+            sdbDesign.SearchPrefix = "NEO";
             sdbDesign.DefaultObjectIndex = 37;
             sdbDesign.DefaultObjectDescription = "Near Earth Object";
-            SDBIdentifier = "NASA Scout";
-            SDBDescription = "NASA CNEOS Scout";
+            SDBIdentifier = "NASA Scout Unconfirmed NEO";
+            SDBDescription = "NASA CNEOS Scout Server";
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = ServerQueryToResultsXML();
