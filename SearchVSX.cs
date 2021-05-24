@@ -66,28 +66,28 @@ namespace TransientSDB
             switch (SearchType)
             {
                 case NOVA_VTYPE:
-                    sdbDesign.SearchPrefix = "NOVA";
+                    sdbDesign.SearchPrefix = "";
                     SDBIdentifier = "AAVSO VSX NOVA";
                     SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "Nova";
                     break;
                 case BLLAC_VTYPE:
-                    sdbDesign.SearchPrefix = "BLLAC";
+                    sdbDesign.SearchPrefix = "";
                     SDBIdentifier = "AAVSO VSX BLLAC";
                     SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 20; //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "BLLAC";
                     break;
                 case AGN_VTYPE:
-                    sdbDesign.SearchPrefix = "AGN";
+                    sdbDesign.SearchPrefix = "";
                     SDBIdentifier = "AAVSO VSX AGN";
                     SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 20;  //MixedDeepSpace
                     sdbDesign.DefaultObjectDescription = "AGN";
                     break;
                 case QSO_VTYPE:
-                    sdbDesign.SearchPrefix = "QSO";
+                    sdbDesign.SearchPrefix = "";
                     SDBIdentifier = "AAVSO VSX QSO";
                     SDBDescription = VSX_DATABASE_DESCRIPTION;
                     sdbDesign.DefaultObjectIndex = 22;  //Quasar

@@ -79,7 +79,7 @@ namespace TransientSDB
         public bool GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "Exo";
+            sdbDesign.SearchPrefix = "";
             switch (SearchType)
             {
                 case PSSearchType.Confirmed:

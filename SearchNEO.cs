@@ -42,7 +42,7 @@ namespace TransientSDB
         public bool GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "NEO";
+            sdbDesign.SearchPrefix = "";
             sdbDesign.DefaultObjectIndex = 37;
             sdbDesign.DefaultObjectDescription = "Near Earth Object";
             SDBIdentifier = "MPC NEOCP";

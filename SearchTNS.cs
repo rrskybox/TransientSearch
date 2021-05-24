@@ -52,7 +52,7 @@ namespace TransientSDB
                 sdbDesign.DefaultObjectDescription = "Supernova";
                 SDBIdentifier = "Transient Name Server - Supernova";
                 SDBDescription = "IAU Supernova Working Group Transient Name Server";
-                sdbDesign.SearchPrefix = "Supernova";
+                sdbDesign.SearchPrefix = "";
             }
             else
             {
@@ -60,7 +60,7 @@ namespace TransientSDB
                 sdbDesign.DefaultObjectDescription = "Unclassified Transient";
                 SDBIdentifier = "Transient Name Server - Unclassified AT";
                 SDBDescription = "IAU Supernova Working Group Transient Name Server";
-                sdbDesign.SearchPrefix = "Unclassifed AT";
+                sdbDesign.SearchPrefix = "";
             }
 
             //Import TNS CSV text query and convert to an XML database
