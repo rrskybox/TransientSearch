@@ -249,10 +249,10 @@ namespace TransientSDB
             this.NovaSelectButton.Checked = true;
             this.NovaSelectButton.Location = new System.Drawing.Point(15, 17);
             this.NovaSelectButton.Name = "NovaSelectButton";
-            this.NovaSelectButton.Size = new System.Drawing.Size(51, 17);
+            this.NovaSelectButton.Size = new System.Drawing.Size(57, 17);
             this.NovaSelectButton.TabIndex = 1;
             this.NovaSelectButton.TabStop = true;
-            this.NovaSelectButton.Text = "Nova";
+            this.NovaSelectButton.Text = "Novae";
             this.NovaSelectButton.UseVisualStyleBackColor = true;
             // 
             // NEOGroupBox
