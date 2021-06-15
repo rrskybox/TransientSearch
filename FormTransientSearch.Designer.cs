@@ -181,10 +181,10 @@ namespace TransientSDB
             this.SuperNovaSelectButton.Checked = true;
             this.SuperNovaSelectButton.Location = new System.Drawing.Point(14, 42);
             this.SuperNovaSelectButton.Name = "SuperNovaSelectButton";
-            this.SuperNovaSelectButton.Size = new System.Drawing.Size(77, 17);
+            this.SuperNovaSelectButton.Size = new System.Drawing.Size(83, 17);
             this.SuperNovaSelectButton.TabIndex = 1;
             this.SuperNovaSelectButton.TabStop = true;
-            this.SuperNovaSelectButton.Text = "Supernova";
+            this.SuperNovaSelectButton.Text = "Supernovae";
             this.SuperNovaSelectButton.UseVisualStyleBackColor = true;
             // 
             // groupBox1
