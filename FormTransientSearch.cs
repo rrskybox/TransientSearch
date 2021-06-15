@@ -218,7 +218,10 @@ namespace TransientSDB
             Close();
         }
 
-
+        private void OnTopBox_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = OnTopBox.Checked;
+        }
     }
 }
 

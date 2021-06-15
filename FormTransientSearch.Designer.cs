@@ -46,15 +46,16 @@ namespace TransientSDB
             this.AGNSelectButton = new System.Windows.Forms.RadioButton();
             this.NovaSelectButton = new System.Windows.Forms.RadioButton();
             this.NEOGroupBox = new System.Windows.Forms.GroupBox();
+            this.ScoutButton = new System.Windows.Forms.RadioButton();
             this.NEOButton = new System.Windows.Forms.Button();
+            this.NEOCPButton = new System.Windows.Forms.RadioButton();
             this.ExoButton = new System.Windows.Forms.Button();
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
             this.ConfirmedButton = new System.Windows.Forms.RadioButton();
             this.CandidateButton = new System.Windows.Forms.RadioButton();
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.ScoutButton = new System.Windows.Forms.RadioButton();
-            this.NEOCPButton = new System.Windows.Forms.RadioButton();
+            this.OnTopBox = new System.Windows.Forms.CheckBox();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
@@ -267,6 +268,16 @@ namespace TransientSDB
             this.NEOGroupBox.TabStop = false;
             this.NEOGroupBox.Text = "MPC NEO Server";
             // 
+            // ScoutButton
+            // 
+            this.ScoutButton.AutoSize = true;
+            this.ScoutButton.Location = new System.Drawing.Point(18, 42);
+            this.ScoutButton.Name = "ScoutButton";
+            this.ScoutButton.Size = new System.Drawing.Size(53, 17);
+            this.ScoutButton.TabIndex = 11;
+            this.ScoutButton.Text = "Scout";
+            this.ScoutButton.UseVisualStyleBackColor = true;
+            // 
             // NEOButton
             // 
             this.NEOButton.Location = new System.Drawing.Point(44, 66);
@@ -276,6 +287,18 @@ namespace TransientSDB
             this.NEOButton.Text = "NEO";
             this.NEOButton.UseVisualStyleBackColor = true;
             this.NEOButton.Click += new System.EventHandler(this.NEOButton_Click);
+            // 
+            // NEOCPButton
+            // 
+            this.NEOCPButton.AutoSize = true;
+            this.NEOCPButton.Checked = true;
+            this.NEOCPButton.Location = new System.Drawing.Point(18, 19);
+            this.NEOCPButton.Name = "NEOCPButton";
+            this.NEOCPButton.Size = new System.Drawing.Size(62, 17);
+            this.NEOCPButton.TabIndex = 10;
+            this.NEOCPButton.TabStop = true;
+            this.NEOCPButton.Text = "NEOCP";
+            this.NEOCPButton.UseVisualStyleBackColor = true;
             // 
             // ExoButton
             // 
@@ -336,27 +359,17 @@ namespace TransientSDB
             // 
             this.SDBTextFileDialog.DefaultExt = "*.txt";
             // 
-            // ScoutButton
+            // OnTopBox
             // 
-            this.ScoutButton.AutoSize = true;
-            this.ScoutButton.Location = new System.Drawing.Point(18, 42);
-            this.ScoutButton.Name = "ScoutButton";
-            this.ScoutButton.Size = new System.Drawing.Size(53, 17);
-            this.ScoutButton.TabIndex = 11;
-            this.ScoutButton.Text = "Scout";
-            this.ScoutButton.UseVisualStyleBackColor = true;
-            // 
-            // NEOCPButton
-            // 
-            this.NEOCPButton.AutoSize = true;
-            this.NEOCPButton.Checked = true;
-            this.NEOCPButton.Location = new System.Drawing.Point(18, 19);
-            this.NEOCPButton.Name = "NEOCPButton";
-            this.NEOCPButton.Size = new System.Drawing.Size(62, 17);
-            this.NEOCPButton.TabIndex = 10;
-            this.NEOCPButton.TabStop = true;
-            this.NEOCPButton.Text = "NEOCP";
-            this.NEOCPButton.UseVisualStyleBackColor = true;
+            this.OnTopBox.AutoSize = true;
+            this.OnTopBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.OnTopBox.Location = new System.Drawing.Point(12, 215);
+            this.OnTopBox.Name = "OnTopBox";
+            this.OnTopBox.Size = new System.Drawing.Size(98, 17);
+            this.OnTopBox.TabIndex = 3;
+            this.OnTopBox.Text = "Always On Top";
+            this.OnTopBox.UseVisualStyleBackColor = true;
+            this.OnTopBox.CheckedChanged += new System.EventHandler(this.OnTopBox_CheckedChanged);
             // 
             // FormTransientSearch
             // 
@@ -364,6 +377,7 @@ namespace TransientSDB
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cyan;
             this.ClientSize = new System.Drawing.Size(636, 244);
+            this.Controls.Add(this.OnTopBox);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.NEOGroupBox);
             this.Controls.Add(this.ExoPlanetGroupBox);
@@ -386,6 +400,7 @@ namespace TransientSDB
             this.ExoPlanetGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -417,6 +432,7 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton CandidateButton;
         private System.Windows.Forms.RadioButton ScoutButton;
         private System.Windows.Forms.RadioButton NEOCPButton;
+        private System.Windows.Forms.CheckBox OnTopBox;
     }
 }
 
