@@ -56,7 +56,7 @@ namespace TransientSDB
         public const string TAPTransitMid = "pl_tranmid";
         public const string TAPPeriodPlusError = "pl_orbpererr1";
         public const string TAPPeriodMinusError = "pl_orbpererr2";
- 
+
         public const string NextTransitX = "NextTransit";
         public const string NextTransitEarliestX = "NextTransitEarliest";
         public const string NextTransitLatestX = "NextTransitLatest";
@@ -162,7 +162,10 @@ namespace TransientSDB
                         widths[dIndex] = dItemValue.Length;
                     dIndex++;
                 }
-                sdbX.Add(xmlItem);
+                //Add the entry, if the transit midpoint is not empty
+                if (xmlItem.Element("pl_tranmid").Value != "")
+                    sdbX.Add(xmlItem);
+                else { }
             }
 
             //pull out the field information
