@@ -40,6 +40,8 @@ namespace TransientSDB
         public string SDBIdentifier { get; set; } = "Transient Name Server";
         public string SDBDescription { get; set; } = "Supernova Query";
         public int SearchBackDays { get; set; }
+        public int MaxRecordCount { get; set; }
+        public bool IsNGCHosted { get; set; }
         public bool SearchSN { get; set; }
         public bool SearchClassified { get; set; }
 
@@ -78,7 +80,7 @@ namespace TransientSDB
 
         private XElement ServerQueryToResultsXML()
         {
-            string weburl = MakeSearchQuery();
+            //string weburl = MakeSearchQuery();
             string contents;
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
@@ -371,10 +373,13 @@ namespace TransientSDB
             queryString["classifier"] = "";
             queryString["discovery_instrument[]"] = "";
             queryString["classification_instrument[]"] = "";
-            queryString["hostname"] = "NGC";
+            if (IsNGCHosted)
+                queryString["hostname"] = "NGC";
+            else
+                queryString["hostname"] = "";
             queryString["associated_groups[]"] = "null";
             queryString["ext_catid"] = "";
-            queryString["num_page"] = "50";
+            queryString["num_page"] = MaxRecordCount.ToString("0") ;
 
             queryString["display[redshift]"] = "0";
             queryString["display[hostname]"] = "0";

@@ -53,6 +53,10 @@ namespace TransientSDB
             tnsAcquisition.SearchBackDays = (int)SearchDaysBox.Value;
             tnsAcquisition.SearchClassified = ATSelectButton.Checked;
             tnsAcquisition.SearchSN = SuperNovaSelectButton.Checked;
+            tnsAcquisition.IsNGCHosted = NCGHostBox.Checked;
+            if (Max50Button.Checked) tnsAcquisition.MaxRecordCount = 50;
+            else if (Max100Button.Checked) tnsAcquisition.MaxRecordCount = 100;
+            else if (Max500Button.Checked) tnsAcquisition.MaxRecordCount = 500;
 
             if (tnsAcquisition.GetAndSet())
             {
@@ -222,6 +226,7 @@ namespace TransientSDB
         {
             this.TopMost = OnTopBox.Checked;
         }
-    }
+
+     }
 }
 
