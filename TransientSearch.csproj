@@ -156,10 +156,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Transient Server Description.docx">
+    <None Include="Transient Search Description.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Transient Server Description.pdf" />
+    <None Include="Transient Search Description.pdf" />
     <None Include="TransientSearch_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
