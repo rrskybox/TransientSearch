@@ -159,6 +159,7 @@
     <None Include="Transient Server Description.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Transient Server Description.pdf" />
     <None Include="TransientSearch_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
