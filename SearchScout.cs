@@ -246,7 +246,7 @@ namespace TransientSDB
         {
             string neoResultText;
             WebClient client = new WebClient();
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            //System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
             {
                 // string urlSearch = url_NEO_search + MakeSearchQuery();
