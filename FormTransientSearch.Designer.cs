@@ -37,7 +37,11 @@ namespace TransientSDB
             this.SearchDaysBox = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.TNSGroupBox = new System.Windows.Forms.GroupBox();
-            this.NCGHostBox = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Max100Button = new System.Windows.Forms.RadioButton();
+            this.Max500Button = new System.Windows.Forms.RadioButton();
+            this.Max50Button = new System.Windows.Forms.RadioButton();
+            this.NGCHostBox = new System.Windows.Forms.CheckBox();
             this.ATSelectButton = new System.Windows.Forms.RadioButton();
             this.SuperNovaSelectButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -57,17 +61,13 @@ namespace TransientSDB
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OnTopBox = new System.Windows.Forms.CheckBox();
-            this.Max50Button = new System.Windows.Forms.RadioButton();
-            this.Max500Button = new System.Windows.Forms.RadioButton();
-            this.Max100Button = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.NEOGroupBox.SuspendLayout();
             this.ExoPlanetGroupBox.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNSReaderButton
@@ -160,7 +160,7 @@ namespace TransientSDB
             // 
             this.TNSGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
             this.TNSGroupBox.Controls.Add(this.groupBox2);
-            this.TNSGroupBox.Controls.Add(this.NCGHostBox);
+            this.TNSGroupBox.Controls.Add(this.NGCHostBox);
             this.TNSGroupBox.Controls.Add(this.ATSelectButton);
             this.TNSGroupBox.Controls.Add(this.label1);
             this.TNSGroupBox.Controls.Add(this.SuperNovaSelectButton);
@@ -173,15 +173,62 @@ namespace TransientSDB
             this.TNSGroupBox.TabStop = false;
             this.TNSGroupBox.Text = "Transient Name Server";
             // 
-            // NCGHostBox
+            // groupBox2
             // 
-            this.NCGHostBox.AutoSize = true;
-            this.NCGHostBox.Location = new System.Drawing.Point(14, 69);
-            this.NCGHostBox.Name = "NCGHostBox";
-            this.NCGHostBox.Size = new System.Drawing.Size(98, 17);
-            this.NCGHostBox.TabIndex = 3;
-            this.NCGHostBox.Text = "NCG Host Only";
-            this.NCGHostBox.UseVisualStyleBackColor = true;
+            this.groupBox2.Controls.Add(this.Max100Button);
+            this.groupBox2.Controls.Add(this.Max500Button);
+            this.groupBox2.Controls.Add(this.Max50Button);
+            this.groupBox2.Location = new System.Drawing.Point(73, 92);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(103, 55);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Max Count";
+            // 
+            // Max100Button
+            // 
+            this.Max100Button.AutoSize = true;
+            this.Max100Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Max100Button.Location = new System.Drawing.Point(34, 19);
+            this.Max100Button.Name = "Max100Button";
+            this.Max100Button.Size = new System.Drawing.Size(29, 30);
+            this.Max100Button.TabIndex = 10;
+            this.Max100Button.Text = "100";
+            this.Max100Button.UseVisualStyleBackColor = true;
+            // 
+            // Max500Button
+            // 
+            this.Max500Button.AutoSize = true;
+            this.Max500Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Max500Button.Location = new System.Drawing.Point(69, 19);
+            this.Max500Button.Name = "Max500Button";
+            this.Max500Button.Size = new System.Drawing.Size(29, 30);
+            this.Max500Button.TabIndex = 9;
+            this.Max500Button.Text = "500";
+            this.Max500Button.UseVisualStyleBackColor = true;
+            // 
+            // Max50Button
+            // 
+            this.Max50Button.AutoSize = true;
+            this.Max50Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Max50Button.Checked = true;
+            this.Max50Button.Location = new System.Drawing.Point(5, 19);
+            this.Max50Button.Name = "Max50Button";
+            this.Max50Button.Size = new System.Drawing.Size(23, 30);
+            this.Max50Button.TabIndex = 8;
+            this.Max50Button.TabStop = true;
+            this.Max50Button.Text = "50";
+            this.Max50Button.UseVisualStyleBackColor = true;
+            // 
+            // NGCHostBox
+            // 
+            this.NGCHostBox.AutoSize = true;
+            this.NGCHostBox.Location = new System.Drawing.Point(33, 69);
+            this.NGCHostBox.Name = "NGCHostBox";
+            this.NGCHostBox.Size = new System.Drawing.Size(110, 17);
+            this.NGCHostBox.TabIndex = 3;
+            this.NGCHostBox.Text = "NGC Hosted Only";
+            this.NGCHostBox.UseVisualStyleBackColor = true;
             // 
             // ATSelectButton
             // 
@@ -389,53 +436,6 @@ namespace TransientSDB
             this.OnTopBox.UseVisualStyleBackColor = true;
             this.OnTopBox.CheckedChanged += new System.EventHandler(this.OnTopBox_CheckedChanged);
             // 
-            // Max50Button
-            // 
-            this.Max50Button.AutoSize = true;
-            this.Max50Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Max50Button.Checked = true;
-            this.Max50Button.Location = new System.Drawing.Point(5, 19);
-            this.Max50Button.Name = "Max50Button";
-            this.Max50Button.Size = new System.Drawing.Size(23, 30);
-            this.Max50Button.TabIndex = 8;
-            this.Max50Button.TabStop = true;
-            this.Max50Button.Text = "50";
-            this.Max50Button.UseVisualStyleBackColor = true;
-            // 
-            // Max500Button
-            // 
-            this.Max500Button.AutoSize = true;
-            this.Max500Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Max500Button.Location = new System.Drawing.Point(69, 19);
-            this.Max500Button.Name = "Max500Button";
-            this.Max500Button.Size = new System.Drawing.Size(29, 30);
-            this.Max500Button.TabIndex = 9;
-            this.Max500Button.Text = "500";
-            this.Max500Button.UseVisualStyleBackColor = true;
-            // 
-            // Max100Button
-            // 
-            this.Max100Button.AutoSize = true;
-            this.Max100Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Max100Button.Location = new System.Drawing.Point(34, 19);
-            this.Max100Button.Name = "Max100Button";
-            this.Max100Button.Size = new System.Drawing.Size(29, 30);
-            this.Max100Button.TabIndex = 10;
-            this.Max100Button.Text = "100";
-            this.Max100Button.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.Max100Button);
-            this.groupBox2.Controls.Add(this.Max500Button);
-            this.groupBox2.Controls.Add(this.Max50Button);
-            this.groupBox2.Location = new System.Drawing.Point(73, 92);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(103, 55);
-            this.groupBox2.TabIndex = 11;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Max Count";
-            // 
             // FormTransientSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -458,14 +458,14 @@ namespace TransientSDB
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).EndInit();
             this.TNSGroupBox.ResumeLayout(false);
             this.TNSGroupBox.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.NEOGroupBox.ResumeLayout(false);
             this.NEOGroupBox.PerformLayout();
             this.ExoPlanetGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -500,7 +500,7 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton ScoutButton;
         private System.Windows.Forms.RadioButton NEOCPButton;
         private System.Windows.Forms.CheckBox OnTopBox;
-        private System.Windows.Forms.CheckBox NCGHostBox;
+        private System.Windows.Forms.CheckBox NGCHostBox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton Max100Button;
         private System.Windows.Forms.RadioButton Max500Button;

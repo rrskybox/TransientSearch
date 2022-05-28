@@ -37,7 +37,7 @@ namespace TransientSDB
         private XElement sdbXResults;
         private XDocument sdbXDoc;
 
-        public string SDBIdentifier { get; set; } = "Transient Name Server";
+        public string SDBIdentifier { get; set; } = "TNS";
         public string SDBDescription { get; set; } = "Supernova Query";
         public int SearchBackDays { get; set; }
         public int MaxRecordCount { get; set; }
@@ -51,16 +51,19 @@ namespace TransientSDB
             if (SearchSN)
             {
                 sdbDesign.DefaultObjectIndex = 60;
-                sdbDesign.DefaultObjectDescription = "Supernova";
-                SDBIdentifier = "Transient Name Server - Supernova";
-                SDBDescription = "IAU Supernova Working Group Transient Name Server";
+                sdbDesign.DefaultObjectDescription = "Supernovae";
+                SDBDescription = "IAU Supernova Working Group Transient Name Server (https://www.wis-tns.org/)";
                 sdbDesign.SearchPrefix = "";
+                if (IsNGCHosted)
+                    SDBIdentifier = "TNS - Supernovae(NGC)";
+                else
+                    SDBIdentifier = "TNS - Supernovae";
             }
             else
             {
                 sdbDesign.DefaultObjectIndex = 20;
                 sdbDesign.DefaultObjectDescription = "Unclassified Transient";
-                SDBIdentifier = "Transient Name Server - Unclassified AT";
+                SDBIdentifier = "TNS - Unclassified AT";
                 SDBDescription = "IAU Supernova Working Group Transient Name Server";
                 sdbDesign.SearchPrefix = "";
             }
@@ -379,7 +382,7 @@ namespace TransientSDB
                 queryString["hostname"] = "";
             queryString["associated_groups[]"] = "null";
             queryString["ext_catid"] = "";
-            queryString["num_page"] = MaxRecordCount.ToString("0") ;
+            queryString["num_page"] = MaxRecordCount.ToString("0");
 
             queryString["display[redshift]"] = "0";
             queryString["display[hostname]"] = "0";
