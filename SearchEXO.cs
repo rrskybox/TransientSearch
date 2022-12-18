@@ -35,6 +35,10 @@ namespace TransientSDB
     public class SearchEXO
     {
         const string URL_Exo_search = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?";
+        const string ConfirmedSDBIdentifier = "Confirmed EXO";
+        const string CandidateSDBIdentifier = "Candidate EXO";
+        const string ConfirmedSearchPrefix = "Con";
+        const string CandidateSearchPrefix = "Sus";
 
         const string TAPSolutionType = "soltype";
         const string TAPPublishedConfirmed = "\'Published Confirmed\'";
@@ -79,13 +83,20 @@ namespace TransientSDB
         public bool GetAndSet()
         {
             sdbDesign = new SDBDesigner();
-            sdbDesign.SearchPrefix = "";
             switch (SearchType)
             {
                 case PSSearchType.Confirmed:
-                    { SDBIdentifier = "Confirmed EXO"; break; }
+                    {
+                        SDBIdentifier = ConfirmedSDBIdentifier;
+                        sdbDesign.SearchPrefix = ConfirmedSearchPrefix;
+                        break;
+                    }
                 case PSSearchType.Candidate:
-                    { SDBIdentifier = "Candidate EXO"; break; }
+                    {
+                        SDBIdentifier = CandidateSDBIdentifier;
+                        sdbDesign.SearchPrefix = CandidateSearchPrefix;
+                        break;
+                    }
             }
             SDBDescription = "Exo Planet Query Listing, IPAC, CalTech";
             sdbDesign.DefaultObjectIndex = 28;
