@@ -9,4 +9,4 @@ Transient Search is a Windows 10 application whose purpose is to automate the qu
 
 Transient Search can perform queries of each of these servers then compile the results in a form the TheSkyX can import as either in the clipboard or text file to make a My Chart Elements listing or import into a user Sky Database using Create Sky Database functionality.  The all resultant custom catalogs will contain at least the object name, type, location (ra,dec) and magnitude.  Other data fields may also be translated depending upon the server and the Transient Search version.
 
-For a full description, see TransientSearchDescription.docx or  TransientSearchDescription.pdf
+For a full description, see TransientSearchDescription.docx or  publish/TransientSearchDescription.pdf
