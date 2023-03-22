@@ -80,7 +80,7 @@ namespace TransientSDB
 
         public PSSearchType SearchType { get; set; }
 
-        public bool GetAndSet()
+        public bool GetAndSet(bool cull)
         {
             sdbDesign = new SDBDesigner();
             switch (SearchType)
@@ -105,13 +105,16 @@ namespace TransientSDB
             //Import Exo VOTable query and convert to an SDB XML database
             sdbXResults = ServerQueryToResultsXML();
             if (sdbXResults == null) return false;
+            //Check then cull results of any entry that has no planetary period
+            if (cull)
+                sdbXResults = CullResults();
             //Parse the Exo-specific catalog data for names and widths to be used
             //  for defining columns in the output text data to TSX SDB text file
             //colMap is the generic list of column names and maximum data widths
             sdbDesign.MakeHeaderMap(sdbXResults);
             //Create the TSX SDB Text header by mapping the column map to the 
             //  TSX built-in and user data fields
-            sdbXDoc = ResultsXMLtoSDBHeader(sdbXResults);
+            sdbXDoc = ResultsXMLtoSDBHeader();
             return true;
         }
 
@@ -194,7 +197,7 @@ namespace TransientSDB
             return sdbX;
         }
 
-        private XDocument ResultsXMLtoSDBHeader(XElement xmlDB)
+        private XDocument ResultsXMLtoSDBHeader()
         {
             //Translates EXO Formatted data into TSX readable text header
             //  but still XML formatted
@@ -374,5 +377,26 @@ namespace TransientSDB
                 "&format=votable";
             return queryString;
         }
+
+        private XElement CullResults()
+        {
+            //Remove all sdb results records where the pl-transper is zero
+            XElement culledXList = new XElement(XMLParser.SDBListX);
+
+            foreach (XElement recX in sdbXResults.Elements())
+            {
+                if (!(recX.Element(TAPPeriod).Value == "" ||
+                    recX.Element(TAPTransitDuration).Value == "" ||
+                    recX.Element(TAPTransitDepth).Value == ""))
+                {
+                    culledXList.Add(recX);
+                }
+            }
+            //Future culling
+            //Average all records for a target
+            //Make a list of all unique names
+            return culledXList;
+        }
+
     }
 }

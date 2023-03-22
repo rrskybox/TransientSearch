@@ -61,6 +61,7 @@ namespace TransientSDB
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OnTopBox = new System.Windows.Forms.CheckBox();
+            this.CullCheckBox = new System.Windows.Forms.CheckBox();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
@@ -367,7 +368,7 @@ namespace TransientSDB
             // 
             // ExoButton
             // 
-            this.ExoButton.Location = new System.Drawing.Point(42, 66);
+            this.ExoButton.Location = new System.Drawing.Point(64, 66);
             this.ExoButton.Name = "ExoButton";
             this.ExoButton.Size = new System.Drawing.Size(45, 31);
             this.ExoButton.TabIndex = 4;
@@ -378,6 +379,7 @@ namespace TransientSDB
             // ExoPlanetGroupBox
             // 
             this.ExoPlanetGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.ExoPlanetGroupBox.Controls.Add(this.CullCheckBox);
             this.ExoPlanetGroupBox.Controls.Add(this.ConfirmedButton);
             this.ExoPlanetGroupBox.Controls.Add(this.ExoButton);
             this.ExoPlanetGroupBox.Controls.Add(this.CandidateButton);
@@ -435,6 +437,18 @@ namespace TransientSDB
             this.OnTopBox.Text = "Always On Top";
             this.OnTopBox.UseVisualStyleBackColor = true;
             this.OnTopBox.CheckedChanged += new System.EventHandler(this.OnTopBox_CheckedChanged);
+            // 
+            // CullCheckBox
+            // 
+            this.CullCheckBox.AutoSize = true;
+            this.CullCheckBox.Checked = true;
+            this.CullCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CullCheckBox.Location = new System.Drawing.Point(15, 74);
+            this.CullCheckBox.Name = "CullCheckBox";
+            this.CullCheckBox.Size = new System.Drawing.Size(43, 17);
+            this.CullCheckBox.TabIndex = 10;
+            this.CullCheckBox.Text = "Cull";
+            this.CullCheckBox.UseVisualStyleBackColor = true;
             // 
             // FormTransientSearch
             // 
@@ -505,6 +519,7 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton Max100Button;
         private System.Windows.Forms.RadioButton Max500Button;
         private System.Windows.Forms.RadioButton Max50Button;
+        private System.Windows.Forms.CheckBox CullCheckBox;
     }
 }
 

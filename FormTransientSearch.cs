@@ -141,7 +141,7 @@ namespace TransientSDB
             else
                 exoAcquisition.SearchType = SearchEXO.PSSearchType.Candidate;
 
-            if (exoAcquisition.GetAndSet())
+            if (exoAcquisition.GetAndSet(CullCheckBox.Checked))
             {
                 if (TextFileRadioButton.Checked)
                 {
