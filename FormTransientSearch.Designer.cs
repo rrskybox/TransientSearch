@@ -37,10 +37,6 @@ namespace TransientSDB
             this.SearchDaysBox = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.TNSGroupBox = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.Max100Button = new System.Windows.Forms.RadioButton();
-            this.Max500Button = new System.Windows.Forms.RadioButton();
-            this.Max50Button = new System.Windows.Forms.RadioButton();
             this.NGCHostBox = new System.Windows.Forms.CheckBox();
             this.ATSelectButton = new System.Windows.Forms.RadioButton();
             this.SuperNovaSelectButton = new System.Windows.Forms.RadioButton();
@@ -56,16 +52,15 @@ namespace TransientSDB
             this.NEOCPButton = new System.Windows.Forms.RadioButton();
             this.ExoButton = new System.Windows.Forms.Button();
             this.ExoPlanetGroupBox = new System.Windows.Forms.GroupBox();
+            this.CullCheckBox = new System.Windows.Forms.CheckBox();
             this.ConfirmedButton = new System.Windows.Forms.RadioButton();
             this.CandidateButton = new System.Windows.Forms.RadioButton();
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OnTopBox = new System.Windows.Forms.CheckBox();
-            this.CullCheckBox = new System.Windows.Forms.CheckBox();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.NEOGroupBox.SuspendLayout();
             this.ExoPlanetGroupBox.SuspendLayout();
@@ -73,7 +68,7 @@ namespace TransientSDB
             // 
             // TNSReaderButton
             // 
-            this.TNSReaderButton.Location = new System.Drawing.Point(67, 153);
+            this.TNSReaderButton.Location = new System.Drawing.Point(67, 137);
             this.TNSReaderButton.Name = "TNSReaderButton";
             this.TNSReaderButton.Size = new System.Drawing.Size(46, 31);
             this.TNSReaderButton.TabIndex = 0;
@@ -127,9 +122,9 @@ namespace TransientSDB
             // 
             // SearchDaysBox
             // 
-            this.SearchDaysBox.Location = new System.Drawing.Point(14, 111);
+            this.SearchDaysBox.Location = new System.Drawing.Point(53, 98);
             this.SearchDaysBox.Maximum = new decimal(new int[] {
-            365,
+            3650,
             0,
             0,
             0});
@@ -139,7 +134,7 @@ namespace TransientSDB
             0,
             0});
             this.SearchDaysBox.Name = "SearchDaysBox";
-            this.SearchDaysBox.Size = new System.Drawing.Size(44, 20);
+            this.SearchDaysBox.Size = new System.Drawing.Size(60, 20);
             this.SearchDaysBox.TabIndex = 5;
             this.SearchDaysBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.SearchDaysBox.Value = new decimal(new int[] {
@@ -151,7 +146,7 @@ namespace TransientSDB
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 92);
+            this.label1.Location = new System.Drawing.Point(11, 101);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(31, 13);
             this.label1.TabIndex = 6;
@@ -160,7 +155,6 @@ namespace TransientSDB
             // TNSGroupBox
             // 
             this.TNSGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
-            this.TNSGroupBox.Controls.Add(this.groupBox2);
             this.TNSGroupBox.Controls.Add(this.NGCHostBox);
             this.TNSGroupBox.Controls.Add(this.ATSelectButton);
             this.TNSGroupBox.Controls.Add(this.label1);
@@ -173,53 +167,6 @@ namespace TransientSDB
             this.TNSGroupBox.TabIndex = 4;
             this.TNSGroupBox.TabStop = false;
             this.TNSGroupBox.Text = "Transient Name Server";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.Max100Button);
-            this.groupBox2.Controls.Add(this.Max500Button);
-            this.groupBox2.Controls.Add(this.Max50Button);
-            this.groupBox2.Location = new System.Drawing.Point(73, 92);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(103, 55);
-            this.groupBox2.TabIndex = 11;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Max Count";
-            // 
-            // Max100Button
-            // 
-            this.Max100Button.AutoSize = true;
-            this.Max100Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Max100Button.Location = new System.Drawing.Point(34, 19);
-            this.Max100Button.Name = "Max100Button";
-            this.Max100Button.Size = new System.Drawing.Size(29, 30);
-            this.Max100Button.TabIndex = 10;
-            this.Max100Button.Text = "100";
-            this.Max100Button.UseVisualStyleBackColor = true;
-            // 
-            // Max500Button
-            // 
-            this.Max500Button.AutoSize = true;
-            this.Max500Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Max500Button.Location = new System.Drawing.Point(69, 19);
-            this.Max500Button.Name = "Max500Button";
-            this.Max500Button.Size = new System.Drawing.Size(29, 30);
-            this.Max500Button.TabIndex = 9;
-            this.Max500Button.Text = "500";
-            this.Max500Button.UseVisualStyleBackColor = true;
-            // 
-            // Max50Button
-            // 
-            this.Max50Button.AutoSize = true;
-            this.Max50Button.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Max50Button.Checked = true;
-            this.Max50Button.Location = new System.Drawing.Point(5, 19);
-            this.Max50Button.Name = "Max50Button";
-            this.Max50Button.Size = new System.Drawing.Size(23, 30);
-            this.Max50Button.TabIndex = 8;
-            this.Max50Button.TabStop = true;
-            this.Max50Button.Text = "50";
-            this.Max50Button.UseVisualStyleBackColor = true;
             // 
             // NGCHostBox
             // 
@@ -390,6 +337,18 @@ namespace TransientSDB
             this.ExoPlanetGroupBox.TabStop = false;
             this.ExoPlanetGroupBox.Text = "ExoPlanet Server";
             // 
+            // CullCheckBox
+            // 
+            this.CullCheckBox.AutoSize = true;
+            this.CullCheckBox.Checked = true;
+            this.CullCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CullCheckBox.Location = new System.Drawing.Point(15, 74);
+            this.CullCheckBox.Name = "CullCheckBox";
+            this.CullCheckBox.Size = new System.Drawing.Size(43, 17);
+            this.CullCheckBox.TabIndex = 10;
+            this.CullCheckBox.Text = "Cull";
+            this.CullCheckBox.UseVisualStyleBackColor = true;
+            // 
             // ConfirmedButton
             // 
             this.ConfirmedButton.AutoSize = true;
@@ -438,18 +397,6 @@ namespace TransientSDB
             this.OnTopBox.UseVisualStyleBackColor = true;
             this.OnTopBox.CheckedChanged += new System.EventHandler(this.OnTopBox_CheckedChanged);
             // 
-            // CullCheckBox
-            // 
-            this.CullCheckBox.AutoSize = true;
-            this.CullCheckBox.Checked = true;
-            this.CullCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CullCheckBox.Location = new System.Drawing.Point(15, 74);
-            this.CullCheckBox.Name = "CullCheckBox";
-            this.CullCheckBox.Size = new System.Drawing.Size(43, 17);
-            this.CullCheckBox.TabIndex = 10;
-            this.CullCheckBox.Text = "Cull";
-            this.CullCheckBox.UseVisualStyleBackColor = true;
-            // 
             // FormTransientSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,8 +419,6 @@ namespace TransientSDB
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).EndInit();
             this.TNSGroupBox.ResumeLayout(false);
             this.TNSGroupBox.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.NEOGroupBox.ResumeLayout(false);
@@ -515,10 +460,6 @@ namespace TransientSDB
         private System.Windows.Forms.RadioButton NEOCPButton;
         private System.Windows.Forms.CheckBox OnTopBox;
         private System.Windows.Forms.CheckBox NGCHostBox;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton Max100Button;
-        private System.Windows.Forms.RadioButton Max500Button;
-        private System.Windows.Forms.RadioButton Max50Button;
         private System.Windows.Forms.CheckBox CullCheckBox;
     }
 }

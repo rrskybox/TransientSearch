@@ -40,7 +40,6 @@ namespace TransientSDB
         public string SDBIdentifier { get; set; } = "TNS";
         public string SDBDescription { get; set; } = "Supernova Query";
         public int SearchBackDays { get; set; }
-        public int MaxRecordCount { get; set; }
         public bool IsNGCHosted { get; set; }
         public bool SearchSN { get; set; }
         public bool SearchClassified { get; set; }
@@ -87,55 +86,68 @@ namespace TransientSDB
             string contents;
             WebClient client = new WebClient();
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-            try
-            {
-                string urlSearch = url_tns_search + MakeSearchQuery();
-                contents = client.DownloadString(urlSearch);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Download Error: " + ex.Message);
-                return null;
-            };
-
-            //Clean up the column headers so they can be used as XML item names
-            string[] lines = contents.Split('\n');
-            lines[0] = lines[0].Replace(" ", "_");
-            lines[0] = lines[0].Replace("/", "");
-            lines[0] = lines[0].Replace("(", "");
-            lines[0] = lines[0].Replace(")", "");
-            lines[0] = lines[0].Replace(".", "");
-            lines[0] = lines[0].Replace("\"", "");
-
-            //Split into rows and load the header line as csv file
-            char[] csvSplit = new char[] { '\t' };
-            string[] headers = lines[0].Split(csvSplit, System.StringSplitOptions.None).Select(x => x.Trim('\"')).ToArray();
-            int[] widths = new int[headers.Length];
-
+            int pages = 40;
             //create an xml working database
             XElement xml = new XElement(XMLParser.SDBListX);
-            for (int line = 1; line < lines.Length; line++)
+            string[] headers = null;
+            int[] widths = null;
+            for (int p = 0; p <= pages; p++)
             {
-                lines[line] = lines[line].Replace("\"", "");
-                string[] entries = lines[line].Split(csvSplit, System.StringSplitOptions.None);
-                XElement xmlItem = new XElement(XMLParser.SDBEntryX);
-                for (int i = 0; i < headers.Length; i++)
+                try
                 {
-                    if (headers[i].Contains("RA") || headers[i].Contains("DEC"))
-                        entries[i] = Utility.ParseRADecString(entries[i], ':').ToString();
-                    xmlItem.Add(new XElement(headers[i], entries[i]));
-                    if (entries[i].Length > widths[i]) widths[i] = entries[i].Length;
+                    string urlSearch = url_tns_search + MakeSearchQuery(p);
+                    contents = client.DownloadString(urlSearch);
                 }
-                //fill in clipboard fields
-                //Name
-                xml.Add(xmlItem);
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Download Error: " + ex.Message);
+                    return null;
+                };
+
+                //Clean up the column headers so they can be used as XML item names
+                string[] lines = contents.Split('\n');
+                lines[0] = lines[0].Replace(" ", "_");
+                lines[0] = lines[0].Replace("/", "");
+                lines[0] = lines[0].Replace("(", "");
+                lines[0] = lines[0].Replace(")", "");
+                lines[0] = lines[0].Replace(".", "");
+                lines[0] = lines[0].Replace("\"", "");
+
+                //Split into rows and load the header line as csv file
+                char[] csvSplit = new char[] { '\t' };
+                headers = lines[0].Split(csvSplit, System.StringSplitOptions.None).Select(x => x.Trim('\"')).ToArray();
+                widths = new int[headers.Length];
+
+                for (int line = 1; line < lines.Length; line++)
+                {
+                    lines[line] = lines[line].Replace("\"", "");
+                    string[] entries = lines[line].Split(csvSplit, System.StringSplitOptions.None);
+                    XElement xmlItem = new XElement(XMLParser.SDBEntryX);
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        if (headers[i].Contains("RA") || headers[i].Contains("DEC"))
+                            entries[i] = Utility.ParseRADecString(entries[i], ':').ToString();
+                        xmlItem.Add(new XElement(headers[i], entries[i]));
+                        if (entries[i].Length > widths[i]) widths[i] = entries[i].Length;
+                    }
+                    //fill in clipboard fields
+                    //Name
+                    xml.Add(xmlItem);
+                }
+                int styles = xml.Elements().Count();
+                if (xml.Elements().Count() < (p + 1) * 50)
+                    break;
+                if (styles > 300)
+                    System.Threading.Thread.Sleep(10000);  //Time for TNS Rate Limiting
             }
+
             XElement headerRecordX = new XElement("SDBDataFields");
             for (int i = 0; i < widths.Length; i++)
             {
                 XElement colRecordX = new XElement(headers[i], widths[i]);
                 headerRecordX.Add(colRecordX);
             }
+
             xml.Add(headerRecordX);
             return xml;
         }
@@ -339,11 +351,13 @@ namespace TransientSDB
             return;
         }
 
-        private string MakeSearchQuery()
+        private string MakeSearchQuery(int page)
         {
             //Returns a url string for querying the TNS website
 
             NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+            queryString["page"] = page.ToString("0");
+
             queryString["format"] = "tsv";
 
             queryString["name"] = "";
@@ -382,7 +396,7 @@ namespace TransientSDB
                 queryString["hostname"] = "";
             queryString["associated_groups[]"] = "null";
             queryString["ext_catid"] = "";
-            queryString["num_page"] = MaxRecordCount.ToString("0");
+            queryString["num_page"] = "50";
 
             queryString["display[redshift]"] = "0";
             queryString["display[hostname]"] = "0";

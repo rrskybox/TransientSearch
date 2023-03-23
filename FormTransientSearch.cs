@@ -54,9 +54,6 @@ namespace TransientSDB
             tnsAcquisition.SearchClassified = ATSelectButton.Checked;
             tnsAcquisition.SearchSN = SuperNovaSelectButton.Checked;
             tnsAcquisition.IsNGCHosted = NGCHostBox.Checked;
-            if (Max50Button.Checked) tnsAcquisition.MaxRecordCount = 50;
-            else if (Max100Button.Checked) tnsAcquisition.MaxRecordCount = 100;
-            else if (Max500Button.Checked) tnsAcquisition.MaxRecordCount = 500;
 
             if (tnsAcquisition.GetAndSet())
             {
