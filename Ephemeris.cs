@@ -25,21 +25,21 @@ namespace TransientSDB
                 {
                     double period = Convert.ToDouble(periodX);
                     double jDate = Convert.ToDouble(julDateX);
-                    DateTime nextTransit = NextTransit(jDate, period).ToLocalTime();
+                    DateTime nextTransit = NextTransitUTC(jDate, period).ToLocalTime();
                     nextTransitString = nextTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     width = Utility.Bigger(nextTransitString.Length, width);
 
                     if (periodMinusErrorX != "")
                     {
                         double periodMin = Convert.ToDouble(periodX) + Convert.ToDouble(periodMinusErrorX);
-                        DateTime nextEarliestTransit = NextTransit(jDate, periodMin).ToLocalTime();
+                        DateTime nextEarliestTransit = NextTransitUTC(jDate, periodMin).ToLocalTime();
                         nextEarliestTransitString = nextEarliestTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     }
 
                     if (periodPlusErrorX != "")
                     {
                         double periodMax = Convert.ToDouble(periodX) + Convert.ToDouble(periodPlusErrorX);
-                        DateTime nextLatestTransit = NextTransit(jDate, periodMax).ToLocalTime();
+                        DateTime nextLatestTransit = NextTransitUTC(jDate, periodMax).ToLocalTime();
                         nextLatestTransitString = nextLatestTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     }
                 }
@@ -56,7 +56,7 @@ namespace TransientSDB
             return utc;
         }
 
-        private static DateTime NextTransit(double julDate, double periodDays)
+        private static DateTime NextTransitUTC(double julDate, double periodDays)
         {
             DateTime rightNow = DateTime.UtcNow;
             DateTime firstTransit = JulianToUTC(julDate);

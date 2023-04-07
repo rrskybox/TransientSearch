@@ -31,7 +31,7 @@ namespace TransientSDB
     public class SearchTNS
     {
         // url of TNS and TNS-sandbox api                                     
-        const string url_tns_search = "http://wis-tns.weizmann.ac.il/search?";
+        const string url_tns_search = "http://wis-tns.org/search?";
 
         private SDBDesigner sdbDesign;
         private XElement sdbXResults;
