@@ -48,7 +48,7 @@ namespace TransientSDB
 
 
         public string SDBIdentifier { get; set; } = "AAVSO VSX";
-        public string SDBDescription { get; set; } = VSX_DATABASE_DESCRIPTION ;
+        public string SDBDescription { get; set; } = VSX_DATABASE_DESCRIPTION;
         public string SDBPeriodHigh { get; set; } = ""; //future 
         public string SDBPeriodLow { get; set; } = ""; //future 
 

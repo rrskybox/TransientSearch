@@ -58,17 +58,21 @@ namespace TransientSDB
             this.CloseButton = new System.Windows.Forms.Button();
             this.SDBTextFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OnTopBox = new System.Windows.Forms.CheckBox();
+            this.TTGroupBox = new System.Windows.Forms.GroupBox();
+            this.TargetToolLoadButton = new System.Windows.Forms.Button();
+            this.LoadTargetToolFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.OutputGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchDaysBox)).BeginInit();
             this.TNSGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.NEOGroupBox.SuspendLayout();
             this.ExoPlanetGroupBox.SuspendLayout();
+            this.TTGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNSReaderButton
             // 
-            this.TNSReaderButton.Location = new System.Drawing.Point(67, 137);
+            this.TNSReaderButton.Location = new System.Drawing.Point(67, 139);
             this.TNSReaderButton.Name = "TNSReaderButton";
             this.TNSReaderButton.Size = new System.Drawing.Size(46, 31);
             this.TNSReaderButton.TabIndex = 0;
@@ -79,7 +83,7 @@ namespace TransientSDB
             // TextFileRadioButton
             // 
             this.TextFileRadioButton.AutoSize = true;
-            this.TextFileRadioButton.Location = new System.Drawing.Point(356, 17);
+            this.TextFileRadioButton.Location = new System.Drawing.Point(83, 18);
             this.TextFileRadioButton.Name = "TextFileRadioButton";
             this.TextFileRadioButton.Size = new System.Drawing.Size(65, 17);
             this.TextFileRadioButton.TabIndex = 1;
@@ -90,7 +94,7 @@ namespace TransientSDB
             // 
             this.ClipboardRadioButton.AutoSize = true;
             this.ClipboardRadioButton.Checked = true;
-            this.ClipboardRadioButton.Location = new System.Drawing.Point(356, 40);
+            this.ClipboardRadioButton.Location = new System.Drawing.Point(83, 41);
             this.ClipboardRadioButton.Name = "ClipboardRadioButton";
             this.ClipboardRadioButton.Size = new System.Drawing.Size(69, 17);
             this.ClipboardRadioButton.TabIndex = 2;
@@ -103,9 +107,9 @@ namespace TransientSDB
             this.OutputGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
             this.OutputGroupBox.Controls.Add(this.ClipboardRadioButton);
             this.OutputGroupBox.Controls.Add(this.TextFileRadioButton);
-            this.OutputGroupBox.Location = new System.Drawing.Point(199, 127);
+            this.OutputGroupBox.Location = new System.Drawing.Point(466, 126);
             this.OutputGroupBox.Name = "OutputGroupBox";
-            this.OutputGroupBox.Size = new System.Drawing.Size(431, 73);
+            this.OutputGroupBox.Size = new System.Drawing.Size(164, 73);
             this.OutputGroupBox.TabIndex = 3;
             this.OutputGroupBox.TabStop = false;
             this.OutputGroupBox.Text = "Output";
@@ -219,7 +223,7 @@ namespace TransientSDB
             // SuspectsSelectButton
             // 
             this.SuspectsSelectButton.AutoSize = true;
-            this.SuspectsSelectButton.Location = new System.Drawing.Point(89, 29);
+            this.SuspectsSelectButton.Location = new System.Drawing.Point(89, 17);
             this.SuspectsSelectButton.Name = "SuspectsSelectButton";
             this.SuspectsSelectButton.Size = new System.Drawing.Size(69, 17);
             this.SuspectsSelectButton.TabIndex = 7;
@@ -383,7 +387,8 @@ namespace TransientSDB
             // 
             // SDBTextFileDialog
             // 
-            this.SDBTextFileDialog.DefaultExt = "*.txt";
+            this.SDBTextFileDialog.DefaultExt = "txt";
+            this.SDBTextFileDialog.Filter = "Text (*.txt)|*.txt";
             // 
             // OnTopBox
             // 
@@ -397,12 +402,38 @@ namespace TransientSDB
             this.OnTopBox.UseVisualStyleBackColor = true;
             this.OnTopBox.CheckedChanged += new System.EventHandler(this.OnTopBox_CheckedChanged);
             // 
+            // TTGroupBox
+            // 
+            this.TTGroupBox.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.TTGroupBox.Controls.Add(this.TargetToolLoadButton);
+            this.TTGroupBox.Location = new System.Drawing.Point(199, 127);
+            this.TTGroupBox.Name = "TTGroupBox";
+            this.TTGroupBox.Size = new System.Drawing.Size(128, 73);
+            this.TTGroupBox.TabIndex = 10;
+            this.TTGroupBox.TabStop = false;
+            this.TTGroupBox.Text = "AAVSO Target Tool";
+            // 
+            // TargetToolLoadButton
+            // 
+            this.TargetToolLoadButton.Location = new System.Drawing.Point(26, 26);
+            this.TargetToolLoadButton.Name = "TargetToolLoadButton";
+            this.TargetToolLoadButton.Size = new System.Drawing.Size(73, 24);
+            this.TargetToolLoadButton.TabIndex = 0;
+            this.TargetToolLoadButton.Text = "Load File";
+            this.TargetToolLoadButton.UseVisualStyleBackColor = true;
+            this.TargetToolLoadButton.Click += new System.EventHandler(this.TargetToolLoadButton_Click);
+            // 
+            // LoadTargetToolFileDialog
+            // 
+            this.LoadTargetToolFileDialog.FileName = "openFileDialog1";
+            // 
             // FormTransientSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cyan;
-            this.ClientSize = new System.Drawing.Size(636, 244);
+            this.ClientSize = new System.Drawing.Size(637, 244);
+            this.Controls.Add(this.TTGroupBox);
             this.Controls.Add(this.OnTopBox);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.NEOGroupBox);
@@ -425,6 +456,7 @@ namespace TransientSDB
             this.NEOGroupBox.PerformLayout();
             this.ExoPlanetGroupBox.ResumeLayout(false);
             this.ExoPlanetGroupBox.PerformLayout();
+            this.TTGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -461,6 +493,9 @@ namespace TransientSDB
         private System.Windows.Forms.CheckBox OnTopBox;
         private System.Windows.Forms.CheckBox NGCHostBox;
         private System.Windows.Forms.CheckBox CullCheckBox;
+        private System.Windows.Forms.GroupBox TTGroupBox;
+        private System.Windows.Forms.Button TargetToolLoadButton;
+        private System.Windows.Forms.OpenFileDialog LoadTargetToolFileDialog;
     }
 }
 

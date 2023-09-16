@@ -42,6 +42,7 @@ namespace TransientSDB
             Utility.ButtonGreen(ExoButton);
             Utility.ButtonGreen(NEOButton);
             Utility.ButtonGreen(CloseButton);
+            Utility.ButtonGreen(TargetToolLoadButton);
             OutputGroupBox.ForeColor = Color.Black;
         }
 
@@ -224,6 +225,34 @@ namespace TransientSDB
             this.TopMost = OnTopBox.Checked;
         }
 
-     }
+        private void TargetToolLoadButton_Click(object sender, EventArgs e)
+        {
+            Utility.ButtonRed(TargetToolLoadButton);
+            DialogResult odrTT = LoadTargetToolFileDialog.ShowDialog();
+            if (odrTT == DialogResult.OK)
+            {
+                TargetToolManagement targetToolAcquisition = new TargetToolManagement();
+                string targetToolFileName = LoadTargetToolFileDialog.FileName;
+                if (targetToolAcquisition.GetAndSet(targetToolFileName))
+                {
+                    if (TextFileRadioButton.Checked)
+                    {
+                        DialogResult odr = SDBTextFileDialog.ShowDialog();
+                        if (odr == DialogResult.OK)
+                            targetToolAcquisition.BuildSDBTextFile(SDBTextFileDialog.FileName);
+                        else
+                            MessageBox.Show("Failed to write SDB text file");
+                    }
+                    else
+                        targetToolAcquisition.BuildSDBClipboard();
+                }
+                else
+                    MessageBox.Show("Failed to find any targets");
+            }
+            Utility.ButtonGreen(TargetToolLoadButton);
+            return;
+        }
+    }
 }
+
 
