@@ -30,7 +30,7 @@ namespace TransientSDB
 
         public const string IdentifierX = "identifier";
         public const string SDBDescriptionX = "sdbDescription";
-        //Control Data Fields
+        //Control Data Fields (Header)
         public const string SearchPrefixX = "searchPrefix";
         public const string SpecialSDBX = "specialSDB";
         public const string PlotObjectsX = "plotObjects";
@@ -43,7 +43,7 @@ namespace TransientSDB
         public const string CrossReferenceTypeX = "crossReferenceType";
         public const string DefaultMaxFOVX = "defaultMaxFOV";
         public const string DefaultObjectTypeX = "defaultObjectType";
-        //Built-in Data Fields
+        //Built-in Data Fields (Columns)
         public const string RAHoursX = "raHours";
         public const string RAMinutesX = "raMinutes";
         public const string RASecondsX = "raSeconds";
@@ -62,10 +62,11 @@ namespace TransientSDB
         public const string DrawCommandX = "drawCommand";
         public const string ToggleGroupX = "toggleGroup";
         public const string FileNameX = "fileName";
-        public const string MinimumFOVX = "minimumFOV";
-        public const string MaximumFOVX = "maximumFOV";
         public const string RAMultiplierX = "raMultiplier";
         public const string SampleColumnHeaderX = "sampleColumnHeader";
+        public const string MaximumFOVPlot = "maximumFOV";
+        public const string MinimumFOVPlot = "minimumFOV";
+
         //Custom data fields
         const string UserFieldX = "userField";
         //Field attributes
@@ -78,9 +79,16 @@ namespace TransientSDB
 
         public int DefaultObjectIndex { get; set; } = 20;
         public string DefaultObjectDescription { get; set; } = "Transient";
+
+
         public string SearchPrefix
         {
             set { ControlFields.Single(c => c.ControlName == SearchPrefixX).ControlValue = value; }
+        }
+
+        public string DefaultMaximumFOV
+        {
+            set { ControlFields.Single(c => c.ControlName == DefaultMaxFOVX).ControlValue = value; }
         }
 
         public List<ControlDesc> ControlFields = new List<ControlDesc>()

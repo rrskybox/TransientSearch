@@ -28,7 +28,9 @@ using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using System.Xml.Linq;
+
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 
 namespace TransientSDB
 
@@ -51,7 +53,12 @@ namespace TransientSDB
 
         public bool GetAndSet(string ttFilePath)
         {
-            sdbDesign = new SDBDesigner();
+            sdbDesign = new SDBDesigner();  //Variable Star
+            sdbDesign.DefaultObjectIndex = 1;
+            sdbDesign.DefaultObjectDescription = "AAVSO Target Tool Variable";
+            sdbDesign.DefaultMaximumFOV = "100.0000";
+            sdbDesign.SearchPrefix = "AAVSO-TT";
+
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = TargetToolFileToResultsXML(ttFilePath);
             if (sdbXResults == null)
