@@ -56,8 +56,8 @@ namespace TransientSDB
             sdbDesign = new SDBDesigner();  //Variable Star
             sdbDesign.DefaultObjectIndex = 1;
             sdbDesign.DefaultObjectDescription = "AAVSO Target Tool Variable";
-            sdbDesign.DefaultMaximumFOV = "100.0000";
-            sdbDesign.SearchPrefix = "AAVSO-TT";
+            sdbDesign.DefaultMaximumFOV = "   100.0000";
+            sdbDesign.SearchPrefix = "TT";
 
             //Import TNS CSV text query and convert to an XML database
             sdbXResults = TargetToolFileToResultsXML(ttFilePath);
