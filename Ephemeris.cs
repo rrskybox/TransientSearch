@@ -25,6 +25,11 @@ namespace TransientSDB
                 {
                     double period = Convert.ToDouble(periodX);
                     double jDate = Convert.ToDouble(julDateX);
+
+                    // Occasionally the input is garbage that looks like 10x a real number
+                    if (jDate > 3000000)
+                        jDate = jDate / 10;
+
                     DateTime nextTransit = NextTransitUTC(jDate, period).ToLocalTime();
                     nextTransitString = nextTransit.ToString("MM/dd/yyyy HH:mm:ss");
                     width = Utility.Bigger(nextTransitString.Length, width);

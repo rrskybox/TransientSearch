@@ -138,7 +138,8 @@ namespace TransientSDB
             {
                 MessageBox.Show("Download Error: " + ex.Message);
                 return null;
-            };
+            }
+            ;
             //Standard VOTable parse
             XElement exoDoc = XElement.Parse(exoResults);
             XNamespace exoNS = XNamespace.Get(exoDoc.Attribute("xmlns").Value);
@@ -187,9 +188,11 @@ namespace TransientSDB
             {
                 headerRecordX.Add(new XElement(dHeader[i], widths[i]));
             }
+
+            int ntWidth = 0;
             //Figure out the transit ephemeris for all the targets, if possible
-            int ntWidth = Ephemeris.AddCalculatedEphemeris(sdbX);
-            //Add the NextTransitFields
+            ntWidth = Ephemeris.AddCalculatedEphemeris(sdbX);
+            //Add the NextTransitFields if not null
             headerRecordX.Add(new XElement(NextTransitX, ntWidth));
             headerRecordX.Add(new XElement(NextTransitEarliestX, ntWidth));
             headerRecordX.Add(new XElement(NextTransitLatestX, ntWidth));
